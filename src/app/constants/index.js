@@ -1,4 +1,4 @@
-import { QueryOptions } from "@apollo/client";
+// import { QueryOptions } from "@apollo/client";
 
 // Apollo messages
 export const INVALID_OR_EXPIRED_TOKEN_MESSAGE = 'Sorry! Your token is expired or invalid';
@@ -78,7 +78,7 @@ export const DASHBOARD_LINK = [
 export const AUTH_LINKS = {
   FORGET_PASSWORD_LINK: '/forgot-password',
   LOGIN_LINK: '/login',
-  SET_PASSWORD: '/set-password',
+  SIGN_UP: '/signup',
   RESET_PASSWORD: '/reset-password',
 }
 
