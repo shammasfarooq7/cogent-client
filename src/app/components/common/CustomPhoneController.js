@@ -48,7 +48,7 @@ export const CustomPhoneController = ({ controllerName, controllerLabel }) => {
                 paddingLeft: 15,
                 fontSize: 16,
                 borderRadius: '4px',
-                // padding: '16.5px 14px',
+                padding: '0px 0px',
                 width: '100%',
                 border: '1px solid rgba(0, 0, 0, 0.2)'
               }}
