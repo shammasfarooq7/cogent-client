@@ -5,6 +5,7 @@ import { Controller, useFormContext } from "react-hook-form";
 // styles, constants, utils and interfaces block
 import PhoneInput from "react-phone-input-2";
 import { CustomPhoneContainer } from "../../theme/styleComponents";
+import 'react-phone-input-2/lib/style.css'
 
 /**
  * It takes multiple params to show a customized input field which can have multiple types.
@@ -29,26 +30,19 @@ export const CustomPhoneController = ({ controllerName, controllerLabel }) => {
             <InputLabel shrink={focus} id={`phone-${controllerName}`}>{controllerLabel}</InputLabel>
 
             <PhoneInput
-              country={'us'}
-              onlyCountries={['us']}
-              value={value}
-              onChange={phone => onChange(phone)}
-              disabled={false}
-            //   disableDropdown={false}
-            //   showDropdown={true}
-              dropdownClass={!focus ? "display_none" : undefined}
-              onFocus={() => setFocus(true)}
-              onBlur={() => {
-                (value?.length === 0 || !value) &&
-                  setFocus(false)
-              }}
-              placeholder=""
-              inputClass={!focus ? "transparent" : "appearance"}
+             specialLabel={''}
+             country={'us'}
+             onChange={phone => onChange(phone)}
+            //  inputProps={{
+            //     name: 'phone',
+            //     required: true,
+            //     autoFocus: true
+            //   }}
               inputStyle={{
                 paddingLeft: 15,
                 fontSize: 16,
                 borderRadius: '4px',
-                padding: '0px 0px',
+                padding: '0px 42px',
                 width: '100%',
                 border: '1px solid rgba(0, 0, 0, 0.2)'
               }}
