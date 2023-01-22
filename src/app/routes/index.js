@@ -5,6 +5,7 @@ import { Login } from "../pages/auth/login";
 import { Signup } from "../pages/auth/signup";
 // other packages
 import { AUTH_LINKS, ROOT_ROUTE } from "../constants";
+import { DashboardContent } from "../components/Dashboard/Dashboard";
 
 const MainRoutes = () => {
   return (
@@ -13,6 +14,7 @@ const MainRoutes = () => {
         <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} />
         <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />
         <Route path={AUTH_LINKS.SIGN_UP} element={<Signup />} />
+        <Route path="/dashboard" element={<DashboardContent />} />
       </Routes>
     </BrowserRouter>
   )
