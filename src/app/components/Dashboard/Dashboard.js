@@ -21,6 +21,7 @@ import { AppBar } from '../common/AppBar';
 import {Chart} from '../common/Chart';
 import { Deposits } from '../common/Calendar';
 import { Orders } from '../common/TableSchduel';
+import { DashboardCard } from '../common/Card';
 
 const mdTheme = createTheme();
 
@@ -106,26 +107,35 @@ export const DashboardContent = () => {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               <Grid container spacing={3}>
                 {/* Chart */}
-                <Grid item xs={12} md={8} lg={9}>
+                <Grid item xs={4} md={4} lg={4}>
+                   <DashboardCard color="#3699FF" />
+                </Grid>
+                <Grid item xs={4} md={4} lg={4}>
+                   <DashboardCard color="#242D60" />
+                </Grid>
+                <Grid item xs={4} md={4} lg={4}>
+                   <DashboardCard color="#212121" />
+                </Grid>
+                <Grid item xs={12} md={6} lg={6}>
                   <Paper
                     sx={{
                       p: 2,
                       display: 'flex',
                       flexDirection: 'column',
-                      height: 240,
+                      height: 300,
                     }}
                   >
                     <Chart />
                   </Paper>
                 </Grid>
                 {/* Recent Deposits */}
-                <Grid item xs={12} md={4} lg={3}>
+                <Grid item xs={12} md={6} lg={6}>
                   <Paper
                     sx={{
                       p: 2,
                       display: 'flex',
                       flexDirection: 'column',
-                      height: 240,
+                      height: 300,
                     }}
                   >
                     <Deposits />

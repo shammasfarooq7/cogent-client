@@ -16,7 +16,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export const AuthLayout = ({ children, title, subTitle }) => (
 
-  <Grid container component="main" sx={{ height: '100vh' }}>
+  <Grid container component="main" sx={{ height: '100vh' , background:"#020914" , position:"relative" }}>
+    
     <CssBaseline />
     <Grid
       item

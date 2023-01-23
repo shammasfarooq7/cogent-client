@@ -1,7 +1,7 @@
 import Auth from '../svg/Auth.svg'
-// import EMPTY from '../svgs/empty.svg'
+import Cogent from '../svg/Cogent Logo.svg'
 
 export const images = {
     Auth,
-    // EMPTY
+    Cogent
   }

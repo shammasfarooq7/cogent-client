@@ -33,13 +33,13 @@ export const mainListItems = (
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon className='white'>
-        <BarChartIcon />
+        <BarChartIcon className='white' />
       </ListItemIcon>
       <ListItemText primary="Reports" />
     </ListItemButton>
     <ListItemButton className='white'>
       <ListItemIcon className='white'>
-        <LayersIcon />
+        <LayersIcon className='white'/>
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton>
@@ -53,19 +53,19 @@ export const secondaryListItems = (
     </ListSubheader>
     <ListItemButton >
       <ListItemIcon className='white'>
-        <AssignmentIcon />
+        <AssignmentIcon className='white'/>
       </ListItemIcon>
       <ListItemText primary="Current month" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon className='white'>
-        <AssignmentIcon />
+        <AssignmentIcon className='white'/>
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon className='white'>
-        <AssignmentIcon />
+        <AssignmentIcon className='white'/>
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItemButton>

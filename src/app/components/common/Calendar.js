@@ -1,27 +1,38 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import Title from './Title';
+// packages import
+import { useState } from 'react';
+import { Box, } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
+import { PickersDay } from '@mui/x-date-pickers';
+import dayjs, { Dayjs } from 'dayjs';
+// others
+// import palette from '../../theme/palette';
 
-function preventDefault(event) {
-  event.preventDefault();
-}
+export const Deposits = ()=> {
+  const [date, setDate] = useState(dayjs(new Date()));
+  const EventsDate = [
+    dayjs(new Date(2022, 8, 1)).format('YYYY-MM-DD'),
+    dayjs(new Date(2022, 8, 4)).format('YYYY-MM-DD'),
+    dayjs(new Date(2022, 8, 22)).format('YYYY-MM-DD')
+  ]
 
-export const Deposits = () => {
   return (
-    <React.Fragment>
-      <Title>Recent Deposits</Title>
-      <Typography component="p" variant="h4">
-        $3,024.00
-      </Typography>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
-      </Typography>
-      <div>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-      </div>
-    </React.Fragment>
+    <Box >
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <CalendarPicker date={date} onChange={(newDate) => setDate(newDate)}
+          renderDay={(day, selectedDays, pickersDayProps) => {
+            let selectedMuiClass = '';
+            if (EventsDate.includes(dayjs(day).format('YYYY-MM-DD'))) {
+              selectedMuiClass = 'event-day';
+            }
+
+            return (
+              <PickersDay className={selectedMuiClass} {...pickersDayProps} />
+            );
+          }}
+        />
+      </LocalizationProvider>
+    </Box>
   );
 }

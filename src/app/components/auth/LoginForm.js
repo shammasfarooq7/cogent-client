@@ -53,7 +53,8 @@ export const LoginForm = () => {
   return (
     <FormProvider {...methods}>
       <ThemeProvider theme={theme}>
-        <Grid container component="main" sx={{ height: '100vh' }}>
+        <Grid container component="main" sx={{ height: '100vh' , position:"relative" }}>
+        <Box component='img' display='block' sx={{height:"112px", width:"101px", position:"absolute", top:"10px", left:"20px"}} src={images.Cogent} alt='Cogent logo' />
           <CssBaseline />
           <Grid
             item
