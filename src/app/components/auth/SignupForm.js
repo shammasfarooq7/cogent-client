@@ -7,7 +7,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -18,6 +17,10 @@ import { CustomController } from "../common/CustomController"
 import { CustomPhoneController } from "../common/CustomPhoneController"
 import { signUpValidationSchema } from "../../validationSchema";
 import { SportsRugbySharp } from "@mui/icons-material";
+import { useMutation } from '@apollo/client';
+import { SIGN_UP } from "../../../graphql/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { Alert } from "../common/Alert";
 // other packages
 
 const theme = createTheme();
@@ -35,10 +38,29 @@ export const SignupForm = () => {
     }
   })
 
+  const navigate = useNavigate()
+  const [signup, { data, loading, error }] = useMutation(SIGN_UP);
+
+  if(data){
+    Alert.success("Registerd user successfully")
+    //  navigate("/login")
+  }
+
   const { handleSubmit, control, reset, formState: { errors } } = methods;
 
   const onSubmit = async (data) => {
+    const {email , password , phoneNumber} = data
     console.log(data)
+    await signup({
+        variables : {
+          createUserInput : {
+            email,
+            password,
+            phoneNumber
+          }
+        }   
+    })
+   
   }
 
   return (
@@ -76,17 +98,17 @@ export const SignupForm = () => {
                 alignItems: 'center',
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
-              </Avatar>
+              </Avatar> */}
               <Typography sx={{fontWeight :"500", fontSize:"16px", marginRight:"414px", marginBottom:"10px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
                 Sign up
               </Typography>
               <Typography sx={{fontSize : "14px", marginRight:"251px"  ,color: "#FFFFFF" , fontFamily:"Poppins" }}>
                if you already have an account register you can
-               <Link href="#" variant="body2">
+               <Typography component={Link} to="/login" variant="body2" sx={{cursor:"pointer"}}>
                         {" Register here!"}
-                      </Link>
+                      </Typography>
               </Typography>
               <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <Box sx={{ mt: 1 }}>
@@ -97,16 +119,16 @@ export const SignupForm = () => {
                     fieldType='text'
                   />
 
-                <CustomController
+                {/* <CustomController
                     controllerName='username'
                     controllerLabel='Enter your username'
                     fieldType='text'
-                  />
+                  /> */}
 
                   <CustomController
                     controllerName='password'
                     controllerLabel='Enter your password'
-                    fieldType='text'
+                    fieldType='password'
                   />
 
 
@@ -114,15 +136,15 @@ export const SignupForm = () => {
                   <CustomController
                     controllerName='confirmPassword'
                     controllerLabel='Confirm Your password'
-                    fieldType='text'
+                    fieldType='password'
                   />
 
 
 
-                  {/* <CustomPhoneController
+                  <CustomPhoneController
                     controllerName='phoneNumber'
                     controllerLabel=''
-                  /> */}
+                  />
 
 
                   <Button
@@ -135,9 +157,9 @@ export const SignupForm = () => {
                   </Button>
                   <Grid container>
                     <Grid item xs>
-                      <Link href="#" variant="body2">
+                      <Typography component={Link} variant="body2" sx={{cursor:"pointer"}}>
                         Forgot password?
-                      </Link>
+                      </Typography>
                     </Grid>
                     {/* <Grid item>
                       <Link href="#" variant="body2">

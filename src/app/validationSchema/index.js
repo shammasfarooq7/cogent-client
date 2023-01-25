@@ -4,10 +4,13 @@ import {requiredMessage } from "../utils";
 
 const passwordValidationSchema = {
    password: yup.string().required(requiredMessage("Password")), 
-   confirmPassword: yup
-   .string()
-   .oneOf([yup.ref("password"), null], "Passwords must match")
-   .required("confirm your password")
+}
+
+const confirmPasswordValidationSchema = {
+  confirmPassword: yup
+  .string()
+  .oneOf([yup.ref("password"), null], "Passwords must match")
+  .required("confirm your password")
 }
 
 const emailValidationSchema = {
@@ -30,5 +33,6 @@ export const loginValidationSchema = yup.object({
 export const signUpValidationSchema = yup.object({
   ...emailValidationSchema,
   ...passwordValidationSchema,
+  ...confirmPasswordValidationSchema,
   ...phoneNumberValidationSchema
 })
