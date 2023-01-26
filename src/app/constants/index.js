@@ -1,5 +1,3 @@
-// import { QueryOptions } from "@apollo/client";
-
 // Apollo messages
 export const INVALID_OR_EXPIRED_TOKEN_MESSAGE = 'Sorry! Your token is expired or invalid';
 export const NOT_FOUND_EXCEPTION = 'Not Found Exception';
