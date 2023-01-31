@@ -22,6 +22,8 @@ import {Chart} from '../common/Chart';
 import { Deposits } from '../common/Calendar';
 import { Orders } from '../common/TableSchduel';
 import { DashboardCard } from '../common/Card';
+import { useQuery } from "@apollo/client";
+import { GET_CURRENT_USER } from '../../../graphql/auth';
 
 const mdTheme = createTheme();
 
@@ -30,7 +32,10 @@ export const DashboardContent = () => {
     const toggleDrawer = () => {
       setOpen(!open);
     };
-  
+
+   // Just a dummy Query
+    const {data}=useQuery(GET_CURRENT_USER)
+
     return (
       <ThemeProvider theme={mdTheme}>
         <Box sx={{ display: 'flListItemsex' }}>
