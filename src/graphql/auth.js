@@ -24,13 +24,3 @@ export const SIGN_IN = gql`
   }
 `;
 
-
-// Just a dummy Query
-// To check GQl auth guard
-export const GET_CURRENT_USER = gql`
-  query getLoggedInUser {
-    getLoggedInUser {
-      email
-    }
-  }
-`;
