@@ -5,8 +5,8 @@ import { gql } from '@apollo/client';
 //   }
 // }
 export const SIGN_UP = gql`
-  mutation SignUp($createUserInput: CreateUserInput!) {
-    signup(createUserInput: $createUserInput) {
+  mutation SignUp($signUpUserInput: SignUpUserInput!) {
+    signup(signUpUserInput: $signUpUserInput) {
       id
       email
       phoneNumber
@@ -20,6 +20,7 @@ export const SIGN_IN = gql`
   mutation SignIn($loginUserInput: LoginUserInput!) {
     signin(loginUserInput: $loginUserInput) {
       accessToken
+      roles
     }
   }
 `;

@@ -25,7 +25,6 @@ import { AUTH_TOKEN, DASHBOARD_ROUTE, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FOR
 // import { LoginUserInput, useLoginMutation } from "../../../generated";
 import { loginValidationSchema } from "../../validationSchema";
 import { SIGN_IN } from "../../../graphql/auth";
-import { AuthLayout } from "./Layout";
 import { useMutation } from "@apollo/client";
 
 const theme = createTheme();
@@ -88,6 +87,17 @@ export const LoginForm = () => {
             }}
           />
           <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{background: "#1E1E1E"}}>
+            <Box sx={{marginTop:"120px", marginLeft:"60px"}}>
+          <Typography sx={{ontWeight :"700", fontSize:"20px", marginBottom:"10px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
+                Login in
+              </Typography>
+              <Typography sx={{fontSize : "14px", marginTop:"20px" ,color: "#FFFFFF" , fontFamily:"Poppins" }}>
+               if you don't have an account register  <span style={{displa:"block"}}>you can</span> 
+              </Typography>
+               <Typography component={Link} to="/signup" variant="body2" sx={{cursor:"pointer"}}>
+                      {" Register here!"}
+                      </Typography>
+            </Box>
             <Box
               sx={{
                 my: 8,
@@ -115,12 +125,16 @@ export const LoginForm = () => {
                     controllerName='email'
                     controllerLabel='Email'
                     fieldType='text'
+                    variantField="standard"
                   />
 
                   <CustomController
                     controllerName='password'
                     controllerLabel='Password'
                     fieldType='password'
+                    variantField="standard"
+                    fieldIcon={<LockOutlinedIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
+                    isPassword
                   />
 
                   <Button

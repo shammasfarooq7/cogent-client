@@ -11,6 +11,7 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Modal from '@mui/material/Modal';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -23,6 +24,8 @@ import { Deposits } from '../common/Calendar';
 import { Orders } from '../common/TableSchduel';
 import { DashboardCard } from '../common/Card';
 import { useQuery } from "@apollo/client";
+import { Button } from '@mui/material';
+import { ResourceForm } from './ResouceForm';
 
 const mdTheme = createTheme();
 
@@ -31,7 +34,8 @@ export const DashboardContent = () => {
     const toggleDrawer = () => {
       setOpen(!open);
     };
-
+    const [openModal, setOpenModal] = React.useState(false);
+    const handleOpen = () => setOpenModal(true);
 
     return (
       <ThemeProvider theme={mdTheme}>
@@ -146,11 +150,26 @@ export const DashboardContent = () => {
                 {/* Recent Orders */}
                 <Grid item xs={12}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                    <Orders />
+                    <Orders tableName="Active Incidents" />
+                  </Paper>
+                </Grid>
+               <Grid container spacing={2} sx={{mt:2}}>
+               <Grid xs={6}>
+              </Grid>
+              <Grid xs={4}></Grid>
+              <Grid xs={2}>              
+                    <Button variant='contained' onClick={handleOpen} sx={{mt:2, paddingLeft:"35px", paddingRight:"35px", background:"#F64E60", color:"white", borderRadius:"12px"}}>Add</Button>
+                    {openModal && 
+                     <ResourceForm openModal={openModal} setOpenModal={setOpenModal} />
+                     }
+              </Grid>
+                </Grid>  
+                <Grid item xs={12}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                    <Orders tableName="Add Resources" />
                   </Paper>
                 </Grid>
               </Grid>
-              {/* <Copyright sx={{ pt: 4 }} /> */}
             </Container>
           </Box>
         </Box>

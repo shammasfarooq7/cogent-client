@@ -1,6 +1,6 @@
 // packages block
 import React from 'react';
-import { Box, InputAdornment, TextField ,Input } from '@mui/material';
+import { Box, InputAdornment, TextField ,Input, MenuItem } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
@@ -46,20 +46,12 @@ const styles = theme => ({
 
 
 
-export const CustomController = ({ fieldIcon,controllerName, controllerLabel, fieldType, variantField, isDisabled, isMultiLine, maxLength, rowsLength, readOnly }) => {
+export const CustomFormController = ({ controllerName, controllerLabel, fieldType , isMultiLine , rowsLength , fieldIcon }) => {
   const { control } = useFormContext();
-   
+  
   // const {classes} = this.props
   //  console.log("ssssssssss",classes)
 
-  const CssTextField = styled(TextField)({
-    '& label.Mui-focused': {
-      color: 'white',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'white',
-    }
-  });
 
 
   return (
@@ -70,30 +62,18 @@ export const CustomController = ({ fieldIcon,controllerName, controllerLabel, fi
         <TextField
           type={fieldType}
           margin='dense'
+          size='small'
           error={invalid}
-          sx={{ input: { color: 'white',  fontFamily:"Poppins",marginLeft:"2px" }, label : {color: 'white' , fontFamily:"Poppins", fontWeight:"400", fontSize:"13px"},
-          "& .MuiInput-root-focused": {
-            "& > fieldset": {
-          borderColor: "white"
-            }
-          }
-        }}
-          label={controllerLabel}
-          disabled={isDisabled}
           rows={isMultiLine ? rowsLength : undefined}
+          multiline={isMultiLine}
+          label={controllerLabel}
           fullWidth
           {...field}
           helperText={message}
-          multiline={isMultiLine}
-          variant={variantField}
-          inputProps={{
-            maxLength: maxLength || undefined,
-            readOnly: readOnly ? true : false,
-            // classes: { notchedOutline: classes.specialOutline }
-          }}
+          variant="outlined"
           InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
+            endAdornment: (
+              <InputAdornment position="end">
                 {fieldIcon} 
               {/* <fieldIcon sx={{color:"#FFFFFF", fontSize:"15px"}} /> */}
               </InputAdornment>

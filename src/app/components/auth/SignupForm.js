@@ -53,7 +53,7 @@ export const SignupForm = () => {
     console.log(data)
     await signup({
         variables : {
-          createUserInput : {
+          signUpUserInput : {
             email,
             password,
             phoneNumber
@@ -89,6 +89,17 @@ export const SignupForm = () => {
             }}
           />
           <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{background: "#1E1E1E"}}>
+          <Box sx={{marginTop:"120px", marginLeft:"60px"}}>
+          <Typography sx={{fontWeight :"700", fontSize:"20px", marginBottom:"10px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
+                Sign up
+              </Typography>
+              <Typography sx={{fontSize : "14px", marginTop:"20px" ,color: "#FFFFFF" , fontFamily:"Poppins" }}>
+               if you already have an account register  <span style={{displa:"block"}}>you can</span> 
+              </Typography>
+               <Typography component={Link} to="/login" variant="body2" sx={{cursor:"pointer"}}>
+                      {" Register here!"}
+                      </Typography>
+            </Box>
             <Box
               sx={{
                 my: 8,
@@ -117,6 +128,7 @@ export const SignupForm = () => {
                     controllerName='email'
                     controllerLabel='Enter your Email '
                     fieldType='text'
+                    variantField="standard"
                   />
 
                 {/* <CustomController
@@ -129,6 +141,9 @@ export const SignupForm = () => {
                     controllerName='password'
                     controllerLabel='Enter your password'
                     fieldType='password'
+                    variantField="standard"
+                    fieldIcon={<LockOutlinedIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
+                    isPassword
                   />
 
 
@@ -137,6 +152,9 @@ export const SignupForm = () => {
                     controllerName='confirmPassword'
                     controllerLabel='Confirm Your password'
                     fieldType='password'
+                    variantField="standard"
+                    fieldIcon={<LockOutlinedIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
+                    isPassword
                   />
 
 

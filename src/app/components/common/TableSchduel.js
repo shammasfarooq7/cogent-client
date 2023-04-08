@@ -52,10 +52,10 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export const Orders = () => {
+export const Orders = ({tableName}) => {
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>{tableName}</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
