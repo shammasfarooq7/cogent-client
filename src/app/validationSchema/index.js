@@ -21,6 +21,10 @@ const rpocEmailValidationSchema = {
   email: yup.string().required(requiredMessage("Email"))
 }
 
+const cogentEmailValidationSchema = {
+  cogentEmail: yup.string().required(requiredMessage("Email"))
+}
+
 const statusValidationSchema = {
   status:  yup.string().required(requiredMessage("Status")),
 }
@@ -106,7 +110,8 @@ export const resourceFormValidationSchema = yup.object({
   ...swiftCodeValidationSchema,
   ...bankAddressValidationSchema,
   ...branchNameValidationSchema,
-  ...bankNameValidationSchema
+  ...bankNameValidationSchema,
+  ...cogentEmailValidationSchema
 
 })
 
