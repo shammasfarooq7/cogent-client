@@ -25,3 +25,20 @@ export const SIGN_IN = gql`
   }
 `;
 
+export const GET_CURRENT_USER = gql`
+query getCurrentUserQuery {
+  getCurrentUser {
+    email
+    phoneNumber
+    firstName
+    lastName
+    middleName
+    email
+    rpocEmail
+    cogentEmail
+    roles {
+      role
+    }
+  }
+}
+`;

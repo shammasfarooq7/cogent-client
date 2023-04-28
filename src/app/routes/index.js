@@ -12,14 +12,19 @@ const MainRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} />
+        <Route path={ROOT_ROUTE} element={
+          <PrivateRoute>
+            <DashboardContent />
+          </PrivateRoute>
+        } />
+        <Route path={"/dashboard"} element={
+          <PrivateRoute>
+            <DashboardContent />
+          </PrivateRoute>
+        } />
+        {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
         <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />
         <Route path={AUTH_LINKS.SIGN_UP} element={<Signup />} />
-        <Route path='/dashboard' element={
-            <PrivateRoute>
-              <DashboardContent />
-            </PrivateRoute>
-        } />
       </Routes>
     </BrowserRouter>
   )

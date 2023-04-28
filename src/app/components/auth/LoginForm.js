@@ -46,7 +46,6 @@ export const LoginForm = () => {
     localStorage.setItem(AUTH_TOKEN, accessToken)
     navigate(DASHBOARD_ROUTE)
     Alert.success("Sign In successfully")
-    console.log(accessToken)
     // const {accessToke} = data
   }
   if(error){
