@@ -1,34 +1,38 @@
 // packages block
-import React from 'react';
+import React, { useState } from 'react';
 import MainRoutes from "./routes";
 import { ApolloProvider } from "@apollo/client";
 import client from "./apollo";
 import { SnackbarProvider } from 'notistack';
 import { CloseButton, SnackbarUtilsConfiguration } from './components/common/Alert';
+import { UserContext } from './context/user-context';
 
 
 export function App() {
+  const [user, setUser] = useState(null);
+
   return (
     <SnackbarProvider
       maxSnack={5} autoHideDuration={5000} action={key => <CloseButton id={key} />}
       preventDuplicate={true} anchorOrigin={{ vertical: "top", horizontal: "right" }}
       classes={{ containerRoot: 'snackbarProvider' }}
     >
-        <>
-      <SnackbarUtilsConfiguration />
+      <>
+        <SnackbarUtilsConfiguration />
 
-      <ApolloProvider client={client}>
-        {/* <AuthContextProvider> */}
+        <ApolloProvider client={client}>
+          {/* <AuthContextProvider> */}
           {/* <ThemeProvider theme={customTheme}>
             <CssBaseline /> */}
-            {/* <AppContextProvider> */}
-              <MainRoutes />
-            {/* </AppContextProvider> */}
+          <UserContext.Provider value={{ user, setUser }}>
+            <MainRoutes />
+          </UserContext.Provider>
+
           {/* </ThemeProvider> */}
-        {/* </AuthContextProvider> */}
-      </ApolloProvider>
+          {/* </AuthContextProvider> */}
+        </ApolloProvider>
       </>
-      </SnackbarProvider>
+    </SnackbarProvider>
   );
 }
 
