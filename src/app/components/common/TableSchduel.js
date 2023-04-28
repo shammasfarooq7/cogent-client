@@ -6,6 +6,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { Box } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -55,25 +58,29 @@ function preventDefault(event) {
 export const Orders = ({tableName}) => {
   return (
     <React.Fragment>
-      <Title>{tableName}</Title>
+      <Title sx={{color : "black"}}>{tableName}</Title>
       <Table size="small">
         <TableHead>
-          <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+          <TableRow sx={{backgroundColor : "#F5F8FA" , borderRadius:"10px"}}>
+            <TableCell>Resource ID</TableCell>
+            <TableCell>Country</TableCell>
+            <TableCell>City</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell >Actions</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
+        <TableBody sx={{marginTop:"10px"}}>
           {rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} >
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.shipTo}</TableCell>
               <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+             <Box sx={{display : "flex"}}>
+             <TableCell >{}</TableCell>
+             <TableCell sx={{backgroundColor : "#F5F8FA"}} >{<EditIcon sx={{color : "#A1A5B7" , cursor : "pointer"}} />}</TableCell>
+             <TableCell sx={{backgroundColor : "#F5F8FA"}}>{<DeleteIcon sx={{color : "#A1A5B7" , cursor : "pointer"}} />}</TableCell>
+             </Box>
             </TableRow>
           ))}
         </TableBody>
