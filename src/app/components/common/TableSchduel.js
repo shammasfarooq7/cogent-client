@@ -6,9 +6,11 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { images } from '../../assets/images';
+import { Search } from './Search';
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -55,10 +57,19 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export const Orders = ({tableName}) => {
+export const Orders = ({tableName,search}) => {
   return (
     <React.Fragment>
+      <Box sx={{display:"flex", justifyContent:"space-between", mb:2}}>
       <Title sx={{color : "black"}}>{tableName}</Title>
+      <Box>
+      {search &&   <Search sx={{ width:"200px"}}
+     
+     />}
+     {search &&  <Button sx={{backgroundColor:"#242D60", color:"white", padding:"6px 30px", marginLeft:"6px"}}>Add</Button>}
+      </Box>
+    
+       </Box>
       <Table size="small">
         <TableHead>
           <TableRow sx={{backgroundColor : "#F5F8FA" , borderRadius:"10px"}}>
@@ -71,15 +82,15 @@ export const Orders = ({tableName}) => {
         </TableHead>
         <TableBody sx={{marginTop:"10px"}}>
           {rows.map((row) => (
-            <TableRow key={row.id} >
+            <TableRow key={row.id}  sx={{mt:2}}>
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.shipTo}</TableCell>
               <TableCell>{row.paymentMethod}</TableCell>
              <Box sx={{display : "flex"}}>
-             <TableCell >{}</TableCell>
-             <TableCell sx={{backgroundColor : "#F5F8FA"}} >{<EditIcon sx={{color : "#A1A5B7" , cursor : "pointer"}} />}</TableCell>
-             <TableCell sx={{backgroundColor : "#F5F8FA"}}>{<DeleteIcon sx={{color : "#A1A5B7" , cursor : "pointer"}} />}</TableCell>
+             <TableCell ><Box component='img' sx={{height:"40px", width:"40px"}} src={images.Menu} alt='Menu' /></TableCell>
+             <TableCell ><Box component='img' sx={{height:"40px", width:"40px"}} src={images.Edit} alt='Menu' /></TableCell>
+             <TableCell ><Box component='img' sx={{height:"40px", width:"40px"}} src={images.Trash} alt='Menu' /></TableCell>
              </Box>
             </TableRow>
           ))}

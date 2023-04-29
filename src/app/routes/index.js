@@ -8,6 +8,7 @@ import { AUTH_LINKS, ROOT_ROUTE } from "../constants";
 import { DashboardContent } from "../components/Dashboard/Dashboard";
 import { PrivateRoute } from "./PrivateRoute";
 import { ResourceDetails } from "../components/Dashboard/ResourceDetails";
+import { AllResource } from "../components/Dashboard/AllResource";
 
 const MainRoutes = () => {
   return (
@@ -19,14 +20,19 @@ const MainRoutes = () => {
           </PrivateRoute>
         } />
         <Route path={"/dashboard"} element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <DashboardContent />
-          // </PrivateRoute>
+          </PrivateRoute>
         } />
          <Route path={"/resource-details"} element={
-          // <PrivateRoute>
+          <PrivateRoute>
             <ResourceDetails />
-          // </PrivateRoute>
+          </PrivateRoute>
+        } />
+          <Route path={"/all-resource"} element={
+          <PrivateRoute>
+            <AllResource />
+          </PrivateRoute>
         } />
         {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
         <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />
