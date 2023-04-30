@@ -33,3 +33,62 @@ mutation DeleteResourceMutation($id: String!) {
   }
 `;
 
+
+export const GET_A_RESOURCE_QUERY = gql`
+query GetResourceQuery($id: String!) {
+  getResource(id: $id) {
+    id
+    status
+    vendorName
+    rpocName
+    rpocEmail
+    rpocContactNumber
+    firstName
+    lastName
+    middleName
+    idCardNumber
+    taxNumber
+    nationality
+    region
+    country
+    state
+    city
+    postalCode
+    addressLine1
+    addressLine1
+    email
+    phoneNumber
+    whatsappNumber
+    cogentEmail
+    skillSet
+    availableTools
+    hourlyRate
+    halfDayRate
+    fullDayRate
+    monthlyRate
+    anyExtraRate
+
+    userPaymentMethod {
+      id
+      accountType
+      accountTitle
+      beneficiaryFirstName
+      beneficiaryMiddleName
+      beneficiaryAddress
+      beneficiaryLastName
+      sortCode
+      accountNumber
+      iban
+      swiftCode
+      bankName
+      branchName
+      bankAddress
+    }
+    transport
+    mobility
+    onboardedBy
+    isOnboarded
+    }
+  }
+`;
+

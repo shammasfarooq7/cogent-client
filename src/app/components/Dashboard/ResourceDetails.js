@@ -1,60 +1,43 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Modal from '@mui/material/Modal';
-import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Avatar, MenuItem, Typography, Menu, Button } from "@mui/material"
-import { MainListItems, secondaryListItems } from '../common/ListItems';
-import { Drawer } from '../common/Drawer';
-import { AppBar } from '../common/AppBar';
-import { Chart } from '../common/Chart';
-import { Deposits } from '../common/Calendar';
-import { Orders } from '../common/TableSchduel';
-import { DashboardCard } from '../common/Card';
-import { useQuery } from "@apollo/client";
-import { ResourceForm } from './ResouceForm';
-import { handleLogout } from '../../utils';
-import { useNavigate } from 'react-router-dom';
+import { Avatar, Typography, Button } from "@mui/material"
+import { Navigate, useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../common/HeaderResource';
+import { useQuery } from '@apollo/client';
+import { GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
+import { getName } from '../../helper';
 
 
 const mdTheme = createTheme();
 
 export const ResourceDetails = () => {
   const navigate = useNavigate();
+  const urlSearchParams = new URLSearchParams(window.location.search)
+  const id = urlSearchParams?.get("id");
 
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-  const [openModal, setOpenModal] = React.useState(false);
-  const [profileAnchor, setProfileAnchor] = React.useState(false);
+  const { data, loading, error } = useQuery(GET_A_RESOURCE_QUERY, {
+    variables: {
+      id
+    },
+    fetchPolicy: "network-only"
+  })
 
-  const handleOpen = () => setOpenModal(true);
+  const info = data?.getResource;
+  const paymentInfo = info?.userPaymentMethod?.[0]
 
-  const handleProfileClick = (e) => {
-    setProfileAnchor(e.currentTarget)
-  }
-  const handleProfileClose = () => {
-    setProfileAnchor(null)
-  }
 
-  const handleSignOut = () => {
-    handleLogout();
-    navigate("/login")
-  }
+  if (!id) return <Navigate replace to={"/dashboard"} />
+
+  if (error)
+    return (
+      <Box padding={"30px"} sx={{ margin: "30px", border: "1px solid gray", borderRadius: "8px", background: "white" }}>
+        {error?.message || "Something went wrong"}
+      </Box>
+    )
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4, paddingLeft: "10px" }}>
@@ -64,8 +47,8 @@ export const ResourceDetails = () => {
           <Grid item xs={4} md={4} lg={4} sx={{ display: "flex", flexDirection: "row" }}>
             <Avatar src="/static/images/avatar/1.jpg" variant="rounded" />
             <Box sx={{ paddingLeft: "5px" }}>
-              <Typography>Bad Dennis</Typography>
-              <Typography sx={{ fontSize: "9px" }}>#11122222222</Typography>
+              <Typography> {getName(info?.firstName, info?.middleName, info?.lastName) || "_ _"} </Typography>
+              <Typography sx={{ fontSize: "9px" }}>{info?.id || "_ _"}</Typography>
             </Box>
           </Grid>
           <Grid item xs={4} md={4} lg={5}>
@@ -83,23 +66,23 @@ export const ResourceDetails = () => {
         <Grid item xs={4} md={4} lg={12} sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Status</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.status || "_ _"}</Typography>
           </Box>
           <Box>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Vendor Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.vendorName || "_ _"}</Typography>
           </Box>
           <Box>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>RPOC Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.rpocName || "_ _"}</Typography>
           </Box>
           <Box>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>RPOC Email</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.rpocEmail || "_ _"}</Typography>
           </Box>
           <Box>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>RPOC Contact Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.rpocContactNumber}</Typography>
           </Box>
         </Grid>
 
@@ -110,56 +93,56 @@ export const ResourceDetails = () => {
 
           <Grid item xs={4} md={4} lg={3} >
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{getName(info?.firstName, info?.middleName, info?.lastName) || "_ _"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>ID Card Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.idCardNumber || "_ _"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>TaxNumber</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.taxNumber || "_ _"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Nationality</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.nationality || "_ _"}</Typography>
           </Grid>
 
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Region</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.region || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Country</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.country || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>State</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.state || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>City</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.city || "_ _"}</Typography>
             </Grid >
           </Grid>
 
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3} >
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Postal Code</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.postalCode || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Address Line 1</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.addressLine1 || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Address Line 2</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.addressLine2 || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Email Address</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.email || "_ _"}</Typography>
             </Grid >
           </Grid>
 
@@ -167,34 +150,34 @@ export const ResourceDetails = () => {
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Mobile Number</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.phoneNumber || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Contact Number</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.phoneNumber || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>WhatsApp Number</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.whatsappNumber || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>WhatsApp Group</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
             </Grid >
           </Grid>
 
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>whatsapp Group Link</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Cogent Email Id</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.cogentEmail || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Work Permit Status</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
 
@@ -230,20 +213,20 @@ export const ResourceDetails = () => {
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Hourly Rate</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.hourlyRate || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Half Day Rate(4 hours)</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.halfDayRate || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Half Day Rate(8 hours)</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Full Day Rate(8 hours)</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.fullDayRate || "_ _"}</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Monthly Rate</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.monthlyRate || "_ _"}</Typography>
 
           </Grid >
         </Grid>
@@ -251,7 +234,7 @@ export const ResourceDetails = () => {
         <Grid container>
           <Grid item xs={12} md={12} lg={12} sx={{ mt: 2 }}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Any Extra (Please Specify)</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop.</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.anyExtraRate || "_ _"}</Typography>
           </Grid>
         </Grid>
 
@@ -262,35 +245,35 @@ export const ResourceDetails = () => {
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Account Type</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.accountType || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Account Title</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.accountTitle || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Benificiary's Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}> {getName(paymentInfo?.beneficiaryFirstName, paymentInfo?.beneficiaryMiddleName, paymentInfo?.beneficiaryLastName) || "_ _"} </Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Benificiary's Address</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.beneficiaryAddress || "_ _"}</Typography>
           </Grid >
         </Grid>
 
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Account Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.accountNumber || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>IBAN</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.iban || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>BC/Swift</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.swiftCode || "_ _"}</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
@@ -301,15 +284,15 @@ export const ResourceDetails = () => {
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Bank Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.bankName || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Branch Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.branchName || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Bank Address</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{paymentInfo?.bankAddress || "_ _"}</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
@@ -324,15 +307,15 @@ export const ResourceDetails = () => {
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Mode of Transportation</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.transport || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Availability</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Mobility (km)</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.mobility || "_ _"}</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
@@ -347,20 +330,20 @@ export const ResourceDetails = () => {
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>NDA Status</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>B2b Status</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Onboarderd By</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.onboardedBy || "_ _"}</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Onboarderd Completed</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.isOnboarded ? "True" : "False"}</Typography>
           </Grid >
         </Grid>
 

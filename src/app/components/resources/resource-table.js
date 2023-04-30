@@ -16,12 +16,15 @@ import { DELETE_RESOURCE_MUTATION, GET_ALL_USERS_QUERY } from '../../../graphql/
 import DeleteAlert from '../common/DeleteAlert';
 import { ResourceForm } from '../Dashboard/ResouceForm';
 import { Alert } from '../common/Alert';
+import { useNavigate } from 'react-router-dom';
 
 function preventDefault(event) {
     event.preventDefault();
 }
 
 export const ResourceTable = ({ tableName, search }) => {
+
+    const navigate = useNavigate();
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const [openResourceForm, setOpenResourceForm] = useState(false);
@@ -120,7 +123,8 @@ export const ResourceTable = ({ tableName, search }) => {
                                     <TableCell>{resource.isOnboarded ? <>Onboarding Completed</> : <>Documents Pending</>}</TableCell>
                                     <Box sx={{ display: "flex" }}>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Menu} alt='Menu' /></TableCell>
-                                        <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Edit} alt='Menu' /></TableCell>
+                                        <TableCell ><Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer" }} src={images.Edit} alt='Menu'
+                                            onClick={() => { navigate(`/resource-details?id=${resource?.id}`) }} /></TableCell>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer" }}
                                             src={images.Trash} alt='Menu'
                                             onClick={() => { onDeleteClick(resource?.id) }}
