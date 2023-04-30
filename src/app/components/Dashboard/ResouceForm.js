@@ -13,7 +13,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { CustomDropDrownController } from '../common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { resourceFormValidationSchema } from '../../validationSchema';
-import { RESOURCE_FORM } from '../../../graphql/resourceForm';
+import { CREATE_RESOURCE_MUTATION } from '../../../graphql/resources';
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
 
@@ -87,7 +87,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
             isOnboarded: true
         }
     });
-    const [createResource, { data, loading, error }] = useMutation(RESOURCE_FORM);
+    const [createResource, { data, loading, error }] = useMutation(CREATE_RESOURCE_MUTATION);
 
     if (data) {
         Alert.success("Resource created successfully")

@@ -10,62 +10,53 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import "./style.css"
+import { useNavigate } from 'react-router-dom';
 
-export const mainListItems = (
-  <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon className='white'>
-        <DashboardIcon  className='white'/>
-      </ListItemIcon>
-      <ListItemText primary="Dashboard"  />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon className='white'>
-        <ShoppingCartIcon className='white' />
-      </ListItemIcon>
-      <ListItemText primary="Orders" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon className='white'>
-        <PeopleIcon className='white'/>
-      </ListItemIcon>
-      <ListItemText primary="Customers" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon className='white'>
-        <BarChartIcon className='white' />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
-    <ListItemButton className='white'>
-      <ListItemIcon className='white'>
-        <LayersIcon className='white'/>
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-  </React.Fragment>
-);
+export const MainListItems = () => {
+
+  const navigate = useNavigate();
+
+  return (
+    <React.Fragment >
+      <ListItemButton onClick={() => navigate("/dashboard")}>
+        <ListItemIcon className='white'>
+          <DashboardIcon className='white' />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </ListItemButton>
+
+      <ListItemButton onClick={() => navigate("/all-resource")}>
+        <ListItemIcon className='white'>
+          <DashboardIcon className='white' />
+        </ListItemIcon>
+        <ListItemText primary="Resources" />
+      </ListItemButton>
+
+    </React.Fragment >
+
+  )
+};
 
 export const secondaryListItems = (
   <React.Fragment>
-    <ListSubheader component="div" inset sx={{ background: "#1E1E2D", color:"white"}}>
+    <ListSubheader component="div" inset sx={{ background: "#1E1E2D", color: "white" }}>
       Saved reports
     </ListSubheader>
     <ListItemButton >
       <ListItemIcon className='white'>
-        <AssignmentIcon className='white'/>
+        <AssignmentIcon className='white' />
       </ListItemIcon>
       <ListItemText primary="Current month" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon className='white'>
-        <AssignmentIcon className='white'/>
+        <AssignmentIcon className='white' />
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
     </ListItemButton>
     <ListItemButton>
       <ListItemIcon className='white'>
-        <AssignmentIcon className='white'/>
+        <AssignmentIcon className='white' />
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItemButton>
