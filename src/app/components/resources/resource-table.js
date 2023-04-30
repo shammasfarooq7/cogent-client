@@ -63,6 +63,20 @@ export const ResourceTable = ({ tableName, search }) => {
         setOpenDeleteAlert(false);
     }
 
+    const renderStatus = (status) => {
+        let background = "#E8FFF3";
+        let color = "#50CD89";
+        if (status === "Documents Pending") {
+            background = "#FFE8E8";
+            color = "#FF0000";
+        }
+
+        return <Box sx={{
+            textAlign: "center", paddingX: "2px", paddingY: "4px", borderRadius: "6px", background, color,
+            width: 151, fontStyle: "normal", fontWeight: 500, fontSize: "11px", lineHeight: "16px"
+        }}>{status}</Box>
+    }
+
     return (
         <>
             <DeleteAlert
@@ -125,7 +139,7 @@ export const ResourceTable = ({ tableName, search }) => {
                                     </TableCell>
                                     <TableCell>{resource.country || "_ _"}</TableCell>
                                     <TableCell>{resource.city || "_ _"}</TableCell>
-                                    <TableCell>{resource.isOnboarded ? <>Onboarding Completed</> : <>Documents Pending</>}</TableCell>
+                                    <TableCell>{resource.isOnboarded ? renderStatus("Onboarding Completed") : renderStatus("Documents Pending")}</TableCell>
                                     <Box sx={{ display: "flex" }}>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Menu} alt='Menu' /></TableCell>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer" }} src={images.Edit} alt='Menu'

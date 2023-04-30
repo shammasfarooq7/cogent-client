@@ -103,7 +103,7 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
     const onSubmit = async (data) => {
 
         const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, languages, skillSet, availableTools,
-            beneficiaryFirstName, firstName, middleName, lastName, idcardNumber, taxNumber, nationality, region, country, city, state,
+            beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
             postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNo, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
             whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
             beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
@@ -120,7 +120,7 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                     firstName,
                     lastName,
                     middleName,
-                    idcardNumber,
+                    idCardNumber,
                     taxNumber,
                     nationality,
                     region,
@@ -134,7 +134,7 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                     rpocContactNumber,
                     rpocEmail,
                     whatsappGroup,
-                    whatsappGroupLink,
+                    // whatsappGroupLink,
                     workPermitStatus,
                     hourlyRate,
                     halfDayRate,
@@ -255,7 +255,7 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                                     </Grid>
                                     <Grid item xs={4}>
                                         <CustomFormController
-                                            controllerName='idcardNumber'
+                                            controllerName='idCardNumber'
                                             controllerLabel='ID Card Number'
                                             fieldType='text'
                                         />
