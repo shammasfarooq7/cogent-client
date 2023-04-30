@@ -7,9 +7,11 @@ import Grid from '@mui/material/Grid';
 import { Avatar, Typography, Button } from "@mui/material"
 import { Navigate, useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../common/HeaderResource';
-import { useQuery } from '@apollo/client';
-import { GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
+import { useMutation, useQuery } from '@apollo/client';
+import { DELETE_RESOURCE_MUTATION, GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
 import { getName } from '../../helper';
+import DeleteAlert from '../common/DeleteAlert';
+import { Alert } from '../common/Alert';
 
 
 const mdTheme = createTheme();
@@ -19,15 +21,33 @@ export const ResourceDetails = () => {
   const urlSearchParams = new URLSearchParams(window.location.search)
   const id = urlSearchParams?.get("id");
 
+  const [openDeleteAlert, setOpenDeleteAlert] = React.useState(false);
+
   const { data, loading, error } = useQuery(GET_A_RESOURCE_QUERY, {
     variables: {
       id
     },
     fetchPolicy: "network-only"
-  })
+  });
+
+  const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
+
 
   const info = data?.getResource;
   const paymentInfo = info?.userPaymentMethod?.[0]
+
+
+  const handleDeleteConfirm = async () => {
+    await deleteResource({
+      variables: {
+        id
+
+      }
+    })
+    Alert.success("Deleted Successfully!")
+    setOpenDeleteAlert(false);
+    navigate("/all-resource")
+  }
 
 
   if (!id) return <Navigate replace to={"/dashboard"} />
@@ -41,6 +61,16 @@ export const ResourceDetails = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4, paddingLeft: "10px" }}>
+
+      <DeleteAlert
+        open={openDeleteAlert}
+        setOpen={setOpenDeleteAlert}
+        handleConfirm={handleDeleteConfirm}
+        isLoading={isDeleteLoading}
+        title={"Delete Resource"}
+        text={"Are you sure you want to delete this resource? This action cannot be revert back."}
+      />
+
       <Box sx={{ backgroundColor: "white", p: 2 }}>
         {/* Chart */}
         <Grid container sx={{ mb: 2 }}>
@@ -55,7 +85,8 @@ export const ResourceDetails = () => {
 
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
-            <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}>Delete</Button>
+            <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}
+              onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button>
             <Button variant="contained">Update</Button>
           </Grid>
         </Grid>
