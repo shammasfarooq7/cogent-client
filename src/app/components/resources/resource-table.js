@@ -17,6 +17,7 @@ import DeleteAlert from '../common/DeleteAlert';
 import { ResourceForm } from '../Dashboard/ResouceForm';
 import { Alert } from '../common/Alert';
 import { useNavigate } from 'react-router-dom';
+import useDebounce from '../../customHooks/useDebounce';
 
 function preventDefault(event) {
     event.preventDefault();
@@ -29,11 +30,15 @@ export const ResourceTable = ({ tableName, search }) => {
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const [openResourceForm, setOpenResourceForm] = useState(false);
     const [toBeDeleted, setToBeDeleted] = useState(null);
+    const [searchValue, setSearchValue] = useState(null);
+
+    const searchQuery = useDebounce(searchValue, 500);
 
     const { data, loading, error, refetch } = useQuery(GET_ALL_USERS_QUERY, {
         variables: {
             getAllUsersInput: {
-                role: "RESOURCE"
+                role: "RESOURCE",
+                ...(searchQuery && { searchQuery })
             }
         },
         fetchPolicy: "network-only"
@@ -75,7 +80,7 @@ export const ResourceTable = ({ tableName, search }) => {
                 <Title sx={{ color: "black" }}>Add Resources</Title>
                 <Box>
                     {search && <Search sx={{ width: "200px" }}
-
+                        onChange={(e) => { setSearchValue(e.target.value) }}
                     />}
                     <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
                         onClick={() => setOpenResourceForm(true)}

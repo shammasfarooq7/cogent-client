@@ -221,16 +221,20 @@ export const ResourceDetails = () => {
         </Grid>
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Mobile Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Skill Set</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
+              {info?.skillSet?.length ? info?.skillSet?.join(", ") : "_ _"}
+            </Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Contact Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Available Tools</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
+              {info?.availableTools?.length ? info?.availableTools?.join(", ") : "_ _"}
+            </Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Attachment</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>lorem ipsum</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={1}>
@@ -239,7 +243,7 @@ export const ResourceDetails = () => {
         </Grid>
 
         <Grid item xs={12} md={12} lg={12}>
-          <HeaderResource heading="Skill SET & TOOLS" />
+          <HeaderResource heading="RATE" />
         </Grid>
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
