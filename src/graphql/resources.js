@@ -25,3 +25,11 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
   }
 `;
 
+export const DELETE_RESOURCE_MUTATION = gql`
+mutation DeleteResourceMutation($id: String!) {
+  deleteResource(id: $id) {
+      message
+    }
+  }
+`;
+

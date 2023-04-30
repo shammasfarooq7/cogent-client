@@ -16,6 +16,8 @@ import { resourceFormValidationSchema } from '../../validationSchema';
 import { CREATE_RESOURCE_MUTATION } from '../../../graphql/resources';
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
+import { SimpleDropDownController } from '../common/SimpleDropDownController';
+import { availableToolsList, languages_list, skillSetList } from '../../constants';
 
 const style = {
     position: 'absolute',
@@ -62,7 +64,7 @@ const EngagementType = [
 
 
 
-export const ResourceForm = ({ openModal, setOpenModal }) => {
+export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
     const handleClose = () => setOpenModal(false);
 
     const methods = useForm({
@@ -70,10 +72,13 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
         mode: "all",
         defaultValues: {
             status: "",
+            vendorName: "",
             engagementType: "",
-            languages: "",
-            skillSet: "",
-            availableTools: "",
+            rpocName: "",
+            email: "",
+            languages: [],
+            skillSet: [],
+            availableTools: [],
             beneficiaryFirstName: "",
             beneficiaryMiddleName: "",
             beneficiaryLastName: "",
@@ -93,11 +98,16 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
         Alert.success("Resource created successfully")
         //  navigate("/login")
     }
-    const { handleSubmit, control, reset, formState: { errors } } = methods;
-    console.log("erors", errors)
+    const { handleSubmit, control, watch, reset, formState: { errors } } = methods;
+
     const onSubmit = async (data) => {
 
-        const { email, cogentEmail, status, engagementType, languages, skillSet, availableTools, beneficiaryFirstName, beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle, swiftCode, iban, bankAddress, bankName, branchName, isOnboarded } = data
+        const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, languages, skillSet, availableTools,
+            beneficiaryFirstName, firstName, middleName, lastName, idcardNumber, taxNumber, nationality, region, country, city, state,
+            postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNo, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
+            whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
+            beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
+            swiftCode, iban, bankAddress, bankName, branchName, isOnboarded } = data
         await createResource({
             variables: {
                 createResourceInput: {
@@ -107,9 +117,33 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                     cogentEmail,
                     status,
                     engagementType,
-                    languages,
-                    skillSet,
-                    availableTools,
+                    firstName,
+                    lastName,
+                    middleName,
+                    idcardNumber,
+                    taxNumber,
+                    nationality,
+                    region,
+                    country,
+                    city,
+                    state,
+                    postalCode,
+                    addressLine1,
+                    addressLine2,
+                    rpocName,
+                    rpocContactNumber,
+                    rpocEmail,
+                    whatsappGroup,
+                    whatsappGroupLink,
+                    workPermitStatus,
+                    hourlyRate,
+                    halfDayRate,
+                    fullDayRate,
+                    monthlyRate,
+                    anyExtraRate,
+                    languages: languages?.map(item => item?.value) || [],
+                    skillSet: skillSet?.map(item => item?.value) || [],
+                    availableTools: availableTools?.map(item => item?.value) || [],
                     beneficiaryFirstName,
                     beneficiaryMiddleName,
                     beneficiaryLastName,
@@ -126,6 +160,10 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
             }
         })
 
+        if (refetchResources) {
+            await refetchResources()
+        }
+        handleClose()
     }
     return (
         <Box sx={{ overflowY: "auto" }}>
@@ -177,7 +215,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                     </Grid>
                                     <Grid item xs={4}>
                                         <CustomFormController
-                                            controllerName='email'
+                                            controllerName='rpocEmail'
                                             controllerLabel='RPOC Email'
                                             fieldType='text'
                                         />
@@ -196,7 +234,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
 
                                     <Grid item xs={4}>
                                         <CustomFormController
-                                            controllerName='firsName'
+                                            controllerName='firstName'
                                             controllerLabel='First Name'
                                             fieldType='text'
                                         />
@@ -229,11 +267,20 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                             fieldType='text'
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
+                                    <Grid item xs={4} alignSelf={"center"}>
+                                        {/* <CustomFormController
                                             controllerName='languages'
                                             controllerLabel='Languages'
                                             fieldType='text'
+                                        /> */}
+                                        <SimpleDropDownController
+                                            controllerName='languages'
+                                            options={languages_list?.map(list => ({
+                                                value: list?.name,
+                                                label: list?.name
+                                            }))}
+                                            placeholder={"Languages"}
+                                            isMulti={true}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -294,7 +341,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                     </Grid>
                                     <Grid item xs={4}>
                                         <CustomFormController
-                                            controllerName='emailId'
+                                            controllerName='email'
                                             controllerLabel='Email ID'
                                             fieldType='text'
                                         />
@@ -316,7 +363,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                     </Grid>
                                     <Grid item xs={1.5}>
                                         <CustomDropDrownController
-                                            controllerName='code'
+                                            controllerName='contactCode'
                                             controllerLabel='+92'
                                             fieldType='text'
                                             currencies={EngagementType}
@@ -331,7 +378,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                     </Grid>
                                     <Grid item xs={1.5}>
                                         <CustomDropDrownController
-                                            controllerName='code'
+                                            controllerName='whatsappCode'
                                             controllerLabel='+92'
                                             fieldType='text'
                                             currencies={EngagementType}
@@ -378,11 +425,18 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                 <HeaderResource heading="SKILL SET & TOOLS" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
-                                        <CustomFormController
+                                        {/* <CustomFormController
                                             controllerName='skillSet'
                                             controllerLabel='Skill Set'
                                             fieldType='text'
+                                        /> */}
+                                        <SimpleDropDownController
+                                            controllerName='skillSet'
+                                            options={skillSetList}
+                                            placeholder={"Skill Set"}
+                                            isMulti={true}
                                         />
+
                                     </Grid>
                                     <Grid item xs={7}>
                                         <CustomFormController
@@ -395,10 +449,17 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                         />
                                     </Grid>
                                     <Grid item xs={5}>
-                                        <CustomFormController
+                                        {/* <CustomFormController
                                             controllerName='availableTools'
                                             controllerLabel='Available Tools'
                                             fieldType='text'
+                                        /> */}
+
+                                        <SimpleDropDownController
+                                            controllerName='availableTools'
+                                            options={availableToolsList}
+                                            placeholder={"Available Tools"}
+                                            isMulti={true}
                                         />
                                     </Grid>
                                 </Grid>
@@ -440,7 +501,7 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CustomFormController
-                                            controllerName='extra'
+                                            controllerName='anyExtraRate'
                                             controllerLabel='Any Extra (Please Specify)'
                                             fieldType='text'
                                             rowsLength={4}
@@ -606,8 +667,9 @@ export const ResourceForm = ({ openModal, setOpenModal }) => {
                                         type="submit"
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
+                                        disabled={loading}
                                     >
-                                        ADD
+                                        {loading ? "ADDING..." : "ADD"}
                                     </Button>
                                     <Button
                                         onClick={handleClose}
