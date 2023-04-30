@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function DeleteAlert({ open, setOpen, title, text, handleConfirm }) {
+export default function DeleteAlert({ open, setOpen, title, isLoading = false, text, handleConfirm }) {
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -16,9 +16,6 @@ export default function DeleteAlert({ open, setOpen, title, text, handleConfirm 
 
     return (
         <div>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open alert dialog
-            </Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -35,8 +32,8 @@ export default function DeleteAlert({ open, setOpen, title, text, handleConfirm 
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleConfirm} autoFocus>
-                        Confirm
+                    <Button onClick={handleConfirm} autoFocus disabled={isLoading}>
+                        {isLoading ? "Confirm..." : "Confirm"}
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -108,10 +108,7 @@ export const DashboardContent = () => {
           </Grid>
           <Grid xs={4}></Grid>
           <Grid xs={2}>
-            <Button variant='contained' onClick={handleOpen} sx={{ mt: 2, paddingLeft: "35px", paddingRight: "35px", background: "#F64E60", color: "white", borderRadius: "12px" }}>Add</Button>
-            {openModal &&
-              <ResourceForm openModal={openModal} setOpenModal={setOpenModal} />
-            }
+       
           </Grid>
         </Grid>
         <Grid item xs={12}>

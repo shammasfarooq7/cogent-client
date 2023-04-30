@@ -11,9 +11,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { images } from './../../assets/images';
 import { Search } from '../common/Search';
 import Title from '../common/Title';
-import { useQuery } from '@apollo/client';
-import { GET_ALL_USERS_QUERY } from '../../../graphql/resources';
+import { useMutation, useQuery } from '@apollo/client';
+import { DELETE_RESOURCE_MUTATION, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
 import DeleteAlert from '../common/DeleteAlert';
+import { ResourceForm } from '../Dashboard/ResouceForm';
+import { Alert } from '../common/Alert';
 
 function preventDefault(event) {
     event.preventDefault();
@@ -22,35 +24,49 @@ function preventDefault(event) {
 export const ResourceTable = ({ tableName, search }) => {
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+    const [openResourceForm, setOpenResourceForm] = useState(false);
     const [toBeDeleted, setToBeDeleted] = useState(null);
 
-    const { data, loading, error } = useQuery(GET_ALL_USERS_QUERY, {
+    const { data, loading, error, refetch } = useQuery(GET_ALL_USERS_QUERY, {
         variables: {
             getAllUsersInput: {
                 role: "RESOURCE"
             }
         },
+        fetchPolicy: "network-only"
     });
+
+    const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
 
     const onDeleteClick = (id) => {
         setToBeDeleted(id);
         setOpenDeleteAlert(true)
     };
 
-    const handleDeleteConfirm = () => {
-        console.log({ toBeDeleted });
+    const handleDeleteConfirm = async () => {
+        await deleteResource({
+            variables: {
+                id: toBeDeleted
+
+            }
+        })
+        await refetch();
+        Alert.success("Deleted Successfully!")
+        setOpenDeleteAlert(false);
     }
 
     return (
         <>
-
             <DeleteAlert
                 open={openDeleteAlert}
                 setOpen={setOpenDeleteAlert}
                 handleConfirm={handleDeleteConfirm}
+                isLoading={isDeleteLoading}
                 title={"Delete Resource"}
                 text={"Are you sure you want to delete this resource? This action cannot be revert back."}
             />
+
+            {openResourceForm && <ResourceForm openModal={openResourceForm} setOpenModal={setOpenResourceForm} refetchResources={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Title sx={{ color: "black" }}>Add Resources</Title>
@@ -58,7 +74,9 @@ export const ResourceTable = ({ tableName, search }) => {
                     {search && <Search sx={{ width: "200px" }}
 
                     />}
-                    {search && <Button sx={{ backgroundColor: "#242D60", color: "white", padding: "6px 30px", marginLeft: "6px" }}>Add</Button>}
+                    <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
+                        onClick={() => setOpenResourceForm(true)}
+                    >Add</Button>
                 </Box>
 
             </Box>
