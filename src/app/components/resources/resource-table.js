@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { useState } from 'react';
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,12 +13,16 @@ import { Search } from '../common/Search';
 import Title from '../common/Title';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_USERS_QUERY } from '../../../graphql/resources';
+import DeleteAlert from '../common/DeleteAlert';
 
 function preventDefault(event) {
     event.preventDefault();
 }
 
 export const ResourceTable = ({ tableName, search }) => {
+
+    const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+    const [toBeDeleted, setToBeDeleted] = useState(null);
 
     const { data, loading, error } = useQuery(GET_ALL_USERS_QUERY, {
         variables: {
@@ -28,8 +32,26 @@ export const ResourceTable = ({ tableName, search }) => {
         },
     });
 
+    const onDeleteClick = (id) => {
+        setToBeDeleted(id);
+        setOpenDeleteAlert(true)
+    };
+
+    const handleDeleteConfirm = () => {
+        console.log({ toBeDeleted });
+    }
+
     return (
         <>
+
+            <DeleteAlert
+                open={openDeleteAlert}
+                setOpen={setOpenDeleteAlert}
+                handleConfirm={handleDeleteConfirm}
+                title={"Delete Resource"}
+                text={"Are you sure you want to delete this resource? This action cannot be revert back."}
+            />
+
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Title sx={{ color: "black" }}>Add Resources</Title>
                 <Box>
@@ -81,7 +103,10 @@ export const ResourceTable = ({ tableName, search }) => {
                                     <Box sx={{ display: "flex" }}>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Menu} alt='Menu' /></TableCell>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Edit} alt='Menu' /></TableCell>
-                                        <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Trash} alt='Menu' /></TableCell>
+                                        <TableCell ><Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer" }}
+                                            src={images.Trash} alt='Menu'
+                                            onClick={() => { onDeleteClick(resource?.id) }}
+                                        /></TableCell>
                                     </Box>
                                 </TableRow>
                             ))}
