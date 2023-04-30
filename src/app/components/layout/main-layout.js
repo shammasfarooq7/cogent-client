@@ -57,6 +57,13 @@ export const MainLayout = ({ children }) => {
         navigate("/login")
     }
 
+    const publicRoutes = ["/login", "/signup"]
+
+    if (publicRoutes.includes(window.location.pathname))
+        return (
+            children
+        )
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flListItemsex' }}>
