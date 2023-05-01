@@ -1,5 +1,5 @@
 // packages block
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, InputAdornment, TextField, Input, MenuItem } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
@@ -49,6 +49,7 @@ const styles = theme => ({
 
 export const SimpleDropDownController = ({ controllerName, options, placeholder, isMulti = false, isClearable = true, controllerLabel, fieldType, currencies }) => {
     const { control } = useFormContext();
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const customStyles = {
         control: (provided) => ({
@@ -70,10 +71,12 @@ export const SimpleDropDownController = ({ controllerName, options, placeholder,
                         isMulti={isMulti}
                         name="colors"
                         options={options}
-                        className={`basic-multi-select ${invalid && "react-select-error"}`}
+                        className={`basic-multi-select ${invalid && "react-select-error"} ${isMenuOpen && "open-react-select"}`}
                         classNamePrefix="select"
                         placeholder={placeholder}
                         isClearable={isClearable}
+                        onMenuOpen={() => { setIsMenuOpen(true) }}
+                        onMenuClose={() => { setIsMenuOpen(false) }}
                     />
                     <Box fontSize={"0.75rem"} color={"#d32f2f"}>{message}</Box>
                 </>

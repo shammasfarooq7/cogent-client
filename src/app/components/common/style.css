@@ -3,10 +3,12 @@
 }
 
 .basic-multi-select {
-    z-index: 10;
     margin-top: 8px;
     margin-bottom: 4px;
-    /* height: 40px; */
+}
+
+.open-react-select {
+    z-index: 10;
 }
 
 .react-select-error {

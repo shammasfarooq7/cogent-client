@@ -18,6 +18,7 @@ import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
 import { SimpleDropDownController } from '../common/SimpleDropDownController';
 import { availableToolsList, languages_list, skillSetList } from '../../constants';
+import { CustomDocumentUploadController } from '../common/CustomDocumentUploadController';
 
 const style = {
     position: 'absolute',
@@ -439,10 +440,9 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
 
                                     </Grid>
                                     <Grid item xs={7}>
-                                        <CustomFormController
+                                        <CustomDocumentUploadController
                                             controllerName='myResume'
                                             controllerLabel='My Resume/CV (Attachment)'
-                                            //  fieldType='file'
                                             fieldIcon={<AttachFileIcon>
                                                 <input type="file" />
                                             </AttachFileIcon>}
@@ -632,19 +632,21 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                                 <HeaderResource heading="CONTRACT STATUS" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <CustomDropDrownController
-                                            controllerName='nidaStatus'
-                                            controllerLabel='NIDA Status'
-                                            fieldType='text'
-                                            currencies={EngagementType}
+                                        <CustomDocumentUploadController
+                                            controllerName='ndaStatus'
+                                            controllerLabel='NDA Status'
+                                            fieldIcon={<AttachFileIcon>
+                                                <input type="file" />
+                                            </AttachFileIcon>}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <CustomDropDrownController
+                                        <CustomDocumentUploadController
                                             controllerName='b2bStatus'
                                             controllerLabel='B2B Status'
-                                            fieldType='text'
-                                            currencies={EngagementType}
+                                            fieldIcon={<AttachFileIcon>
+                                                <input type="file" />
+                                            </AttachFileIcon>}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
