@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -12,6 +12,7 @@ import { DELETE_RESOURCE_MUTATION, GET_A_RESOURCE_QUERY } from '../../../graphql
 import { getName } from '../../helper';
 import DeleteAlert from '../common/DeleteAlert';
 import { Alert } from '../common/Alert';
+import { ResourceForm } from './ResouceForm';
 
 
 const mdTheme = createTheme();
@@ -21,9 +22,10 @@ export const ResourceDetails = () => {
   const urlSearchParams = new URLSearchParams(window.location.search)
   const id = urlSearchParams?.get("id");
 
-  const [openDeleteAlert, setOpenDeleteAlert] = React.useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+  const [openResourceForm, setOpenResourceForm] = useState(false);
 
-  const { data, loading, error } = useQuery(GET_A_RESOURCE_QUERY, {
+  const { data, loading, error, refetch } = useQuery(GET_A_RESOURCE_QUERY, {
     variables: {
       id
     },
@@ -49,6 +51,9 @@ export const ResourceDetails = () => {
     navigate("/all-resource")
   }
 
+  const handleUpdateClick = () => {
+    setOpenResourceForm(true);
+  };
 
   if (!id) return <Navigate replace to={"/dashboard"} />
 
@@ -71,6 +76,13 @@ export const ResourceDetails = () => {
         text={"Are you sure you want to delete this resource? This action cannot be revert back."}
       />
 
+      {openResourceForm &&
+        <ResourceForm
+          openModal={openResourceForm}
+          setOpenModal={setOpenResourceForm}
+          editInfo={info}
+          refetchResources={refetch} />}
+
       <Box sx={{ backgroundColor: "white", p: 2 }}>
         {/* Chart */}
         <Grid container sx={{ mb: 2 }}>
@@ -87,7 +99,7 @@ export const ResourceDetails = () => {
           <Grid item xs={4} md={4} lg={3}>
             <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}
               onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button>
-            <Button variant="contained">Update</Button>
+            <Button variant="contained" onClick={handleUpdateClick}>Update</Button>
           </Grid>
         </Grid>
         <Divider />

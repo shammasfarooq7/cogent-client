@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -13,12 +13,13 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { CustomDropDrownController } from '../common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { resourceFormValidationSchema } from '../../validationSchema';
-import { CREATE_RESOURCE_MUTATION } from '../../../graphql/resources';
+import { CREATE_RESOURCE_MUTATION, UPDATE_RESOURCE_MUTATION } from '../../../graphql/resources';
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
 import { SimpleDropDownController } from '../common/SimpleDropDownController';
 import { availableToolsList, languages_list, skillSetList } from '../../constants';
 import { CustomDocumentUploadController } from '../common/CustomDocumentUploadController';
+// import { CustomFormPhoneController } from '../common/CustomFormPhoneController';
 
 const style = {
     position: 'absolute',
@@ -65,8 +66,20 @@ const EngagementType = [
 
 
 
-export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
+export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResources }) => {
     const handleClose = () => setOpenModal(false);
+
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    const id = urlSearchParams?.get("id");
+
+    const { userPaymentMethod, ...info } = editInfo || {};
+    const editDefaultState = {
+        ...info,
+        ...(info?.skillSet?.length ? { skillSet: info?.skillSet?.map(skill => ({ value: skill, label: skill })) } : {}),
+        ...(info?.availableTools?.length ? { availableTools: info?.availableTools?.map(tool => ({ value: tool, label: tool })) } : {}),
+        ...(info?.languages?.length ? { languages: info?.languages?.map(language => ({ value: language, label: language })) } : {}),
+        ...(userPaymentMethod?.length ? { ...userPaymentMethod?.[0] } : {})
+    }
 
     const methods = useForm({
         resolver: yupResolver(resourceFormValidationSchema),
@@ -90,82 +103,103 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
             bankName: "",
             branchName: "",
             bankAddress: "",
-            isOnboarded: true
+            isOnboarded: true,
+            ...editDefaultState
         }
     });
     const [createResource, { data, loading, error }] = useMutation(CREATE_RESOURCE_MUTATION);
+    const [updateResource, { data: UpdateData, loading: updateLoading, error: updateError }] = useMutation(UPDATE_RESOURCE_MUTATION);
 
-    if (data) {
-        Alert.success("Resource created successfully")
-        //  navigate("/login")
+    if (data || UpdateData) {
+        Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
     }
-    const { handleSubmit, control, watch, reset, formState: { errors } } = methods;
+    const { handleSubmit, formState: { errors } } = methods;
 
     const onSubmit = async (data) => {
-
         const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, languages, skillSet, availableTools,
             beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
             postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNo, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
             whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
             beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
-            swiftCode, iban, bankAddress, bankName, branchName, isOnboarded } = data
-        await createResource({
-            variables: {
-                createResourceInput: {
-                    accountType,
-                    accountTitle,
-                    email,
-                    cogentEmail,
-                    status,
-                    engagementType,
-                    firstName,
-                    lastName,
-                    middleName,
-                    idCardNumber,
-                    taxNumber,
-                    nationality,
-                    region,
-                    country,
-                    city,
-                    state,
-                    postalCode,
-                    addressLine1,
-                    addressLine2,
-                    rpocName,
-                    rpocContactNumber,
-                    rpocEmail,
-                    whatsappGroup,
-                    // whatsappGroupLink,
-                    workPermitStatus,
-                    hourlyRate,
-                    halfDayRate,
-                    fullDayRate,
-                    monthlyRate,
-                    anyExtraRate,
-                    languages: languages?.map(item => item?.value) || [],
-                    skillSet: skillSet?.map(item => item?.value) || [],
-                    availableTools: availableTools?.map(item => item?.value) || [],
-                    beneficiaryFirstName,
-                    beneficiaryMiddleName,
-                    beneficiaryLastName,
-                    beneficiaryAddress,
-                    accountNumber,
-                    swiftCode,
-                    accountNumber,
-                    iban,
-                    bankAddress,
-                    branchName,
-                    bankName,
-                    isOnboarded
+            swiftCode, iban, bankAddress, bankName, branchName, isOnboarded, onboardedBy } = data
+
+        const payload = {
+            accountType,
+            accountTitle,
+            email,
+            cogentEmail,
+            status,
+            engagementType,
+            firstName,
+            lastName,
+            middleName,
+            idCardNumber,
+            taxNumber,
+            nationality,
+            region,
+            country,
+            city,
+            state,
+            postalCode,
+            addressLine1,
+            addressLine2,
+            rpocName,
+            rpocContactNumber,
+            rpocEmail,
+            whatsappGroup,
+            // whatsappGroupLink,
+            workPermitStatus,
+            hourlyRate,
+            halfDayRate,
+            fullDayRate,
+            monthlyRate,
+            anyExtraRate,
+            languages: languages?.map(item => item?.value) || [],
+            skillSet: skillSet?.map(item => item?.value) || [],
+            availableTools: availableTools?.map(item => item?.value) || [],
+            beneficiaryFirstName,
+            beneficiaryMiddleName,
+            beneficiaryLastName,
+            beneficiaryAddress,
+            accountNumber,
+            swiftCode,
+            accountNumber,
+            iban,
+            bankAddress,
+            branchName,
+            bankName,
+            isOnboarded,
+            onboardedBy
+        }
+
+
+        if (editInfo) {
+            await updateResource({
+                variables: {
+                    updateResourceInput: {
+                        ...payload
+                    },
+                    id
                 }
-            }
-        })
+            })
+        }
+        else {
+            await createResource({
+                variables: {
+                    createResourceInput: {
+                        ...payload
+                    }
+                }
+            })
+        }
+
 
         if (refetchResources) {
             await refetchResources()
         }
         handleClose()
     }
+
     return (
         <Box sx={{ overflowY: "auto" }}>
             <Modal
@@ -176,7 +210,7 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ padding: "12px" }}>
-                        Add Resource
+                        {editInfo ? "Update Resource" : "Add Resource"}
                     </Typography>
                     <Divider />
                     <Box sx={{ p: 2 }}>
@@ -370,12 +404,18 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                                             currencies={EngagementType}
                                         />
                                     </Grid>
-                                    <Grid item xs={2.5}>
+                                    <Grid item xs={4}>
                                         <CustomFormController
                                             controllerName='contactNo'
                                             controllerLabel='Contact No'
                                             fieldType='text'
                                         />
+                                        {/* <CustomFormPhoneController
+                                            controllerName='contactNo'
+                                            controllerLabel='Contact No'
+                                            fieldType='text'
+                                            currencies={EngagementType}
+                                        /> */}
                                     </Grid>
                                     <Grid item xs={1.5}>
                                         <CustomDropDrownController
@@ -651,8 +691,8 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                                     </Grid>
                                     <Grid item xs={6}>
                                         <CustomFormController
-                                            controllerName='onboarderBy'
-                                            controllerLabel='Onboarder By'
+                                            controllerName='onboardedBy'
+                                            controllerLabel='Onboarded By'
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -669,9 +709,9 @@ export const ResourceForm = ({ openModal, setOpenModal, refetchResources }) => {
                                         type="submit"
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
-                                        disabled={loading}
+                                        disabled={loading || updateLoading}
                                     >
-                                        {loading ? "ADDING..." : "ADD"}
+                                        {(loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
                                     </Button>
                                     <Button
                                         onClick={handleClose}

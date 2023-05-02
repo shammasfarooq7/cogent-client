@@ -9,6 +9,15 @@ mutation CreateResource($createResourceInput: CreateResourceInput!) {
   }
 `;
 
+export const UPDATE_RESOURCE_MUTATION = gql`
+mutation UpdateResourceMutation($updateResourceInput: UpdateResourceInput!, $id:String!) {
+  updateResource(updateResourceInput: $updateResourceInput, id:$id) {
+      message
+    }
+
+  }
+`;
+
 
 export const GET_ALL_USERS_QUERY = gql`
 query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
@@ -67,7 +76,8 @@ query GetResourceQuery($id: String!) {
     fullDayRate
     monthlyRate
     anyExtraRate
-
+    languages
+    engagementType
     userPaymentMethod {
       id
       accountType
