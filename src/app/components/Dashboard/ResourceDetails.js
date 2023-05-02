@@ -31,7 +31,7 @@ export const ResourceDetails = () => {
     },
     fetchPolicy: "network-only"
   });
-
+  
   const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
 
 

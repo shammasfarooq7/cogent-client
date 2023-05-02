@@ -15,7 +15,7 @@ const bull = (
   </Box>
 );
 
-export const DashboardCard = ({color })=> {
+export const DashboardCard = ({color , hiring , text })=> {
   return (
     <Card sx={{ minWidth: 275 , borderRadius: "12px" , background: `${color}` }}>
       <CardContent>
@@ -26,10 +26,10 @@ export const DashboardCard = ({color })=> {
           be{bull}nev{bull}o{bull}lent
         </Typography> */}
         <Typography sx={{ mb: 1.5 , color:"#FFFFFF", fontWeight:"600" , fontSize:"42px"}} color="text.secondary">
-         04
+         {hiring}
         </Typography>
         <Typography variant="body2" sx={{fontFamily: "Poppins",fontWeight:"600", color:"#FFFFFF"}}>
-        New Hiring
+      {text}
         </Typography>
         <Typography sx={{fontFamily: "Poppins", fontSize:"12px",color:"#FFFFFF"}}>
         Lorem Ipsum sss ccc

@@ -30,6 +30,8 @@ import { useNavigate } from 'react-router-dom';
 import cogentLogo from '../../assets/images/Cogent Logo.png';
 import cogentTextLogo from '../../assets/images/Cogent Text Logo.png';
 import { ResourceTable } from '../resources/resource-table';
+import { useEffect } from 'react';
+import { Get_Dashboard_Stats } from '../../../graphql/resources';
 
 
 const mdTheme = createTheme();
@@ -43,6 +45,28 @@ export const DashboardContent = () => {
   };
   const [openModal, setOpenModal] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(false);
+  const [dashboardStat , setDashboardStat] = React.useState(null)
+
+  const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
+    
+    fetchPolicy: "network-only"
+  });
+
+  useEffect(() => {
+    if (data) {
+      setDashboardStat(data.getDashboardStats);
+    }
+  }, [data]);
+
+  let newHiringCount = 0;
+  let newRequestCount = 0;
+  let totalResourceCount = 0;
+
+  if (dashboardStat) {
+    newHiringCount = dashboardStat.newHiringCount;
+    newRequestCount = dashboardStat.newRequestCount;
+    totalResourceCount = dashboardStat.totalResourceCount;
+  }
 
   const handleOpen = () => setOpenModal(true);
 
@@ -64,13 +88,13 @@ export const DashboardContent = () => {
       <Grid container spacing={"30px"}>
         {/* Chart */}
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard color="#3699FF" />
+          <DashboardCard hiring = {newHiringCount} text = {"Today's Incident"} color="#3699FF" />
         </Grid>
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard color="#242D60" />
+          <DashboardCard hiring={newRequestCount} text = {"In progress"} color="#242D60" />
         </Grid>
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard color="#212121" />
+          <DashboardCard hiring={totalResourceCount} text = {"Upcoming Incident's"} color="#212121" />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <Paper

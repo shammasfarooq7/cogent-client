@@ -34,6 +34,31 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
   }
 `;
 
+export const Get_Dashboard_Stats = gql`
+  query GetDashboardStats{
+    getDashboardStats {
+    totalResourceCount
+    newRequestCount
+    newHiringCount
+  }
+  }
+`;
+
+export const Get_RESOURCE_Dashboard_Stats = gql`
+  query GetResourceDashboardStats{
+    getResourceDashboardStats {
+      resourceStats {
+        total
+        difference
+      }
+      onboardedStats{
+        total
+        difference
+      }
+  }
+  }
+`;
+
 export const DELETE_RESOURCE_MUTATION = gql`
 mutation DeleteResourceMutation($id: String!) {
   deleteResource(id: $id) {

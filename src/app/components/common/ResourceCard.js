@@ -16,19 +16,19 @@ const bull = (
   </Box>
 );
 
-export const ResourceCard = ({color })=> {
+export const ResourceCard = ({color  , total , difference , text})=> {
   return (
     <Card sx={{ minWidth: 220 , borderRadius: "12px"  }}>
       <CardContent>
         <Typography sx={{ mb: 1.5 , fontWeight:"600" , fontSize:"12px"}} >
-        All Resource
+       {text}
         </Typography>
         <Typography variant="body2" sx={{fontFamily: "Poppins",fontWeight:"600"}}>
-        1890
+        {total}
         </Typography>
         <Typography sx={{fontFamily: "Poppins", fontSize:"12px", display:"flex", flexDirection:"row"}}>
         <ArrowDownwardIcon/>
-        <Typography sx={{fontFamily: "Poppins", fontSize:"13px",marginTop:"3px",marginRight:"5px", color:"#FF6623"}}>15.5%</Typography>
+        <Typography sx={{fontFamily: "Poppins", fontSize:"13px",marginTop:"3px",marginRight:"5px", color:"#FF6623"}}>{difference}</Typography>
         <Typography sx={{fontFamily: "Poppins", fontSize:"13px",marginTop:"3px", color:"#8F9BB3"}}>Since Last month</Typography>
         </Typography>
       </CardContent>

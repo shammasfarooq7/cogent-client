@@ -30,6 +30,8 @@ import { useNavigate } from 'react-router-dom';
 import { ResourceCard } from '../common/ResourceCard';
 import { Search } from '../common/Search';
 import { ResourceTable } from '../resources/resource-table';
+import { Get_RESOURCE_Dashboard_Stats } from '../../../graphql/resources';
+import { useEffect } from 'react';
 
 
 
@@ -44,6 +46,34 @@ export const AllResource = () => {
   };
   const [openModal, setOpenModal] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(false);
+  const [dashboardResourceStat , setDashboardResourceStat] = React.useState(null)
+
+  const { data, loading, error } = useQuery(Get_RESOURCE_Dashboard_Stats, {
+    
+    fetchPolicy: "network-only"
+  });
+ console.log("data", data)
+  useEffect(() => {
+    if (data) {
+      setDashboardResourceStat(data.getResourceDashboardStats);
+    }
+  }, [data]);
+
+  let total = 0;
+  let difference = 0;
+
+  let totalOnboard = 0;
+  let differenceOnboard = 0
+
+
+  if (dashboardResourceStat && dashboardResourceStat.resourceStats) {
+    total = dashboardResourceStat.resourceStats.total;
+    difference = dashboardResourceStat.resourceStats.difference;
+  }
+  else if (dashboardResourceStat && dashboardResourceStat.onboardedStats) {
+    totalOnboard = dashboardResourceStat.onboardedStats.total;
+    differenceOnboard = dashboardResourceStat.onboardedStats.difference;
+  }
 
   const handleOpen = () => setOpenModal(true);
 
@@ -64,16 +94,16 @@ export const AllResource = () => {
       <Grid container spacing={2}>
         {/* Chart */}
         <Grid item xs={4} md={4} lg={3}>
-          <ResourceCard />
+          <ResourceCard total = {total} difference={difference} text={"All Resource"} />
+        </Grid>
+        <Grid  item xs={4} md={4} lg={3}>
+          <ResourceCard total={totalOnboard} difference= {differenceOnboard} text={"Onboarding Completed"} />
         </Grid>
         <Grid item xs={4} md={4} lg={3}>
-          <ResourceCard />
+          <ResourceCard total={totalOnboard} difference= {differenceOnboard} text={"Interview Scheduled"} />
         </Grid>
         <Grid item xs={4} md={4} lg={3}>
-          <ResourceCard />
-        </Grid>
-        <Grid item xs={4} md={4} lg={3}>
-          <ResourceCard />
+          <ResourceCard total={totalOnboard} difference= {differenceOnboard} text={"Documents Pending"} />
         </Grid>
 
         {/* Recent Deposits */}
