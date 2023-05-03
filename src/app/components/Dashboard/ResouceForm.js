@@ -19,6 +19,7 @@ import { Alert } from '../common/Alert';
 import { SimpleDropDownController } from '../common/SimpleDropDownController';
 import { availableToolsList, languages_list, skillSetList } from '../../constants';
 import { CustomDocumentUploadController } from '../common/CustomDocumentUploadController';
+import { uploadDocument } from '../../services/rest-apis';
 // import { CustomFormPhoneController } from '../common/CustomFormPhoneController';
 
 const style = {
@@ -121,7 +122,13 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNo, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
             whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
             beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
-            swiftCode, iban, bankAddress, bankName, branchName, isOnboarded, onboardedBy } = data
+            swiftCode, iban, bankAddress, bankName, branchName, isOnboarded, onboardedBy, myResume } = data
+
+        let resumeDocUrl = "";
+        if (myResume) {
+            const response = await uploadDocument(myResume);
+            resumeDocUrl = response?.url || "";
+        };
 
         const payload = {
             accountType,
@@ -169,7 +176,8 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             branchName,
             bankName,
             isOnboarded,
-            onboardedBy
+            onboardedBy,
+            resumeDocUrl
         }
 
 
@@ -404,7 +412,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             currencies={EngagementType}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={2.5}>
                                         <CustomFormController
                                             controllerName='contactNo'
                                             controllerLabel='Contact No'
