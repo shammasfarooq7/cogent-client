@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -17,10 +17,13 @@ import { CREATE_RESOURCE_MUTATION, UPDATE_RESOURCE_MUTATION } from '../../../gra
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
 import { SimpleDropDownController } from '../common/SimpleDropDownController';
-import { availableToolsList, languages_list, skillSetList } from '../../constants';
+import { availabilityOptions, availableToolsList, languages_list, skillSetList, transportOptions, workPermitStatusOptions } from '../../constants';
 import { CustomDocumentUploadController } from '../common/CustomDocumentUploadController';
 import { uploadDocument } from '../../services/rest-apis';
-// import { CustomFormPhoneController } from '../common/CustomFormPhoneController';
+import { CustomPhoneController } from '../common/CustomPhoneController';
+import { UserContext } from '../../context/user-context';
+import { getName } from '../../helper';
+import { CutomFormRadioController } from '../common/CutomFormRadioController';
 
 const style = {
     position: 'absolute',
@@ -60,7 +63,7 @@ const EngagementType = [
         label: 'PTE',
     },
     {
-        value: 'REMOTE',
+        value: 'Remote',
         label: 'REMOTE',
     }
 ];
@@ -69,6 +72,8 @@ const EngagementType = [
 
 export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResources }) => {
     const handleClose = () => setOpenModal(false);
+
+    const { user } = useContext(UserContext);
 
     const urlSearchParams = new URLSearchParams(window.location.search)
     const id = urlSearchParams?.get("id");
@@ -90,6 +95,8 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             vendorName: "",
             engagementType: "",
             rpocName: "",
+            firstName: "",
+            lastName: "",
             email: "",
             languages: [],
             skillSet: [],
@@ -104,7 +111,9 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             bankName: "",
             branchName: "",
             bankAddress: "",
+            rpocContactNumber: "",
             isOnboarded: true,
+            onboardedBy: getName(user?.firstName, user?.middleName, user?.lastName),
             ...editDefaultState
         }
     });
@@ -119,11 +128,11 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     const onSubmit = async (data) => {
         const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, languages, skillSet, availableTools,
             beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
-            postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNo, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
+            postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNumber, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
             whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
             beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
             swiftCode, iban, bankAddress, bankName, branchName, isOnboarded, onboardedBy, myResume } = data
-
+        // return
         let resumeDocUrl = "";
         if (myResume) {
             const response = await uploadDocument(myResume);
@@ -177,7 +186,8 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             bankName,
             isOnboarded,
             onboardedBy,
-            resumeDocUrl
+            resumeDocUrl,
+            mobileNumber
         }
 
 
@@ -264,11 +274,10 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <CustomDropDrownController
-                                            controllerName='rpocContactNumber'
+                                        <CustomPhoneController
+                                            controllerName={'rpocContactNumber'}
                                             controllerLabel='RPOC Contact Number'
-                                            selectDropdown={true}
-                                            currencies={EngagementType}
+                                            inputStyle={{ height: 40 }}
                                         />
                                     </Grid>
                                 </Grid>
@@ -373,6 +382,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='addressLine1'
                                             controllerLabel='Address Line 1'
                                             fieldType='text'
+                                            maxLength={500}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
@@ -380,6 +390,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='addressLine2'
                                             controllerLabel='Address Line 2'
                                             fieldType='text'
+                                            maxLength={500}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -389,63 +400,32 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             fieldType='text'
                                         />
                                     </Grid>
-                                    <Grid item xs={1.5}>
-                                        <CustomDropDrownController
-                                            controllerName='code'
-                                            controllerLabel='+92'
-                                            fieldType='text'
-                                            currencies={EngagementType}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={2.5}>
-                                        <CustomFormController
-                                            controllerName='mobileNo'
+                                    <Grid item xs={4}>
+                                        <CustomPhoneController
+                                            controllerName={'mobileNumber'}
                                             controllerLabel='Mobile No'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
-                                    <Grid item xs={1.5}>
-                                        <CustomDropDrownController
-                                            controllerName='contactCode'
-                                            controllerLabel='+92'
-                                            fieldType='text'
-                                            currencies={EngagementType}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={2.5}>
-                                        <CustomFormController
-                                            controllerName='contactNo'
-                                            controllerLabel='Contact No'
-                                            fieldType='text'
-                                        />
-                                        {/* <CustomFormPhoneController
-                                            controllerName='contactNo'
-                                            controllerLabel='Contact No'
-                                            fieldType='text'
-                                            currencies={EngagementType}
-                                        /> */}
-                                    </Grid>
-                                    <Grid item xs={1.5}>
-                                        <CustomDropDrownController
-                                            controllerName='whatsappCode'
-                                            controllerLabel='+92'
-                                            fieldType='text'
-                                            currencies={EngagementType}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={2.5}>
-                                        <CustomFormController
-                                            controllerName='whatsappNo'
-                                            controllerLabel='WhatsApp No'
-                                            fieldType='text'
+                                            inputStyle={{ height: 40 }}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <CustomDropDrownController
+                                        <CustomPhoneController
+                                            controllerName={'contactNo'}
+                                            controllerLabel='Contact No'
+                                            inputStyle={{ height: 40 }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <CustomPhoneController
+                                            controllerName={'whatsappNo'}
+                                            controllerLabel='WhatsApp No'
+                                            inputStyle={{ height: 40 }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <CustomFormController
                                             controllerName='whatsappGroup'
                                             controllerLabel='WhatsApp Group'
                                             fieldType='text'
-                                            currencies={EngagementType}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -467,7 +447,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='workPermitStatus'
                                             controllerLabel='Work Permit Status'
                                             fieldType='text'
-                                            currencies={EngagementType}
+                                            currencies={workPermitStatusOptions}
                                         />
                                     </Grid>
                                 </Grid>
@@ -658,7 +638,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='modeoftransportation'
                                             controllerLabel='Mode of Transportation'
                                             fieldType='text'
-                                            currencies={EngagementType}
+                                            currencies={transportOptions}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -666,7 +646,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='availability'
                                             controllerLabel='Availability'
                                             fieldType='text'
-                                            currencies={EngagementType}
+                                            currencies={availabilityOptions}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -702,13 +682,22 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='onboardedBy'
                                             controllerLabel='Onboarded By'
                                             fieldType='text'
+                                            disabled={true}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <CustomFormController
+                                        <CutomFormRadioController
                                             controllerName='isOnboarded'
-                                            controllerLabel='onboarded Completed'
-                                            fieldType='text'
+                                            controllerLabel='Onboarded Completed?'
+                                            options={[{
+                                                label: "True",
+                                                value: true,
+                                                disabled: false
+                                            }, {
+                                                label: "False",
+                                                value: false,
+                                                disabled: false
+                                            }]}
                                         />
                                     </Grid>
                                 </Grid>

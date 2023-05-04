@@ -1,6 +1,6 @@
 // packages block
 import React from 'react';
-import { Box, InputAdornment, TextField ,Input, MenuItem } from '@mui/material';
+import { Box, InputAdornment, TextField, Input, MenuItem } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
@@ -46,9 +46,8 @@ const styles = theme => ({
 
 
 
-export const CustomFormController = ({ controllerName, controllerLabel, fieldType , isMultiLine , rowsLength , fieldIcon }) => {
+export const CustomFormController = ({ controllerName, controllerLabel, fieldType, isMultiLine, rowsLength, fieldIcon, maxLength = 40, disabled = false }) => {
   const { control } = useFormContext();
-  
   // const {classes} = this.props
   //  console.log("ssssssssss",classes)
 
@@ -70,12 +69,16 @@ export const CustomFormController = ({ controllerName, controllerLabel, fieldTyp
           fullWidth
           {...field}
           helperText={message}
+          disabled={disabled}
           variant="outlined"
+          inputProps={{
+            maxLength
+          }}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                {fieldIcon} 
-              {/* <fieldIcon sx={{color:"#FFFFFF", fontSize:"15px"}} /> */}
+                {fieldIcon}
+                {/* <fieldIcon sx={{color:"#FFFFFF", fontSize:"15px"}} /> */}
               </InputAdornment>
             ),
           }}

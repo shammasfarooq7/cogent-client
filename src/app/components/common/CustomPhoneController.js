@@ -16,35 +16,37 @@ import 'react-phone-input-2/lib/style.css'
  * @returns JSX Element
  */
 
-export const CustomPhoneController = ({ controllerName, controllerLabel }) => {
+export const CustomPhoneController = ({ controllerName, controllerLabel, inputStyle = {} }) => {
   const { control } = useFormContext();
-  const [focus, setFocus] = useState(false);
 
   return (
     <CustomPhoneContainer>
       <Controller
         name={controllerName}
         control={control}
+        rules={{ validate: () => false, required: true }}
         render={({ field: { value, onChange }, fieldState: { invalid, error: { message } = {} } }) => (
           <FormControl variant="outlined" fullWidth error={invalid}>
-            <InputLabel shrink={focus} id={`phone-${controllerName}`}>{controllerLabel}</InputLabel>
-
+            {/* <InputLabel shrink={focus} id={`phone-${controllerName}`}>{controllerLabel}</InputLabel> */}
             <PhoneInput
-             specialLabel={''}
-             country={'us'}
-             onChange={phone => onChange(phone)}
-            //  inputProps={{
-            //     name: 'phone',
-            //     required: true,
-            //     autoFocus: true
-            //   }}
+              specialLabel={''}
+              // country={'us'}
+              placeholder={controllerLabel}
+              onChange={phone => onChange(phone)}
+              //  inputProps={{
+              //     name: 'phone',
+              //     required: true,
+              //     autoFocus: true
+              //   }}
+              // isValid={(value) => !invalid}
               inputStyle={{
                 paddingLeft: 15,
                 fontSize: 16,
                 borderRadius: '4px',
                 padding: '0px 42px',
                 width: '100%',
-                border: '1px solid rgba(0, 0, 0, 0.2)'
+                border: '1px solid rgba(0, 0, 0, 0.2)',
+                ...inputStyle
               }}
             />
 

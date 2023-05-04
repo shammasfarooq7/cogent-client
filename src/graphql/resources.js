@@ -91,7 +91,7 @@ query GetResourceQuery($id: String!) {
     addressLine1
     addressLine1
     email
-    phoneNumber
+    mobileNumber
     whatsappNumber
     cogentEmail
     skillSet

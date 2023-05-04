@@ -78,7 +78,7 @@ export const SimpleDropDownController = ({ controllerName, options, placeholder,
                         onMenuOpen={() => { setIsMenuOpen(true) }}
                         onMenuClose={() => { setIsMenuOpen(false) }}
                     />
-                    <Box fontSize={"0.75rem"} color={"#d32f2f"}>{message}</Box>
+                    <Box fontSize={"0.75rem"} marginLeft={"14px"} color={"#d32f2f"}>{message}</Box>
                 </>
             )}
         />

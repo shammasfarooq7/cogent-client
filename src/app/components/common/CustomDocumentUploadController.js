@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Input } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Box, Input, FormHelperText } from '@mui/material';
+import { Controller, useFormContext, } from 'react-hook-form';
 import './style.css'
 import { Alert } from './Alert';
 
@@ -41,13 +41,16 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
           <label htmlFor={controllerName}>
             <Box sx={{
               display: "flex", alignItems: "center", justifyContent: "space-between",
-              border: "1px solid #cccccc", paddingY: "7px", paddingX: "10px", borderRadius: "4px", marginTop: "8px", marginBottom: "4px",
+              border: `1px solid ${invalid ? "#d32f2f" : "#cccccc"}`, paddingY: "7px", paddingX: "10px", borderRadius: "4px", marginTop: "8px", marginBottom: "4px",
               fontStyle: "normal", fontSize: "13px", color: "#222B45", lineHeight: "16px", cursor: "pointer"
             }}>
               {field?.value?.name || controllerLabel}
               {fieldIcon}
             </Box>
           </label>
+          {invalid && message &&
+            <FormHelperText style={{ color: "#d32f2f" }}>{message}</FormHelperText>
+          }
         </>
       )}
     />

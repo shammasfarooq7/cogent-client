@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { INVALID_EMAIL, phoneReg } from "../constants";
 import { requiredMessage } from "../utils";
+import { isValidPhoneNumber } from "react-phone-number-input";
 
 const passwordValidationSchema = {
   password: yup.string().required(requiredMessage("Password")),
@@ -153,7 +154,61 @@ export const resourceFormValidationSchema = yup.object({
   ...rpocEmailValidationSchema,
   ...accountTitleValidationSchema,
   ...firstNameValidationSchema,
-  ...lastNameValidationSchema
+  ...lastNameValidationSchema,
+  rpocName: yup.string().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().required('RPOC Name is required'),
+    otherwise: yup.string().optional()
+  }),
+  rpocEmail: yup.string().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().email(INVALID_EMAIL).required('RPOC Email is required'),
+    otherwise: yup.string().email(INVALID_EMAIL)
+  }),
+  rpocContactNumber: yup.string().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().required('RPOC Contact Number is required').test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
+      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
+      return true
+    }),
+    otherwise: yup.string().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
+      if (!value) return true
+      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
+      return true
+    })
+  }),
+  taxNumber: yup.string().required("Tax Number is required"),
+  firstName: yup.string().required("First Name is required"),
+  lastName: yup.string().required("First Name is required"),
+  nationality: yup.string().required("Nationality is required"),
+  country: yup.string().required("Country is required"),
+  mobileNumber: yup.string().required('Mobile Number is required').test('valid-mobile-number', 'Mobile Number is Invalid', function (value) {
+    if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false  // this whole validation for required phone number
+    return true
+  }),
+  contactNo: yup.string().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
+    if (!value) return true
+    if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
+    return true
+  }),
+  whatsappNo: yup.string().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
+    if (!value) return true
+    if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
+    return true
+  }),
+  addressLine1: yup.string().required("Address is required."),
+  workPermitStatus: yup.string().required("Address is required."),
+  myResume: yup.mixed().required('Resume file is required').test(
+    'is-file',
+    'File upload required',
+    (value) => {
+      console.log({ value });
+      return value && ['application/pdf', 'image/jpg'].includes(value?.type);
+    }
+  ),
+  modeoftransportation: yup.string().required("Mode of transport is required."),
+  availability: yup.string().required("Availability of transport is required."),
+  mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
 })
 
 export const loginValidationSchema = yup.object({

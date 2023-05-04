@@ -45,10 +45,10 @@ export const DashboardContent = () => {
   };
   const [openModal, setOpenModal] = React.useState(false);
   const [profileAnchor, setProfileAnchor] = React.useState(false);
-  const [dashboardStat , setDashboardStat] = React.useState(null)
+  const [dashboardStat, setDashboardStat] = React.useState(null)
 
   const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
-    
+
     fetchPolicy: "network-only"
   });
 
@@ -63,9 +63,9 @@ export const DashboardContent = () => {
   let totalResourceCount = 0;
 
   if (dashboardStat) {
-    newHiringCount = dashboardStat.newHiringCount;
-    newRequestCount = dashboardStat.newRequestCount;
-    totalResourceCount = dashboardStat.totalResourceCount;
+    newHiringCount = dashboardStat.newHiringCount < 10 && dashboardStat.newHiringCount > 0 ? `0${dashboardStat.newHiringCount}` : dashboardStat.newHiringCount;
+    newRequestCount = dashboardStat.newRequestCount < 10 && dashboardStat.newRequestCount > 0 ? `0${dashboardStat.newRequestCount}` : dashboardStat.newRequestCount;
+    totalResourceCount = dashboardStat.totalResourceCount < 10 && dashboardStat.totalResourceCount > 0 ? `0${dashboardStat.totalResourceCount}` : dashboardStat.totalResourceCount;
   }
 
   const handleOpen = () => setOpenModal(true);
@@ -88,15 +88,15 @@ export const DashboardContent = () => {
       <Grid container spacing={"30px"}>
         {/* Chart */}
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring = {newHiringCount} text = {"Today's Incident"} color="#3699FF" />
+          <DashboardCard hiring={newHiringCount} text={"New Hiring"} color="#56A0C2" />
         </Grid>
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={newRequestCount} text = {"In progress"} color="#242D60" />
+          <DashboardCard hiring={newRequestCount} text={"New Requests"} color="#242D60" />
         </Grid>
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={totalResourceCount} text = {"Upcoming Incident's"} color="#212121" />
+          <DashboardCard hiring={totalResourceCount} text={"Total Resources"} color="#212121" />
         </Grid>
-        <Grid item xs={12} md={6} lg={6}>
+        {/* <Grid item xs={12} md={6} lg={6}>
           <Paper
             sx={{
               p: 2,
@@ -107,9 +107,9 @@ export const DashboardContent = () => {
           >
             <Chart />
           </Paper>
-        </Grid>
+        </Grid> */}
         {/* Recent Deposits */}
-        <Grid item xs={12} md={6} lg={6}>
+        {/* <Grid item xs={12} md={6} lg={6}>
           <Paper
             sx={{
               p: 2,
@@ -120,19 +120,19 @@ export const DashboardContent = () => {
           >
             <Deposits />
           </Paper>
-        </Grid>
+        </Grid> */}
         {/* Recent Orders */}
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
             <Orders tableName="Active Incidents" />
           </Paper>
-        </Grid>
+        </Grid> */}
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid xs={6}>
           </Grid>
           <Grid xs={4}></Grid>
           <Grid xs={2}>
-       
+
           </Grid>
         </Grid>
         <Grid item xs={12}>
