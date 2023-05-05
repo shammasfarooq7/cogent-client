@@ -11,7 +11,6 @@ export const uploadDocument = async (document) => {
             }
         })
         if (response.ok) {
-            debugger
             const data = await response.json();
 
             return { url: data?.url }

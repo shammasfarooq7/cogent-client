@@ -3,6 +3,16 @@ import { INVALID_EMAIL, phoneReg } from "../constants";
 import { requiredMessage } from "../utils";
 import { isValidPhoneNumber } from "react-phone-number-input";
 
+function paymentMethodValidation(name, value, parentThis) {
+  const fields = ['accountType', 'accountTitle', 'beneficiaryFirstName', 'beneficiaryMiddleName', 'beneficiaryLastName', 'beneficiaryAddress', 'sortCode', 'accountNumber', 'iban', 'swiftCode', 'branchName', 'bankAddress', 'bankName'];
+  const anyOtherFieldHasValue = fields.filter(field => field !== name)?.some((key) => parentThis.parent[key]?.trim());
+  if (anyOtherFieldHasValue) {
+    if (!value) return false
+    return yup.string().required().validateSync(value)
+  }
+  return true;
+};
+
 const passwordValidationSchema = {
   password: yup.string().required(requiredMessage("Password")),
 }
@@ -80,48 +90,109 @@ const availableToolsValidationSchema = {
 }
 
 const beneficiaryFirstNameValidationSchema = {
-  beneficiaryFirstName: yup.string().required(requiredMessage("beneficiaryFirstName")),
-}
+  beneficiaryFirstName: yup.string().test(
+    'beneficiaryFirstName-required',
+    'Beneficiary First Name is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("beneficiaryFirstName", value, parentThis)
+    }
+  )
+};
 
 const beneficiaryLastNameValidationSchema = {
-  beneficiaryLastName: yup.string().required(requiredMessage("beneficiaryLastName")),
-}
+  beneficiaryLastName: yup.string().test(
+    'beneficiaryLastName-required',
+    'Beneficiary First Name is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("beneficiaryLastName", value, parentThis)
+    }
+  )
+};
 
 const beneficiaryMiddleNameValidationSchema = {
-  beneficiaryMiddleName: yup.string().required(requiredMessage("beneficiaryMiddleName")),
+  beneficiaryMiddleName: yup.string(),
 }
 
 const beneficiaryAddressValidationSchema = {
-  beneficiaryAddress: yup.string().required(requiredMessage("beneficiaryAddress")),
+  beneficiaryAddress: yup.string(),
 }
 
 
 const accountTitleValidationSchema = {
-  accountTitle: yup.string().required(requiredMessage("Account Title is required")),
-}
+  accountTitle: yup.string().test(
+    'account-title-required',
+    'Account Title is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("accountTitle", value, parentThis)
+    }
+  )
+};
+
+const accountTypeValidationSchema = {
+  accountType: yup.string().test(
+    'accountType-required',
+    'Account Type is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("accountType", value, parentThis)
+    }
+  )
+};
 
 const accountNumberValidationSchema = {
-  accountNumber: yup.string().required(requiredMessage("accountNumber")),
-}
+  accountNumber: yup.string().test(
+    'accountNumber-required',
+    'Account Number is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("accountNumber", value, parentThis)
+    }
+  )
+};
 
 const ibanValidationSchema = {
-  iban: yup.string().required(requiredMessage("iban")),
-}
+  iban: yup.string().test(
+    'iban-required',
+    'Iban is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("iban", value, parentThis)
+    }
+  )
+};
 
 const swiftCodeValidationSchema = {
-  swiftCode: yup.string().required(requiredMessage("swiftCode")),
-}
+  swiftCode: yup.string().test(
+    'swiftCode-required',
+    'Swift Code is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("swiftCode", value, parentThis)
+    }
+  )
+};
 
 const bankNameValidationSchema = {
-  bankName: yup.string().required(requiredMessage("bankName")),
-}
+  bankName: yup.string(),
+  bankName: yup.string().test(
+    'bankName-required',
+    'Bank Name is required.',
+    function (value) {
+      const parentThis = this;
+      return paymentMethodValidation("bankName", value, parentThis)
+    }
+  )
+};
 
 const branchNameValidationSchema = {
-  branchName: yup.string().required(requiredMessage("branchName")),
+  branchName: yup.string(),
 }
 
 const bankAddressValidationSchema = {
-  bankAddress: yup.string().required(requiredMessage("bankAddress")),
+  bankAddress: yup.string(),
 }
 
 const isOnboardedValidationSchema = {
@@ -153,6 +224,7 @@ export const resourceFormValidationSchema = yup.object({
   ...cogentEmailValidationSchema,
   ...rpocEmailValidationSchema,
   ...accountTitleValidationSchema,
+  ...accountTypeValidationSchema,
   ...firstNameValidationSchema,
   ...lastNameValidationSchema,
   rpocName: yup.string().when('status', {
@@ -206,9 +278,10 @@ export const resourceFormValidationSchema = yup.object({
       return value && ['application/pdf', 'image/jpg'].includes(value?.type);
     }
   ),
-  modeoftransportation: yup.string().required("Mode of transport is required."),
+  transport: yup.string().required("Mode of transport is required."),
   availability: yup.string().required("Availability of transport is required."),
-  mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
+  // mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
+  mobility: yup.string().required("Mobility is required.")
 })
 
 export const loginValidationSchema = yup.object({

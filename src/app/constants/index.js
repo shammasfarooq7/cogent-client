@@ -367,3 +367,14 @@ export const availabilityOptions = [
     label: 'Full Time',
   },
 ];
+
+export const accountTypeBusiness = [
+  {
+    value: 'Business',
+    label: 'Business',
+  },
+  {
+    value: 'Personal',
+    label: 'Personal',
+  },
+];

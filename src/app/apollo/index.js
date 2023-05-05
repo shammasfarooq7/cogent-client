@@ -27,7 +27,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:4000/graphql"
+  uri: `${process.env.REACT_APP_API_BASE_URL}/graphql`
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -70,6 +70,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     const [{ message }] = graphQLErrors;
 
     if (message === UNAUTHORIZED || message === TOKEN_INVALID) handleLogout();
+    else if (message) Alert.error(message)
   }
 
   if (networkError) Alert.error(networkError.message);

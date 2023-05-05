@@ -42,7 +42,8 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
             <Box sx={{
               display: "flex", alignItems: "center", justifyContent: "space-between",
               border: `1px solid ${invalid ? "#d32f2f" : "#cccccc"}`, paddingY: "7px", paddingX: "10px", borderRadius: "4px", marginTop: "8px", marginBottom: "4px",
-              fontStyle: "normal", fontSize: "13px", color: "#222B45", lineHeight: "16px", cursor: "pointer"
+              fontStyle: "normal", fontSize: field?.value?.name ? "13px" : "1rem", fontFamily: `"Roboto", "Helvetica", "Arial", sans- serif`,
+              color: field?.value?.name ? "#222B45" : "#00000099", lineHeight: "16px", cursor: "pointer"
             }}>
               {field?.value?.name || controllerLabel}
               {fieldIcon}
@@ -52,7 +53,8 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
             <FormHelperText style={{ color: "#d32f2f" }}>{message}</FormHelperText>
           }
         </>
-      )}
+      )
+      }
     />
   );
 };

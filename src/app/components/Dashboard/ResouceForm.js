@@ -17,7 +17,7 @@ import { CREATE_RESOURCE_MUTATION, UPDATE_RESOURCE_MUTATION } from '../../../gra
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
 import { SimpleDropDownController } from '../common/SimpleDropDownController';
-import { availabilityOptions, availableToolsList, languages_list, skillSetList, transportOptions, workPermitStatusOptions } from '../../constants';
+import { accountTypeBusiness, availabilityOptions, availableToolsList, languages_list, skillSetList, transportOptions, workPermitStatusOptions } from '../../constants';
 import { CustomDocumentUploadController } from '../common/CustomDocumentUploadController';
 import { uploadDocument } from '../../services/rest-apis';
 import { CustomPhoneController } from '../common/CustomPhoneController';
@@ -112,7 +112,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             branchName: "",
             bankAddress: "",
             rpocContactNumber: "",
-            isOnboarded: true,
+            isOnboarded: false,
             onboardedBy: getName(user?.firstName, user?.middleName, user?.lastName),
             ...editDefaultState
         }
@@ -126,12 +126,12 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     const { handleSubmit, formState: { errors } } = methods;
 
     const onSubmit = async (data) => {
-        const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, languages, skillSet, availableTools,
+        const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, rpocEmail, languages, skillSet, availableTools,
             beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
-            postalCode, addressLine1, addressLine2, rpocEmail, code, mobileNumber, contactCode, contactNo, whatsappCode, whatsappNo, whatsappGroup,
+            postalCode, addressLine1, addressLine2, mobileNumber, contactNumber, whatsappNumber, whatsappGroup,
             whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
             beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
-            swiftCode, iban, bankAddress, bankName, branchName, isOnboarded, onboardedBy, myResume } = data
+            swiftCode, sortCode, iban, bankAddress, bankName, branchName, transport, availability, mobility, isOnboarded, onboardedBy, myResume, contractDocuments } = data
         // return
         let resumeDocUrl = "";
         if (myResume) {
@@ -146,6 +146,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             cogentEmail,
             status,
             engagementType,
+            vendorName,
             firstName,
             lastName,
             middleName,
@@ -163,7 +164,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             rpocContactNumber,
             rpocEmail,
             whatsappGroup,
-            // whatsappGroupLink,
+            whatsappGroupLink,
             workPermitStatus,
             hourlyRate,
             halfDayRate,
@@ -179,15 +180,22 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             beneficiaryAddress,
             accountNumber,
             swiftCode,
+            sortCode,
             accountNumber,
             iban,
-            bankAddress,
-            branchName,
             bankName,
+            branchName,
+            bankAddress,
+            transport,
+            availability,
+            mobility,
             isOnboarded,
             onboardedBy,
             resumeDocUrl,
-            mobileNumber
+            mobileNumber,
+            contactNumber,
+            contractDocuments: contractDocuments === "true" ? true : false,
+            whatsappNumber
         }
 
 
@@ -409,14 +417,14 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                     </Grid>
                                     <Grid item xs={4}>
                                         <CustomPhoneController
-                                            controllerName={'contactNo'}
+                                            controllerName={'contactNumber'}
                                             controllerLabel='Contact No'
                                             inputStyle={{ height: 40 }}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
                                         <CustomPhoneController
-                                            controllerName={'whatsappNo'}
+                                            controllerName={'whatsappNumber'}
                                             controllerLabel='WhatsApp No'
                                             inputStyle={{ height: 40 }}
                                         />
@@ -494,11 +502,10 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                 <HeaderResource heading="RATE" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={4}>
-                                        <CustomDropDrownController
+                                        <CustomFormController
                                             controllerName='hourlyRate'
                                             controllerLabel='Hourly Rate'
                                             fieldType='text'
-                                            currencies={EngagementType}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -509,11 +516,10 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <CustomDropDrownController
+                                        <CustomFormController
                                             controllerName='fullDayRate'
                                             controllerLabel='Full Day Rate (8 Hours)'
                                             fieldType='text'
-                                            currencies={EngagementType}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -540,10 +546,11 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                 <HeaderResource heading="Payment" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <CustomFormController
+                                        <CustomDropDrownController
                                             controllerName='accountType'
                                             controllerLabel='Account Type'
                                             fieldType='text'
+                                            currencies={accountTypeBusiness}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
@@ -635,7 +642,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                 <Grid container spacing={2}>
                                     <Grid item xs={4}>
                                         <CustomDropDrownController
-                                            controllerName='modeoftransportation'
+                                            controllerName='transport'
                                             controllerLabel='Mode of Transportation'
                                             fieldType='text'
                                             currencies={transportOptions}
@@ -660,23 +667,40 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                 <HeaderResource heading="CONTRACT STATUS" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <CustomDocumentUploadController
-                                            controllerName='ndaStatus'
-                                            controllerLabel='NDA Status'
-                                            fieldIcon={<AttachFileIcon>
-                                                <input type="file" />
-                                            </AttachFileIcon>}
+                                        <CutomFormRadioController
+                                            controllerName='contractDocuments'
+                                            controllerLabel='Contract Dociments'
+                                            options={[{
+                                                label: "True",
+                                                value: true,
+                                                disabled: false
+                                            }, {
+                                                label: "False",
+                                                value: false,
+                                                disabled: false
+                                            }]}
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <CustomDocumentUploadController
-                                            controllerName='b2bStatus'
-                                            controllerLabel='B2B Status'
-                                            fieldIcon={<AttachFileIcon>
-                                                <input type="file" />
-                                            </AttachFileIcon>}
+                                        <CutomFormRadioController
+                                            controllerName='interviewStatus'
+                                            controllerLabel='Interview Status'
+                                            options={[{
+                                                label: "Complete",
+                                                value: "Complete",
+                                                disabled: false
+                                            }, {
+                                                label: "Scheduled",
+                                                value: "Scheduled",
+                                                disabled: false
+                                            }, {
+                                                label: "Not Scheduled",
+                                                value: "Not Scheduled",
+                                                disabled: false
+                                            }]}
                                         />
                                     </Grid>
+
                                     <Grid item xs={6}>
                                         <CustomFormController
                                             controllerName='onboardedBy'
@@ -692,11 +716,11 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             options={[{
                                                 label: "True",
                                                 value: true,
-                                                disabled: false
+                                                disabled: true
                                             }, {
                                                 label: "False",
                                                 value: false,
-                                                disabled: false
+                                                disabled: true
                                             }]}
                                         />
                                     </Grid>
