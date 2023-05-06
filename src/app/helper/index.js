@@ -12,3 +12,7 @@ export const getName = (firstName, middlename, lastname) => {
     }
     return name
 }
+
+export const getNameFromUrl = (url) => {
+    return url?.split("/")?.at(-1)
+}

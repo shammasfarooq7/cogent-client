@@ -31,6 +31,7 @@ export const CustomPhoneController = ({ controllerName, controllerLabel, inputSt
             <PhoneInput
               specialLabel={''}
               // country={'us'}
+              value={value}
               placeholder={controllerLabel}
               onChange={phone => onChange(phone)}
               //  inputProps={{

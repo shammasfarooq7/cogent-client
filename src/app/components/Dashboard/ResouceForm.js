@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -24,6 +23,7 @@ import { CustomPhoneController } from '../common/CustomPhoneController';
 import { UserContext } from '../../context/user-context';
 import { getName } from '../../helper';
 import { CutomFormRadioController } from '../common/CutomFormRadioController';
+import FileUrlDisplay from '../common/FileUrlDisplay';
 
 const style = {
     position: 'absolute',
@@ -118,13 +118,13 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             ...editDefaultState
         }
     });
-    const [createResource, { data, loading, error }] = useMutation(CREATE_RESOURCE_MUTATION);
-    const [updateResource, { data: UpdateData, loading: updateLoading, error: updateError }] = useMutation(UPDATE_RESOURCE_MUTATION);
+    const [createResource, { data, loading }] = useMutation(CREATE_RESOURCE_MUTATION);
+    const [updateResource, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_RESOURCE_MUTATION);
 
     if (data || UpdateData) {
         Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
     }
-    const { handleSubmit, watch, setValue, formState: { errors } } = methods;
+    const { handleSubmit, watch, setValue, getValues, formState: { errors } } = methods;
 
     const onSubmit = async (data) => {
         try {
@@ -132,18 +132,18 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
 
             const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, rpocEmail, idCardType, identityDocument, languages, skillSet, availableTools,
                 beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
-                postalCode, addressLine1, addressLine2, mobileNumber, contactNumber, whatsappNumber, whatsappGroup,
+                postalCode, addressLine1, addressLine2, mobileNumber, contactNumber, whatsappNumber, whatsappGroup, resumeDocUrl: resumeUrl, identityDocUrl: identityUrl,
                 whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
                 beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
                 swiftCode, sortCode, iban, bankAddress, bankName, branchName, transport, availability, mobility, isOnboarded, onboardedBy, myResume, contractDocuments, interviewStatus } = data
             // return
-            let resumeDocUrl = "";
+            let resumeDocUrl = resumeUrl || "";
             if (myResume) {
                 const response = await uploadDocument(myResume);
                 resumeDocUrl = response?.url || "";
             };
 
-            let identityDocUrl = "";
+            let identityDocUrl = identityUrl || "";
             if (myResume) {
                 const response = await uploadDocument(identityDocument);
                 identityDocUrl = response?.url || "";
@@ -190,7 +190,6 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 beneficiaryMiddleName,
                 beneficiaryLastName,
                 beneficiaryAddress,
-                accountNumber,
                 swiftCode,
                 sortCode,
                 accountNumber,
@@ -355,14 +354,17 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             currencies={idCardTypeOptions}
                                         />
                                     </Grid>
-                                    <Grid item xs={3}>
-                                        <CustomDocumentUploadController
-                                            controllerName='identityDocument'
-                                            controllerLabel='Identity (Attachment)'
-                                            fieldIcon={<AttachFileIcon>
-                                                <input type="file" />
-                                            </AttachFileIcon>}
-                                        />
+                                    <Grid item xs={3} {...(getValues("identityDocUrl") && { display: "flex", alignItems: "center" })}>
+                                        {getValues("identityDocUrl")
+                                            ? <FileUrlDisplay url={getValues("identityDocUrl")} />
+                                            : <CustomDocumentUploadController
+                                                controllerName='identityDocument'
+                                                controllerLabel='Identity (Attachment)'
+                                                fieldIcon={<AttachFileIcon>
+                                                    <input type="file" />
+                                                </AttachFileIcon>}
+                                            />
+                                        }
                                     </Grid>
                                     <Grid item xs={3}>
                                         <CustomFormController
@@ -519,14 +521,17 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         />
 
                                     </Grid>
-                                    <Grid item xs={7}>
-                                        <CustomDocumentUploadController
-                                            controllerName='myResume'
-                                            controllerLabel='My Resume/CV (Attachment)'
-                                            fieldIcon={<AttachFileIcon>
-                                                <input type="file" />
-                                            </AttachFileIcon>}
-                                        />
+                                    <Grid item xs={7} {...(getValues("resumeDocUrl") && { display: "flex", alignItems: "center" })}>
+                                        {getValues("resumeDocUrl")
+                                            ? <FileUrlDisplay url={getValues("resumeDocUrl")} />
+                                            : <CustomDocumentUploadController
+                                                controllerName='myResume'
+                                                controllerLabel='My Resume/CV (Attachment)'
+                                                fieldIcon={<AttachFileIcon>
+                                                    <input type="file" />
+                                                </AttachFileIcon>}
+                                            />
+                                        }
                                     </Grid>
                                     <Grid item xs={5}>
                                         {/* <CustomFormController
@@ -767,7 +772,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         type="submit"
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
-                                        disabled={loading || updateLoading}
+                                        disabled={isLoading || loading || updateLoading}
                                     >
                                         {(isLoading || loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
                                     </Button>

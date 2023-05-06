@@ -79,6 +79,8 @@ query GetResourceQuery($id: String!) {
     rpocContactNumber
     firstName
     lastName
+    idCardType
+    identityDocUrl
     middleName
     idCardNumber
     taxNumber
@@ -89,12 +91,17 @@ query GetResourceQuery($id: String!) {
     city
     postalCode
     addressLine1
-    addressLine1
+    addressLine2
     email
     mobileNumber
+    contactNumber
     whatsappNumber
+    whatsappGroup
+    whatsappGroupLink
     cogentEmail
+    workPermitStatus
     skillSet
+    resumeDocUrl
     availableTools
     hourlyRate
     halfDayRate
@@ -120,7 +127,10 @@ query GetResourceQuery($id: String!) {
       bankAddress
     }
     transport
+    availability
     mobility
+    interviewStatus
+    contractDocuments
     onboardedBy
     isOnboarded
     }

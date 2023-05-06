@@ -382,16 +382,16 @@ export const accountTypeBusiness = [
 export const idCardTypeOptions = [
   {
     label: "Driver License",
-    value: "dl",
+    value: "DriverLicense",
   }, {
     label: "Passport",
-    value: "pp",
+    value: "Passport",
   }, {
     label: "Id Card",
-    value: "id",
+    value: "IdCard",
   }, {
     label: "Residence Permit",
-    value: "rp",
+    value: "ResidencePermit",
   }
 ];
 

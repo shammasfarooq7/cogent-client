@@ -176,7 +176,6 @@ const swiftCodeValidationSchema = {
 };
 
 const bankNameValidationSchema = {
-  bankName: yup.string(),
   bankName: yup.string().test(
     'bankName-required',
     'Bank Name is required.',
@@ -270,10 +269,13 @@ export const resourceFormValidationSchema = yup.object({
   }),
   addressLine1: yup.string().required("Address is required."),
   workPermitStatus: yup.string().required("Work Permit Status is required."),
-  myResume: yup.mixed().required('Resume file is required').test(
+  resumeDocUrl: yup.string().optional(),
+  identityDocUrl: yup.string().optional(),
+  myResume: yup.mixed().test(
     'is-file',
-    'File upload required',
-    (value) => {
+    'Resume file is required',
+    function (value) {
+      if (this.parent.resumeDocUrl) return true;
       return value && ['application/pdf', 'image/jpg'].includes(value?.type);
     }
   ),
@@ -282,15 +284,16 @@ export const resourceFormValidationSchema = yup.object({
   // mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
   mobility: yup.string().required("Mobility is required."),
   idCardType: yup.string().required("Id Card Type is required."),
-  identityDocument: yup.mixed().required('Identity file is required').test(
+  identityDocument: yup.mixed().test(
     'is-file',
-    'File upload required',
-    (value) => {
+    'Identity file is required',
+    function (value) {
+      if (this.parent.identityDocUrl) return true;
       return value && ['application/pdf', 'image/jpg'].includes(value?.type);
     }
   ),
   contractDocuments: yup.boolean().required(requiredMessage("Contract Document")),
-  interviewStatus:yup.string().required("Interview Status is required."),
+  interviewStatus: yup.string().required("Interview Status is required."),
 })
 
 export const loginValidationSchema = yup.object({
