@@ -108,7 +108,7 @@ export const SignupForm = () => {
               <Typography sx={{fontSize : "14px", marginRight:"140px" ,marginBottom:"45px"  ,color: "#FFFFFF" , fontFamily:"Poppins" }}>
                If you already have an account register you can
                <Typography component={Link} to="/login" variant="body2" sx={{cursor:"pointer" , marginLeft:"10px", fontSize:"16px" , color:"#1e81b0"}}>
-                        {" Register here!"}
+                        {" Login here!"}
                       </Typography>
               </Typography>
               <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -152,7 +152,7 @@ export const SignupForm = () => {
                 <Box  sx={{marginBottom:"25px"}}>
                   <CustomPhoneController
                     controllerName='phoneNumber'
-                    controllerLabel=''
+                    controllerLabel='Phone Number'
                   />
                  </Box>
 
