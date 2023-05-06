@@ -5,11 +5,11 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button, TablePagination , Typography } from '@mui/material';
+import { Box, Button, TablePagination, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { images } from './../../assets/images';
-import { Search } from '../common/Search';  
+import { Search } from '../common/Search';
 import Title from '../common/Title';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_RESOURCE_MUTATION, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
@@ -23,7 +23,7 @@ function preventDefault(event) {
     event.preventDefault();
 }
 
-export const ResourceTable = ({ tableName, search }) => {
+export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, resourceTableRefetch }) => {
 
     const navigate = useNavigate();
 
@@ -47,6 +47,10 @@ export const ResourceTable = ({ tableName, search }) => {
         },
         fetchPolicy: "network-only"
     });
+
+    if (setResourceTabelRefetch && !resourceTableRefetch) {
+        setResourceTabelRefetch(() => refetch)
+    };
 
     const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
 
@@ -105,7 +109,7 @@ export const ResourceTable = ({ tableName, search }) => {
             {openResourceForm && <ResourceForm openModal={openResourceForm} setOpenModal={setOpenResourceForm} refetchResources={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "black" , fontFamily:"popins", fontWeight:"600",fontSize:"18px" }}>All Resources</Typography>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>All Resources</Typography>
                 <Box>
                     {search && <Search sx={{ width: "200px" }}
                         onChange={(e) => { setSearchValue(e.target.value) }}
@@ -119,7 +123,7 @@ export const ResourceTable = ({ tableName, search }) => {
             <Table size="small">
                 <TableHead>
                     <TableRow sx={{ backgroundColor: "#F5F8FA", borderRadius: "10px" }}>
-                        <TableCell sx={{ fontFamily:"popins" }}>Resource ID</TableCell>
+                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Resource ID</TableCell>
                         <TableCell>Country</TableCell>
                         <TableCell>City</TableCell>
                         <TableCell>Status</TableCell>

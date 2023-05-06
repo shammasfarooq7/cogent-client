@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -32,6 +32,7 @@ import cogentTextLogo from '../../assets/images/Cogent Text Logo.png';
 import { ResourceTable } from '../resources/resource-table';
 import { useEffect } from 'react';
 import { Get_Dashboard_Stats } from '../../../graphql/resources';
+import { RequestUsersTable } from '../requestUsers/request-users-table';
 
 
 const mdTheme = createTheme();
@@ -39,13 +40,14 @@ const mdTheme = createTheme();
 export const DashboardContent = () => {
   const navigate = useNavigate();
 
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
-  const [openModal, setOpenModal] = React.useState(false);
-  const [profileAnchor, setProfileAnchor] = React.useState(false);
-  const [dashboardStat, setDashboardStat] = React.useState(null)
+  const [openModal, setOpenModal] = useState(false);
+  const [profileAnchor, setProfileAnchor] = useState(false);
+  const [dashboardStat, setDashboardStat] = useState(null)
+  const [resourceTableRefetch, setResourceTabelRefetch] = useState(null)
 
   const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
 
@@ -122,11 +124,12 @@ export const DashboardContent = () => {
           </Paper>
         </Grid> */}
         {/* Recent Orders */}
-        {/* <Grid item xs={12}>
+        <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <Orders tableName="Active Incidents" />
+            {/* <Orders tableName="Active Incidents" /> */}
+            <RequestUsersTable {...{ resourceTableRefetch }} />
           </Paper>
-        </Grid> */}
+        </Grid>
         <Grid container spacing={2} sx={{ mt: 2 }}>
           <Grid xs={6}>
           </Grid>
@@ -138,7 +141,7 @@ export const DashboardContent = () => {
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
             {/* <Orders tableName="Add Resources" /> */}
-            <ResourceTable />
+            <ResourceTable  {...{ resourceTableRefetch, setResourceTabelRefetch }} />
           </Paper>
         </Grid>
       </Grid>

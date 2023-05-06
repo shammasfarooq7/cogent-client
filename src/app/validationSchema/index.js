@@ -199,7 +199,7 @@ const isOnboardedValidationSchema = {
 }
 
 const phoneNumberValidationSchema = {
-  phoneNumber: yup.string().matches(phoneReg, 'Phone number is not valid').required(requiredMessage("Phone Number")),
+  mobileNumber: yup.string().matches(phoneReg, 'Phone number is not valid').required(requiredMessage("Phone Number")),
 }
 
 export const resourceFormValidationSchema = yup.object({
