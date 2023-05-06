@@ -24,6 +24,7 @@ import { UserContext } from '../../context/user-context';
 import { getName } from '../../helper';
 import { CutomFormRadioController } from '../common/CutomFormRadioController';
 import FileUrlDisplay from '../common/FileUrlDisplay';
+import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
     position: 'absolute',
@@ -269,9 +270,14 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ padding: "12px" }}>
+                    <Box sx={{display:"flex"}}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ padding: "12px", fontFamily:"popins", fontWeight:"600"}}>
                         {editInfo ? "Update Resource" : "Add Resource"}
                     </Typography>
+                    <Box sx={{position:"relative", left:"78%", top:"12px", cursor:"pointer"}} >
+                        <CloseIcon onClick={handleClose}/>
+                    </Box>
+                    </Box>
                     <Divider />
                     <Box sx={{ p: 2 }}>
                         <HeaderResource heading="General Information" />

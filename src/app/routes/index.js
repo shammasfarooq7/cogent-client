@@ -22,19 +22,19 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
           <Route path={"/dashboard"} element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <DashboardContent />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path={"/resource-details"} element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <ResourceDetails />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path={"/all-resource"} element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <AllResource />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
           <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />

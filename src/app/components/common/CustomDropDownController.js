@@ -40,6 +40,9 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
           {...field}
           helperText={message}
           variant="outlined"
+          InputLabelProps={{
+            style: { color: "#222B45", fontFamily:"popins" },
+          }}
         >
              {currencies.map((option) => (
             <MenuItem key={option.value} value={option.value}>

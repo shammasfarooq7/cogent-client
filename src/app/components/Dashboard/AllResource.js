@@ -20,7 +20,7 @@ export const AllResource = () => {
       <Grid container spacing={2}>
         {/* Chart */}
         <Grid item xs={4} md={4} lg={3}>
-          <ResourceCard total={dashboardResourceStat?.resourceStats?.total || 0} difference={dashboardResourceStat?.resourceStats?.difference || 0} text={"All Resource"} />
+          <ResourceCard total={dashboardResourceStat?.resourceStats?.total || 0} difference={dashboardResourceStat?.resourceStats?.difference || 0} text={"All Resource"} downward="down" />
         </Grid>
         <Grid item xs={4} md={4} lg={3}>
           <ResourceCard total={dashboardResourceStat?.onboardedStats?.total || 0} difference={dashboardResourceStat?.onboardedStats?.difference || 0} text={"Onboarding Completed"} />
@@ -29,7 +29,7 @@ export const AllResource = () => {
           <ResourceCard total={0} difference={0} text={"Interview Scheduled"} />
         </Grid>
         <Grid item xs={4} md={4} lg={3}>
-          <ResourceCard total={0} difference={0} text={"Documents Pending"} />
+          <ResourceCard total={0} difference={0} text={"Documents Pending"} downward="down" />
         </Grid>
 
         {/* Recent Deposits */}

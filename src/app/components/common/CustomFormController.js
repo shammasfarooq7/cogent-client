@@ -3,8 +3,10 @@ import React from 'react';
 import { Box, InputAdornment, TextField, Input, MenuItem } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
+// import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
 import './style.css'
+import { Style } from '@mui/icons-material';
 // styles, constants, utils and interfaces block
 
 
@@ -18,41 +20,12 @@ import './style.css'
  * @param {isMultiLine} isMultiLine - used for showing text area
  * @returns JSX Element
  */
-const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
-  },
-  dense: {
-    marginTop: 16
-  },
-  menu: {
-    width: 200
-  },
-  /* STYLES FOR THE OUTLINE BORDER */
-  specialOutline: {
-    borderColor: "pink",
-    borderWidth: 4
-  }
-});
-
-// TextField.PropTypes = {
-//   classes: PropTypes.object.isRequired
-// };
 
 
 
 export const CustomFormController = ({ controllerName, controllerLabel, fieldType, isMultiLine, rowsLength, fieldIcon, maxLength = 40, disabled = false }) => {
   const { control } = useFormContext();
-  // const {classes} = this.props
-  //  console.log("ssssssssss",classes)
-
-
-
+ 
   return (
     <Controller
       name={controllerName}
@@ -60,6 +33,7 @@ export const CustomFormController = ({ controllerName, controllerLabel, fieldTyp
       render={({ field, fieldState: { invalid, error: { message } = {} } }) => (
         <TextField
           type={fieldType}
+          // className={classes.root}
           margin='dense'
           size='small'
           error={invalid}
@@ -73,6 +47,9 @@ export const CustomFormController = ({ controllerName, controllerLabel, fieldTyp
           variant="outlined"
           inputProps={{
             maxLength
+          }}
+          InputLabelProps={{
+            style: { color: "#222B45", fontFamily:"popins" },
           }}
           InputProps={{
             endAdornment: (
