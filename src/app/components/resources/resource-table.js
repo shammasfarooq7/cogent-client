@@ -5,7 +5,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button } from '@mui/material';
+import { Box, Button, TablePagination } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { images } from './../../assets/images';
@@ -31,6 +31,8 @@ export const ResourceTable = ({ tableName, search }) => {
     const [openResourceForm, setOpenResourceForm] = useState(false);
     const [toBeDeleted, setToBeDeleted] = useState(null);
     const [searchValue, setSearchValue] = useState(null);
+    const [page, setPage] = useState(0);
+    const [limit, setLimit] = useState(10);
 
     const searchQuery = useDebounce(searchValue, 500);
 
@@ -38,6 +40,8 @@ export const ResourceTable = ({ tableName, search }) => {
         variables: {
             getAllUsersInput: {
                 role: "RESOURCE",
+                page,
+                limit,
                 ...(searchQuery && { searchQuery })
             }
         },
@@ -49,6 +53,16 @@ export const ResourceTable = ({ tableName, search }) => {
     const onDeleteClick = (id) => {
         setToBeDeleted(id);
         setOpenDeleteAlert(true)
+    };
+
+    const handleChangePage = (event, newPage) => {
+        console.log({ newPage });
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setLimit(parseInt(event.target.value, 10));
+        setPage(0);
     };
 
     const handleDeleteConfirm = async () => {
@@ -120,14 +134,14 @@ export const ResourceTable = ({ tableName, search }) => {
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !data?.getAllUsers?.length
+                        : !data?.getAllUsers?.users?.length
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : data?.getAllUsers?.map((resource) => (
+                            : data?.getAllUsers?.users?.map((resource) => (
                                 <TableRow key={resource.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
@@ -141,7 +155,7 @@ export const ResourceTable = ({ tableName, search }) => {
                                     <TableCell>{resource.city || "_ _"}</TableCell>
                                     <TableCell>{resource.isOnboarded ? renderStatus("Onboarding Completed") : renderStatus("Documents Pending")}</TableCell>
                                     <Box sx={{ display: "flex" }}>
-                                        <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Menu} alt='Menu' /></TableCell>
+                                        {/* <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Menu} alt='Menu' /></TableCell> */}
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer" }} src={images.Edit} alt='Menu'
                                             onClick={() => { navigate(`/resource-details?id=${resource?.id}`) }} /></TableCell>
                                         <TableCell ><Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer" }}
@@ -153,9 +167,16 @@ export const ResourceTable = ({ tableName, search }) => {
                             ))}
                 </TableBody>
             </Table >
-            {/* <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
-        See more orders
-      </Link> */}
+            <Box display={"flex"} justifyContent={"end"} marginTop={2}>
+                <TablePagination
+                    component="div"
+                    count={data?.getAllUsers?.count || 0}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={limit}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Box>
         </>
     );
 }

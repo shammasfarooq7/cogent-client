@@ -22,14 +22,17 @@ mutation UpdateResourceMutation($updateResourceInput: UpdateResourceInput!, $id:
 export const GET_ALL_USERS_QUERY = gql`
 query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
   getAllUsers(getAllUsersInput: $getAllUsersInput) {
-    id
-    email
-    firstName
-    lastName
-    middleName
-    country
-    city
-    isOnboarded
+    count
+    users{
+      id
+      email
+      firstName
+      lastName
+      middleName
+      country
+      city
+      isOnboarded
+    }
     }
   }
 `;
