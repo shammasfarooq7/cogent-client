@@ -20,7 +20,7 @@ export const ResourceCard = ({color  , total , difference , text})=> {
   return (
     <Card sx={{ minWidth: 220 , borderRadius: "12px"  }}>
       <CardContent>
-        <Typography sx={{ mb: 1.5 , fontWeight:"600" , fontSize:"12px"}} >
+        <Typography sx={{ mb: 1.5 , fontWeight:"400" , fontSize:"12px"}} >
        {text}
         </Typography>
         <Typography variant="body2" sx={{fontFamily: "Poppins",fontWeight:"600"}}>

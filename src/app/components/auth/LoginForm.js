@@ -3,13 +3,14 @@ import React from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
+import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FormProvider, useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // component block
 import { CustomController } from "../common/CustomController"
 import { Alert } from "../common/Alert";
+import '../common/style.css';
 // others
 import { AUTH_TOKEN, DASHBOARD_ROUTE, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FORBIDDEN_EXCEPTION, LOGIN, LOGIN_FIELDS, WRONG_EMAIL_OR_PASSWORD } from "../../constants";
 // import { AuthContext } from "../../context/AuthContext";
@@ -86,47 +88,39 @@ export const LoginForm = () => {
             }}
           />
           <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{background: "#1E1E1E"}}>
-            <Box sx={{marginTop:"120px", marginLeft:"60px"}}>
-          <Typography sx={{ontWeight :"700", fontSize:"20px", marginBottom:"10px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
-                Login in
-              </Typography>
-              <Typography sx={{fontSize : "14px", marginTop:"20px" ,color: "#FFFFFF" , fontFamily:"Poppins" }}>
-               if you don't have an account register  <span style={{displa:"block"}}>you can</span> 
-              </Typography>
-               <Typography component={Link} to="/signup" variant="body2" sx={{cursor:"pointer"}}>
-                      {" Register here!"}
-                      </Typography>
-            </Box>
             <Box
               sx={{
                 my: 8,
-                mx: 4,
+                padding:"55px",
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
+               
               }}
             >
               {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar> */}
-              <Typography sx={{fontWeight :"500", fontSize:"16px", marginRight:"414px", marginBottom:"10px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
-                Login in
+              <Typography sx={{fontWeight :"500", fontSize:"26px", marginBottom:"15px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
+                Sign in
               </Typography>
-              <Typography sx={{fontSize : "14px", marginRight:"251px"  ,color: "#FFFFFF" , fontFamily:"Poppins" }}>
-               if you don't have an account register you can
-               <Typography component={Link} to="/signup" variant="body2" sx={{cursor:"pointer"}}>
+              <Typography sx={{fontSize : "14px", marginRight:"140px" ,marginBottom:"45px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
+               If you don't have an account register you can
+               <Typography component={Link} to="/signup" variant="body2" sx={{cursor:"pointer" , marginLeft:"10px", fontSize:"16px" , color:"#1e81b0"}}>
                         {" Register here!"}
                       </Typography>
               </Typography>
               <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                <Box sx={{ mt: 1 }}>
+                <Box sx={{ mt: 2 }}>
+                  <Box  sx={{marginBottom:"25px"}}>
                   <CustomController
                     controllerName='email'
                     controllerLabel='Email'
                     fieldType='text'
+                    fieldIcon={<MailOutlineIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
                     variantField="standard"
                   />
-
+                  </Box>
+                  <Box sx={{marginBottom:"15px"}}>
                   <CustomController
                     controllerName='password'
                     controllerLabel='Password'
@@ -135,21 +129,29 @@ export const LoginForm = () => {
                     fieldIcon={<LockOutlinedIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
                     isPassword
                   />
+                  </Box>
+                  {/* <Box sx={{display:"flex", }}>
+                  <FormGroup>
+                   <FormControlLabel control={<Checkbox sx={{color :"white"}}  />} label="Remember me" />
+                     </FormGroup> 
 
+                   <Grid item xs>
+                      <Typography href="#" variant="body2" sx={{color: "#FFFFFF",cursor:"pointer", lineHeight:2.7, paddingLeft:"153px"}}>
+                        Forgot password?
+                      </Typography>
+                    </Grid>
+                  </Box> */}
+                    
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
+                    sx={{ mt: 3, mb: 2 , borderRadius:"16px" , backgroundColor:"#2a294f"}}
                   >
-                    Login In
+                    Login
                   </Button>
                   <Grid container>
-                    <Grid item xs>
-                      <Typography href="#" variant="body2" sx={{color: "#FFFFFF",cursor:"pointer"}}>
-                        Forgot password?
-                      </Typography>
-                    </Grid>
+                  
                     {/* <Grid item>
                       <Link href="#" variant="body2">
                         {"Don't have an account? Sign Up"}

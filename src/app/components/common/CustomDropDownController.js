@@ -18,43 +18,11 @@ import './style.css'
  * @param {isMultiLine} isMultiLine - used for showing text area
  * @returns JSX Element
  */
-const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit
-  },
-  dense: {
-    marginTop: 16
-  },
-  menu: {
-    width: 200
-  },
-  /* STYLES FOR THE OUTLINE BORDER */
-  specialOutline: {
-    borderColor: "pink",
-    borderWidth: 4
-  }
-});
-
-// TextField.PropTypes = {
-//   classes: PropTypes.object.isRequired
-// };
 
 
 
 export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType , currencies}) => {
   const { control } = useFormContext();
-
-  
-  // const {classes} = this.props
-  //  console.log("ssssssssss",classes)
-
-
-
   return (
     <Controller
       name={controllerName}
@@ -63,6 +31,7 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
         <TextField
           type={fieldType}
           select
+          sx={{borderRadius:"18px"}}
           margin='dense'
           size='small'
           error={invalid}

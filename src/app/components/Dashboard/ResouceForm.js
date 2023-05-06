@@ -29,7 +29,7 @@ const style = {
     position: 'absolute',
     overflow: 'auto',
     top: '52%',
-    left: '58%',
+    left: '60%',
     transform: 'translate(-50%, -50%)',
     bgcolor: 'background.paper',
     borderRadius: "10px",
