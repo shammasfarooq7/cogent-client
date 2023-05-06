@@ -37,6 +37,24 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
   }
 `;
 
+export const GET_REQUEST_USERS_QUERY = gql`
+query GetRequestUsersQuery($getNewRequestUsersInput: GetAllUsersInput!) {
+  getNewRequestUsers(getNewRequestUsersInput: $getNewRequestUsersInput) {
+    count
+    users{
+      id
+      email
+      firstName
+      lastName
+      middleName
+      country
+      city
+      isOnboarded
+    }
+    }
+  }
+`;
+
 export const Get_Dashboard_Stats = gql`
   query GetDashboardStats{
     getDashboardStats {
@@ -70,6 +88,13 @@ mutation DeleteResourceMutation($id: String!) {
   }
 `;
 
+export const ACCEPT_REQUEST_MUTATION = gql`
+mutation ApproveUserRequestMutation($id: String!) {
+  approveUserRequest(id: $id) {
+      message
+    }
+  }
+`;
 
 export const GET_A_RESOURCE_QUERY = gql`
 query GetResourceQuery($id: String!) {
