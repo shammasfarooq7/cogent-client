@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -17,7 +17,7 @@ import { CREATE_RESOURCE_MUTATION, UPDATE_RESOURCE_MUTATION } from '../../../gra
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
 import { SimpleDropDownController } from '../common/SimpleDropDownController';
-import { accountTypeBusiness, availabilityOptions, availableToolsList, languages_list, skillSetList, transportOptions, workPermitStatusOptions } from '../../constants';
+import { accountTypeBusiness, availabilityOptions, availableToolsList, idCardTypeOptions, interviewStatusOptions, languages_list, skillSetList, transportOptions, workPermitStatusOptions } from '../../constants';
 import { CustomDocumentUploadController } from '../common/CustomDocumentUploadController';
 import { uploadDocument } from '../../services/rest-apis';
 import { CustomPhoneController } from '../common/CustomPhoneController';
@@ -74,6 +74,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     const handleClose = () => setOpenModal(false);
 
     const { user } = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(false);
 
     const urlSearchParams = new URLSearchParams(window.location.search)
     const id = urlSearchParams?.get("id");
@@ -123,108 +124,139 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     if (data || UpdateData) {
         Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
     }
-    const { handleSubmit, formState: { errors } } = methods;
+    const { handleSubmit, watch, setValue, formState: { errors } } = methods;
 
     const onSubmit = async (data) => {
-        const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, rpocEmail, languages, skillSet, availableTools,
-            beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
-            postalCode, addressLine1, addressLine2, mobileNumber, contactNumber, whatsappNumber, whatsappGroup,
-            whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
-            beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
-            swiftCode, sortCode, iban, bankAddress, bankName, branchName, transport, availability, mobility, isOnboarded, onboardedBy, myResume, contractDocuments } = data
-        // return
-        let resumeDocUrl = "";
-        if (myResume) {
-            const response = await uploadDocument(myResume);
-            resumeDocUrl = response?.url || "";
-        };
+        try {
+            setIsLoading(true);
 
-        const payload = {
-            accountType,
-            accountTitle,
-            email,
-            cogentEmail,
-            status,
-            engagementType,
-            vendorName,
-            firstName,
-            lastName,
-            middleName,
-            idCardNumber,
-            taxNumber,
-            nationality,
-            region,
-            country,
-            city,
-            state,
-            postalCode,
-            addressLine1,
-            addressLine2,
-            rpocName,
-            rpocContactNumber,
-            rpocEmail,
-            whatsappGroup,
-            whatsappGroupLink,
-            workPermitStatus,
-            hourlyRate,
-            halfDayRate,
-            fullDayRate,
-            monthlyRate,
-            anyExtraRate,
-            languages: languages?.map(item => item?.value) || [],
-            skillSet: skillSet?.map(item => item?.value) || [],
-            availableTools: availableTools?.map(item => item?.value) || [],
-            beneficiaryFirstName,
-            beneficiaryMiddleName,
-            beneficiaryLastName,
-            beneficiaryAddress,
-            accountNumber,
-            swiftCode,
-            sortCode,
-            accountNumber,
-            iban,
-            bankName,
-            branchName,
-            bankAddress,
-            transport,
-            availability,
-            mobility,
-            isOnboarded,
-            onboardedBy,
-            resumeDocUrl,
-            mobileNumber,
-            contactNumber,
-            contractDocuments: contractDocuments === "true" ? true : false,
-            whatsappNumber
+            const { email, cogentEmail, status, vendorName, engagementType, rpocName, rpocContactNumber, rpocEmail, idCardType, identityDocument, languages, skillSet, availableTools,
+                beneficiaryFirstName, firstName, middleName, lastName, idCardNumber, taxNumber, nationality, region, country, city, state,
+                postalCode, addressLine1, addressLine2, mobileNumber, contactNumber, whatsappNumber, whatsappGroup,
+                whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
+                beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
+                swiftCode, sortCode, iban, bankAddress, bankName, branchName, transport, availability, mobility, isOnboarded, onboardedBy, myResume, contractDocuments, interviewStatus } = data
+            // return
+            let resumeDocUrl = "";
+            if (myResume) {
+                const response = await uploadDocument(myResume);
+                resumeDocUrl = response?.url || "";
+            };
+
+            let identityDocUrl = "";
+            if (myResume) {
+                const response = await uploadDocument(identityDocument);
+                identityDocUrl = response?.url || "";
+            };
+
+            const payload = {
+                accountType,
+                accountTitle,
+                email,
+                cogentEmail,
+                status,
+                engagementType,
+                vendorName,
+                firstName,
+                lastName,
+                idCardType,
+                identityDocUrl,
+                middleName,
+                idCardNumber,
+                taxNumber,
+                nationality,
+                region,
+                country,
+                city,
+                state,
+                postalCode,
+                addressLine1,
+                addressLine2,
+                rpocName,
+                rpocContactNumber,
+                rpocEmail,
+                whatsappGroup,
+                whatsappGroupLink,
+                workPermitStatus,
+                hourlyRate,
+                halfDayRate,
+                fullDayRate,
+                monthlyRate,
+                anyExtraRate,
+                languages: languages?.map(item => item?.value) || [],
+                skillSet: skillSet?.map(item => item?.value) || [],
+                availableTools: availableTools?.map(item => item?.value) || [],
+                beneficiaryFirstName,
+                beneficiaryMiddleName,
+                beneficiaryLastName,
+                beneficiaryAddress,
+                accountNumber,
+                swiftCode,
+                sortCode,
+                accountNumber,
+                iban,
+                bankName,
+                branchName,
+                bankAddress,
+                transport,
+                availability,
+                mobility,
+                isOnboarded,
+                onboardedBy,
+                resumeDocUrl,
+                mobileNumber,
+                contactNumber,
+                contractDocuments,
+                whatsappNumber,
+                interviewStatus
+            }
+
+
+            if (editInfo) {
+                await updateResource({
+                    variables: {
+                        updateResourceInput: {
+                            ...payload
+                        },
+                        id
+                    }
+                })
+            }
+            else {
+                await createResource({
+                    variables: {
+                        createResourceInput: {
+                            ...payload
+                        }
+                    }
+                })
+            }
+
+
+            if (refetchResources) {
+                await refetchResources()
+            }
+            handleClose();
+
+        } catch (error) {
+
         }
+        finally {
+            setIsLoading(false);
 
+        }
+    };
 
-        if (editInfo) {
-            await updateResource({
-                variables: {
-                    updateResourceInput: {
-                        ...payload
-                    },
-                    id
-                }
-            })
+    useEffect(() => {
+        if (watch("contractDocuments") &&
+            watch("interviewStatus") === "Complete" &&
+            watch("myResume") && watch("identityDocument")) {
+            setValue("isOnboarded", true)
         }
         else {
-            await createResource({
-                variables: {
-                    createResourceInput: {
-                        ...payload
-                    }
-                }
-            })
+            setValue("isOnboarded", false)
         }
-
-
-        if (refetchResources) {
-            await refetchResources()
-        }
-        handleClose()
-    }
+    }, [watch()]);
 
     return (
         <Box sx={{ overflowY: "auto" }}>
@@ -313,14 +345,24 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             fieldType='text'
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='idCardNumber'
-                                            controllerLabel='ID Card Number'
-                                            fieldType='text'
+                                    <Grid item xs={2}>
+                                        <CustomDropDrownController
+                                            controllerName='idCardType'
+                                            controllerLabel='ID Card Type'
+                                            selectDropdown={true}
+                                            currencies={idCardTypeOptions}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
+                                    <Grid item xs={3}>
+                                        <CustomDocumentUploadController
+                                            controllerName='identityDocument'
+                                            controllerLabel='Identity (Attachment)'
+                                            fieldIcon={<AttachFileIcon>
+                                                <input type="file" />
+                                            </AttachFileIcon>}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={3}>
                                         <CustomFormController
                                             controllerName='taxNumber'
                                             controllerLabel='Tax Number'
@@ -666,7 +708,34 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                 </Grid>
                                 <HeaderResource heading="CONTRACT STATUS" />
                                 <Grid container spacing={2}>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
+                                        <CustomDropDrownController
+                                            controllerName='interviewStatus'
+                                            controllerLabel='Interview Status'
+                                            fieldType='text'
+                                            currencies={interviewStatusOptions}
+                                        />
+
+                                        {/* <CutomFormRadioController
+                                            controllerName='interviewStatus'
+                                            controllerLabel='Interview Status'
+                                            options={[{
+                                                label: "Complete",
+                                                value: "Complete",
+                                                disabled: false
+                                            }, {
+                                                label: "Scheduled",
+                                                value: "Scheduled",
+                                                disabled: false
+                                            }, {
+                                                label: "Not Scheduled",
+                                                value: "NotScheduled",
+                                                disabled: false
+                                            }]}
+                                        /> */}
+                                    </Grid>
+                                    <Grid item xs={1}></Grid>
+                                    <Grid item xs={3} >
                                         <CutomFormRadioController
                                             controllerName='contractDocuments'
                                             controllerLabel='Contract Dociments'
@@ -681,35 +750,8 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             }]}
                                         />
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        <CutomFormRadioController
-                                            controllerName='interviewStatus'
-                                            controllerLabel='Interview Status'
-                                            options={[{
-                                                label: "Complete",
-                                                value: "Complete",
-                                                disabled: false
-                                            }, {
-                                                label: "Scheduled",
-                                                value: "Scheduled",
-                                                disabled: false
-                                            }, {
-                                                label: "Not Scheduled",
-                                                value: "Not Scheduled",
-                                                disabled: false
-                                            }]}
-                                        />
-                                    </Grid>
 
-                                    <Grid item xs={6}>
-                                        <CustomFormController
-                                            controllerName='onboardedBy'
-                                            controllerLabel='Onboarded By'
-                                            fieldType='text'
-                                            disabled={true}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={4}>
                                         <CutomFormRadioController
                                             controllerName='isOnboarded'
                                             controllerLabel='Onboarded Completed?'
@@ -724,6 +766,17 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             }]}
                                         />
                                     </Grid>
+
+
+                                    <Grid item xs={4}>
+                                        <CustomFormController
+                                            controllerName='onboardedBy'
+                                            controllerLabel='Onboarded By'
+                                            fieldType='text'
+                                            disabled={true}
+                                        />
+                                    </Grid>
+
                                 </Grid>
                                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button
@@ -732,7 +785,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
                                         disabled={loading || updateLoading}
                                     >
-                                        {(loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
+                                        {(isLoading || loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
                                     </Button>
                                     <Button
                                         onClick={handleClose}

@@ -378,3 +378,30 @@ export const accountTypeBusiness = [
     label: 'Personal',
   },
 ];
+
+export const idCardTypeOptions = [
+  {
+    label: "Driver License",
+    value: "dl",
+  }, {
+    label: "Passport",
+    value: "pp",
+  }, {
+    label: "Id Card",
+    value: "id",
+  }, {
+    label: "Residence Permit",
+    value: "rp",
+  }
+];
+
+export const interviewStatusOptions = [{
+  label: "Complete",
+  value: "Complete",
+}, {
+  label: "Scheduled",
+  value: "Scheduled",
+}, {
+  label: "Not Scheduled",
+  value: "NotScheduled",
+}];

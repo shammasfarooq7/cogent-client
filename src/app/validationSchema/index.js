@@ -269,19 +269,28 @@ export const resourceFormValidationSchema = yup.object({
     return true
   }),
   addressLine1: yup.string().required("Address is required."),
-  workPermitStatus: yup.string().required("Address is required."),
+  workPermitStatus: yup.string().required("Work Permit Status is required."),
   myResume: yup.mixed().required('Resume file is required').test(
     'is-file',
     'File upload required',
     (value) => {
-      console.log({ value });
       return value && ['application/pdf', 'image/jpg'].includes(value?.type);
     }
   ),
   transport: yup.string().required("Mode of transport is required."),
   availability: yup.string().required("Availability of transport is required."),
   // mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
-  mobility: yup.string().required("Mobility is required.")
+  mobility: yup.string().required("Mobility is required."),
+  idCardType: yup.string().required("Id Card Type is required."),
+  identityDocument: yup.mixed().required('Identity file is required').test(
+    'is-file',
+    'File upload required',
+    (value) => {
+      return value && ['application/pdf', 'image/jpg'].includes(value?.type);
+    }
+  ),
+  contractDocuments: yup.boolean().required(requiredMessage("Contract Document is required.")),
+  interviewStatus:yup.string().required("Interview Status is required."),
 })
 
 export const loginValidationSchema = yup.object({
