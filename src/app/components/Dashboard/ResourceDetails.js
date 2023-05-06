@@ -9,10 +9,11 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../common/HeaderResource';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_RESOURCE_MUTATION, GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
-import { getName } from '../../helper';
+import { getName, getNameFromUrl } from '../../helper';
 import DeleteAlert from '../common/DeleteAlert';
 import { Alert } from '../common/Alert';
 import { ResourceForm } from './ResouceForm';
+import { downloadFile } from '../../services/rest-apis';
 
 
 const mdTheme = createTheme();
@@ -31,7 +32,7 @@ export const ResourceDetails = () => {
     },
     fetchPolicy: "network-only"
   });
-  
+
   const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
 
 
@@ -54,6 +55,10 @@ export const ResourceDetails = () => {
   const handleUpdateClick = () => {
     setOpenResourceForm(true);
   };
+
+  const handleDownloadClick = (url) => {
+    downloadFile(getNameFromUrl(url))
+  }
 
   if (!id) return <Navigate replace to={"/dashboard"} />
 
@@ -139,19 +144,35 @@ export const ResourceDetails = () => {
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{getName(info?.firstName, info?.middleName, info?.lastName) || "_ _"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>ID Card Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.idCardNumber || "_ _"}</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>ID Card Type</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.idCardType || "_ _"}</Typography>
+          </Grid>
+          <Grid item xs={4} md={4} lg={3}>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>ID Card Attachment</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
+              {getNameFromUrl(info?.identityDocUrl) || "_ _"}
+              {info?.identityDocUrl &&
+                <>
+                  <a href={info?.identityDocUrl} style={{ color: '#543F3F', marginLeft: "20px", fontWeight: 400, fontSize: "10px", textDecorationLine: "none" }}>Open</a>
+                  <Button sx={{
+                    fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
+                    color: "#EA3434", marginLeft: "2px",
+                  }}
+                    onClick={() => handleDownloadClick(info?.identityDocUrl)}>
+                    Download
+                  </Button>
+                </>}
+            </Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>TaxNumber</Typography>
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.taxNumber || "_ _"}</Typography>
           </Grid>
-          <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Nationality</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.nationality || "_ _"}</Typography>
-          </Grid>
-
           <Grid container sx={{ mt: 2 }}>
+            <Grid item xs={4} md={4} lg={3}>
+              <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Nationality</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.nationality || "_ _"}</Typography>
+            </Grid>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Region</Typography>
               <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.region || "_ _"}</Typography>
@@ -164,13 +185,12 @@ export const ResourceDetails = () => {
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>State</Typography>
               <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.state || "_ _"}</Typography>
             </Grid >
+          </Grid>
+          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>City</Typography>
               <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.city || "_ _"}</Typography>
             </Grid >
-          </Grid>
-
-          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3} >
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Postal Code</Typography>
               <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.postalCode || "_ _"}</Typography>
@@ -183,21 +203,19 @@ export const ResourceDetails = () => {
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Address Line 2</Typography>
               <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.addressLine2 || "_ _"}</Typography>
             </Grid >
+          </Grid>
+          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Email Address</Typography>
               <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.email || "_ _"}</Typography>
             </Grid >
-          </Grid>
-
-
-          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Mobile Number</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.phoneNumber || "_ _"}</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.mobileNumber || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Contact Number</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.phoneNumber || "_ _"}</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.contactNumber || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>WhatsApp Number</Typography>
@@ -205,14 +223,14 @@ export const ResourceDetails = () => {
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>WhatsApp Group</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.whatsappGroup || "_ _"}</Typography>
             </Grid >
           </Grid>
 
           <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>whatsapp Group Link</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.whatsappGroupLink || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Cogent Email Id</Typography>
@@ -220,7 +238,7 @@ export const ResourceDetails = () => {
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Work Permit Status</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info.workPermitStatus || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
 
@@ -245,8 +263,21 @@ export const ResourceDetails = () => {
             </Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Attachment</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Resume/CV Attachment</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
+              {getNameFromUrl(info?.resumeDocUrl) || "_ _"}
+              {info?.resumeDocUrl &&
+                <>
+                  <a href={info?.resumeDocUrl} style={{ color: '#543F3F', fontWeight: 400, fontSize: "10px", marginLeft: "20px", textDecorationLine: "none" }}>Open</a>
+                  <Button sx={{
+                    fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
+                    color: "#EA3434", marginLeft: "2px",
+                  }}
+                    onClick={() => handleDownloadClick(info?.resumeDocUrl)}>
+                    Download
+                  </Button>
+                </>}
+            </Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={1}>
@@ -358,7 +389,7 @@ export const ResourceDetails = () => {
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Availability</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.availability || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Mobility (km)</Typography>
@@ -376,12 +407,8 @@ export const ResourceDetails = () => {
 
         <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>NDA Status</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
-          </Grid >
-          <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>B2b Status</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>_ _</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Contract Documents</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.contractDocuments ? "TRUE" : "FALSE" || "_ _"}</Typography>
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Onboarderd By</Typography>

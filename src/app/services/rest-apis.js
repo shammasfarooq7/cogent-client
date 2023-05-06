@@ -25,3 +25,27 @@ export const uploadDocument = async (document) => {
         return { error }
     }
 };
+
+export const downloadFile = (fileName) => {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/azure-blob/download?filename=${fileName}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/octet-stream',
+            "Authorization": `Bearer ${localStorage.getItem("cogent_token")}`,
+
+        },
+    })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', fileName);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        })
+        .catch(error => {
+            console.error('Error downloading file:', error);
+        });
+}
