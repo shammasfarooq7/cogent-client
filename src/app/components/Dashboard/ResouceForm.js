@@ -114,6 +114,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             bankAddress: "",
             rpocContactNumber: "",
             isOnboarded: false,
+            contractDocuments: false,
             onboardedBy: getName(user?.firstName, user?.middleName, user?.lastName),
             ...editDefaultState
         }
@@ -257,7 +258,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 setValue("isOnboarded", false)
             }
         }
-    }, [watch()]);
+    }, [watch("contractDocuments"), watch("interviewStatus"), watch("myResume"), watch("identityDocument")]);
 
     return (
         <Box sx={{ overflowY: "auto" }}>
@@ -727,7 +728,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                     <Grid item xs={3} >
                                         <CutomFormRadioController
                                             controllerName='contractDocuments'
-                                            controllerLabel='Contract Dociments'
+                                            controllerLabel='Contract Documents'
                                             options={[{
                                                 label: "True",
                                                 value: true,

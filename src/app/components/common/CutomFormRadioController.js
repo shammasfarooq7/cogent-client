@@ -5,7 +5,6 @@ import './style.css'
 
 export const CutomFormRadioController = ({ controllerName, controllerLabel, options = [], isMultiLine, rowsLength, fieldIcon, maxLength = 40, disabled = false }) => {
     const { control } = useFormContext();
-
     return (
         <Controller
             name={controllerName}
@@ -20,7 +19,7 @@ export const CutomFormRadioController = ({ controllerName, controllerLabel, opti
                         {...field}
                     >
                         {options?.map((item, index) => (
-                            <FormControlLabel key={index} value={item?.value}
+                            <FormControlLabel sx={{ color: "black" }} key={index} value={item?.value}
                                 control={<Radio size='small' style={{ paddingTop: 0, paddingBottom: 0 }} />}
                                 disabled={item?.disabled} label={item?.label} />
                         ))}
