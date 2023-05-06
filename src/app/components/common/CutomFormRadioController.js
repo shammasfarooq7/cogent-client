@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormLabel, RadioGroup, FormControlLabel, Radio, FormControl } from '@mui/material';
+import { FormLabel, RadioGroup, FormControlLabel, Radio, FormControl, FormHelperText } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import './style.css'
 
@@ -25,6 +25,9 @@ export const CutomFormRadioController = ({ controllerName, controllerLabel, opti
                                 disabled={item?.disabled} label={item?.label} />
                         ))}
                     </RadioGroup>
+                    {invalid && message &&
+                        <FormHelperText style={{ color: "#d32f2f" }}>{message}</FormHelperText>
+                    }
                 </FormControl>
             )}
         />

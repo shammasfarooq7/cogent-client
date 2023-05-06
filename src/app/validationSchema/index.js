@@ -289,7 +289,7 @@ export const resourceFormValidationSchema = yup.object({
       return value && ['application/pdf', 'image/jpg'].includes(value?.type);
     }
   ),
-  contractDocuments: yup.boolean().required(requiredMessage("Contract Document is required.")),
+  contractDocuments: yup.boolean().required(requiredMessage("Contract Document")),
   interviewStatus:yup.string().required("Interview Status is required."),
 })
 

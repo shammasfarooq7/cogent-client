@@ -248,13 +248,15 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     };
 
     useEffect(() => {
-        if (watch("contractDocuments") &&
-            watch("interviewStatus") === "Complete" &&
-            watch("myResume") && watch("identityDocument")) {
-            setValue("isOnboarded", true)
-        }
-        else {
-            setValue("isOnboarded", false)
+        if (!editDefaultState?.isOnboarded) {
+            if (watch("contractDocuments") &&
+                watch("interviewStatus") === "Complete" &&
+                watch("myResume") && watch("identityDocument")) {
+                setValue("isOnboarded", true)
+            }
+            else {
+                setValue("isOnboarded", false)
+            }
         }
     }, [watch()]);
 
@@ -715,24 +717,6 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             fieldType='text'
                                             currencies={interviewStatusOptions}
                                         />
-
-                                        {/* <CutomFormRadioController
-                                            controllerName='interviewStatus'
-                                            controllerLabel='Interview Status'
-                                            options={[{
-                                                label: "Complete",
-                                                value: "Complete",
-                                                disabled: false
-                                            }, {
-                                                label: "Scheduled",
-                                                value: "Scheduled",
-                                                disabled: false
-                                            }, {
-                                                label: "Not Scheduled",
-                                                value: "NotScheduled",
-                                                disabled: false
-                                            }]}
-                                        /> */}
                                     </Grid>
                                     <Grid item xs={1}></Grid>
                                     <Grid item xs={3} >
