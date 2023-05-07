@@ -257,12 +257,12 @@ export const resourceFormValidationSchema = yup.object({
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false  // this whole validation for required phone number
     return true
   }),
-  contactNo: yup.string().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
+  contactNumber: yup.string().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
     if (!value) return true
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
     return true
   }),
-  whatsappNo: yup.string().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
+  whatsappNumber: yup.string().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
     if (!value) return true
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
     return true
