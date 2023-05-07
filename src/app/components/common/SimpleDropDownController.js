@@ -1,7 +1,6 @@
 // packages block
 import React, { useState } from 'react';
-import { Box, InputAdornment, TextField, Input, MenuItem } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
 import Select from 'react-select';
@@ -19,27 +18,6 @@ import './style.css'
  * @param {isMultiLine} isMultiLine - used for showing text area
  * @returns JSX Element
  */
-const styles = theme => ({
-    container: {
-        display: "flex",
-        flexWrap: "wrap"
-    },
-    textField: {
-        marginLeft: theme.spacing.unit,
-        marginRight: theme.spacing.unit
-    },
-    dense: {
-        marginTop: 16
-    },
-    menu: {
-        width: 200
-    },
-    /* STYLES FOR THE OUTLINE BORDER */
-    specialOutline: {
-        borderColor: "pink",
-        borderWidth: 4
-    }
-});
 
 // TextField.PropTypes = {
 //   classes: PropTypes.object.isRequired
@@ -47,7 +25,7 @@ const styles = theme => ({
 
 
 
-export const SimpleDropDownController = ({ controllerName, options, placeholder, isMulti = false, isClearable = true, controllerLabel, fieldType, currencies }) => {
+export const SimpleDropDownController = ({ controllerName, options, placeholder, isMulti = false, isClearable = true, }) => {
     const { control } = useFormContext();
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
