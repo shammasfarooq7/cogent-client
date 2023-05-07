@@ -122,7 +122,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                         onChange={(e) => { setSearchValue(e.target.value) }}
                     />}
                     <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
-                        onClick={() => setOpenResourceForm(true)}
+                        onClick={() => { setEditInfo(null); setOpenResourceForm(true) }}
                     >Add</Button>
                 </Box>
 
