@@ -18,6 +18,7 @@ import { ResourceForm } from '../Dashboard/ResouceForm';
 import { Alert } from '../common/Alert';
 import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function preventDefault(event) {
     event.preventDefault();
@@ -33,6 +34,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
     const [searchValue, setSearchValue] = useState(null);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
+    const [editInfo, setEditInfo] = useState(null);
 
     const searchQuery = useDebounce(searchValue, 500);
 
@@ -81,6 +83,11 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
         setOpenDeleteAlert(false);
     }
 
+    const handleEditClick = (info) => {
+        setEditInfo(info);
+        setOpenResourceForm(true)
+    }
+
     const renderStatus = (status) => {
         let background = "#E8FFF3";
         let color = "#50CD89";
@@ -106,7 +113,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                 text={"Are you sure you want to delete this resource? This action cannot be revert back."}
             />
 
-            {openResourceForm && <ResourceForm openModal={openResourceForm} setOpenModal={setOpenResourceForm} refetchResources={refetch} />}
+            {openResourceForm && <ResourceForm openModal={openResourceForm} setOpenModal={setOpenResourceForm} editInfo={editInfo} refetchResources={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>All Resources</Typography>
@@ -159,13 +166,19 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                                     <TableCell>{resource.city || "_ _"}</TableCell>
                                     <TableCell>{resource.isOnboarded ? renderStatus("Onboarding Completed") : renderStatus("Documents Pending")}</TableCell>
                                     <TableCell >
-                                        {/* <TableCell ><Box component='img' sx={{ height: "40px", width: "40px" }} src={images.Menu} alt='Menu' /></TableCell> */}
-                                        <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "6px", marginX: "16px" }} src={images.Edit} alt='Menu'
-                                            onClick={() => { navigate(`/resource-details?id=${resource?.id}`) }} />
-                                        <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "6px", marginX: "16px" }}
+                                        <Box display={"flex"} alignItems={"center"}>
+                                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                                onClick={() => { navigate(`/resource-details?id=${resource?.id}`) }} >
+                                                <VisibilityIcon color='action' />
+                                            </Box>
+                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "6px", marginX: "16px" }} src={images.Edit} alt='Menu'
+                                                onClick={() => { handleEditClick(resource) }} />
+                                            {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "6px", marginX: "16px" }}
                                             src={images.Trash} alt='Menu'
                                             onClick={() => { onDeleteClick(resource?.id) }}
-                                        />
+                                        /> */}
+
+                                        </Box>
                                     </TableCell>
                                 </TableRow>
                             ))}

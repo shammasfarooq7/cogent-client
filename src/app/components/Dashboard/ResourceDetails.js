@@ -102,8 +102,8 @@ export const ResourceDetails = () => {
 
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
-            <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}
-              onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button>
+            {/* <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}
+              onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button> */}
             <Button variant="contained" onClick={handleUpdateClick}>Update</Button>
           </Grid>
         </Grid>
@@ -238,7 +238,7 @@ export const ResourceDetails = () => {
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
               <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Work Permit Status</Typography>
-              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info.workPermitStatus || "_ _"}</Typography>
+              <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.workPermitStatus || "_ _"}</Typography>
             </Grid >
             <Grid item xs={4} md={4} lg={3}>
 

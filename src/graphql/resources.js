@@ -25,12 +25,66 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
     count
     users{
       id
-      email
+      status
+      vendorName
+      rpocName
+      rpocEmail
+      rpocContactNumber
       firstName
       lastName
+      idCardType
+      identityDocUrl
       middleName
+      idCardNumber
+      taxNumber
+      nationality
+      region
       country
+      state
       city
+      postalCode
+      addressLine1
+      addressLine2
+      email
+      mobileNumber
+      contactNumber
+      whatsappNumber
+      whatsappGroup
+      whatsappGroupLink
+      cogentEmail
+      workPermitStatus
+      skillSet
+      resumeDocUrl
+      availableTools
+      hourlyRate
+      halfDayRate
+      fullDayRate
+      monthlyRate
+      anyExtraRate
+      languages
+      engagementType
+      userPaymentMethod {
+        id
+        accountType
+        accountTitle
+        beneficiaryFirstName
+        beneficiaryMiddleName
+        beneficiaryAddress
+        beneficiaryLastName
+        sortCode
+        accountNumber
+        iban
+        swiftCode
+        bankName
+        branchName
+        bankAddress
+      }
+      transport
+      availability
+      mobility
+      interviewStatus
+      contractDocuments
+      onboardedBy
       isOnboarded
     }
     }

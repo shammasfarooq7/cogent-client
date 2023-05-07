@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/client";
 import { ResourceCard } from '../common/ResourceCard';
 import { ResourceTable } from '../resources/resource-table';
 import { Get_RESOURCE_Dashboard_Stats } from '../../../graphql/resources';
+import { Box } from '@mui/material';
 
 export const AllResource = () => {
 
@@ -16,7 +17,7 @@ export const AllResource = () => {
   const dashboardResourceStat = data?.getResourceDashboardStats;
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Box sx={{ p: "30px" }}>
       <Grid container spacing={2}>
         {/* Chart */}
         <Grid item xs={4} md={4} lg={3}>
@@ -42,6 +43,6 @@ export const AllResource = () => {
           </Paper>
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 }
