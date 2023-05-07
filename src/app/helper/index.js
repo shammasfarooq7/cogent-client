@@ -14,10 +14,15 @@ export const getName = (firstName, middlename, lastname) => {
 }
 
 export const getNameFromUrl = (url) => {
-    return url?.split("-")?.at(-1)
+    if (!url) return ""
+    if (url?.split("-")?.length === 1) {
+        return decodeURIComponent(url.split('/').pop());
+    }
+    return decodeURIComponent(url.split('-').pop());
 }
 
 export const getUrlNameforDwnload = (url) => {
+    if (!url) return ""
     return url?.split("/")?.at(-1)
 }
 

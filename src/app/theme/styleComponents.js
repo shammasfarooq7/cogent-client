@@ -1,4 +1,4 @@
-import { Box, Stack, styled, Tab, Tabs, Typography } from "@mui/material";
+import { Box, styled, } from "@mui/material";
 import palette from "./palette";
 import { flexCenter } from "./styleConstants";
 

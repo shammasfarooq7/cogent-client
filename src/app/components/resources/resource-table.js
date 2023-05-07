@@ -1,16 +1,12 @@
 import { useState } from 'react';
-import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, TablePagination, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import { images } from './../../assets/images';
 import { Search } from '../common/Search';
-import Title from '../common/Title';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_RESOURCE_MUTATION, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
 import DeleteAlert from '../common/DeleteAlert';
@@ -20,9 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-function preventDefault(event) {
-    event.preventDefault();
-}
 
 export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, resourceTableRefetch }) => {
 
@@ -38,7 +31,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
 
     const searchQuery = useDebounce(searchValue, 500);
 
-    const { data, loading, error, refetch } = useQuery(GET_ALL_USERS_QUERY, {
+    const { data, loading, refetch } = useQuery(GET_ALL_USERS_QUERY, {
         variables: {
             getAllUsersInput: {
                 role: "RESOURCE",
@@ -56,10 +49,6 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
 
     const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
 
-    const onDeleteClick = (id) => {
-        setToBeDeleted(id);
-        setOpenDeleteAlert(true)
-    };
 
     const handleChangePage = (event, newPage) => {
         console.log({ newPage });

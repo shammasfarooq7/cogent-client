@@ -16,7 +16,7 @@ export const RequestUsersTable = ({ resourceTableRefetch }) => {
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
 
-    const { data, loading, error, refetch } = useQuery(GET_REQUEST_USERS_QUERY, {
+    const { data, loading, refetch } = useQuery(GET_REQUEST_USERS_QUERY, {
         variables: {
             getNewRequestUsersInput: {
                 role: "RESOURCE",
@@ -27,7 +27,7 @@ export const RequestUsersTable = ({ resourceTableRefetch }) => {
         fetchPolicy: "network-only"
     });
 
-console.log({resourceTableRefetch});
+    console.log({ resourceTableRefetch });
 
     const [acceptRequest, { loading: acceptRequestLoading }] = useMutation(ACCEPT_REQUEST_MUTATION)
 
