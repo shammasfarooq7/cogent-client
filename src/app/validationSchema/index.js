@@ -38,7 +38,7 @@ const lastNameValidationSchema = {
 
 
 const rpocEmailValidationSchema = {
-  email: yup.string().required(requiredMessage("Email"))
+  email: yup.string().email("Invalid Email").required(requiredMessage("Email"))
 }
 
 const cogentEmailValidationSchema = {

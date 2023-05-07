@@ -86,7 +86,8 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
         ...(info?.skillSet?.length ? { skillSet: info?.skillSet?.map(skill => ({ value: skill, label: skill })) } : {}),
         ...(info?.availableTools?.length ? { availableTools: info?.availableTools?.map(tool => ({ value: tool, label: tool })) } : {}),
         ...(info?.languages?.length ? { languages: info?.languages?.map(language => ({ value: language, label: language })) } : {}),
-        ...(userPaymentMethod?.length ? { ...userPaymentMethod?.[0] } : {})
+        ...(userPaymentMethod?.length ? { ...userPaymentMethod?.[0] } : {}),
+        ...(info?.onboardedBy ? { onboardedBy: getName(info?.onboardedBy?.firstName, info?.onboardedBy?.middleName, info?.onboardedBy?.lastName) } : {})
     }
 
     const methods = useForm({
@@ -137,7 +138,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 postalCode, addressLine1, addressLine2, mobileNumber, contactNumber, whatsappNumber, whatsappGroup, resumeDocUrl: resumeUrl, identityDocUrl: identityUrl,
                 whatsappGroupLink, workPermitStatus, hourlyRate, halfDayRate, fullDayRate, monthlyRate, anyExtraRate,
                 beneficiaryMiddleName, beneficiaryLastName, beneficiaryAddress, accountNumber, accountType, accountTitle,
-                swiftCode, sortCode, iban, bankAddress, bankName, branchName, transport, availability, mobility, isOnboarded, onboardedBy, myResume, contractDocuments, interviewStatus } = data
+                swiftCode, sortCode, iban, bankAddress, bankName, branchName, transport, availability, mobility, isOnboarded, myResume, contractDocuments, interviewStatus } = data
             // return
             let resumeDocUrl = resumeUrl || "";
             if (myResume) {
@@ -203,7 +204,6 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 availability,
                 mobility,
                 isOnboarded,
-                onboardedBy,
                 resumeDocUrl,
                 mobileNumber,
                 contactNumber,
@@ -250,7 +250,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
 
     useEffect(() => {
         if (!editDefaultState?.isOnboarded) {
-            if (watch("contractDocuments") &&
+            if ((watch("contractDocuments") === "true" || watch("contractDocuments") === true) &&
                 watch("interviewStatus") === "Complete" &&
                 watch("myResume") && watch("identityDocument")) {
                 setValue("isOnboarded", true)
@@ -270,13 +270,13 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Box sx={{display:"flex"}}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ padding: "12px", fontFamily:"popins", fontWeight:"600"}}>
-                        {editInfo ? "Update Resource" : "Add Resource"}
-                    </Typography>
-                    <Box sx={{position:"relative", left:"78%", top:"12px", cursor:"pointer"}} >
-                        <CloseIcon onClick={handleClose}/>
-                    </Box>
+                    <Box sx={{ display: "flex" }}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ padding: "12px", fontFamily: "popins", fontWeight: "600" }}>
+                            {editInfo ? "Update Resource" : "Add Resource"}
+                        </Typography>
+                        <Box sx={{ position: "relative", left: "78%", top: "12px", cursor: "pointer" }} >
+                            <CloseIcon onClick={handleClose} />
+                        </Box>
                     </Box>
                     <Divider />
                     <Box sx={{ p: 2 }}>
