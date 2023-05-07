@@ -219,7 +219,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                         updateResourceInput: {
                             ...payload
                         },
-                        id
+                        id: info?.id
                     }
                 })
             }
@@ -252,14 +252,14 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
         if (!editDefaultState?.isOnboarded) {
             if ((watch("contractDocuments") === "true" || watch("contractDocuments") === true) &&
                 watch("interviewStatus") === "Complete" &&
-                watch("myResume") && watch("identityDocument")) {
+                (watch("myResume") || watch("resumeDocUrl")) && (watch("identityDocument") || watch("identityDocUrl"))) {
                 setValue("isOnboarded", true)
             }
             else {
                 setValue("isOnboarded", false)
             }
         }
-    }, [watch("contractDocuments"), watch("interviewStatus"), watch("myResume"), watch("identityDocument")]);
+    }, [watch("contractDocuments"), watch("interviewStatus"), watch("myResume"), watch("identityDocument"), watch("resumeDocUrl"), watch("identityDocUrl")]);
 
     return (
         <Box sx={{ overflowY: "auto" }}>
