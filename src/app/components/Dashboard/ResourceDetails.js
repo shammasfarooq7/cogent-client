@@ -412,7 +412,7 @@ export const ResourceDetails = () => {
           </Grid >
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Onboarderd By</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.onboardedBy || "_ _"}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{getName(info?.onboardedBy?.firstName, info?.onboardedBy?.middleName, info?.onboardedBy?.lastName) || "_ _"}</Typography>
 
           </Grid >
           <Grid item xs={4} md={4} lg={3}>

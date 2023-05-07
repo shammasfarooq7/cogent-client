@@ -84,7 +84,12 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
       mobility
       interviewStatus
       contractDocuments
-      onboardedBy
+      onboardedBy{
+        id
+      firstName
+      lastName
+      middleName
+      }
       isOnboarded
     }
     }
@@ -213,7 +218,12 @@ query GetResourceQuery($id: String!) {
     mobility
     interviewStatus
     contractDocuments
-    onboardedBy
+    onboardedBy{
+      id
+      firstName
+      lastName
+      middleName
+    }
     isOnboarded
     }
   }
