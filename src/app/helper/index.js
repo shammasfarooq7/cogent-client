@@ -14,5 +14,17 @@ export const getName = (firstName, middlename, lastname) => {
 }
 
 export const getNameFromUrl = (url) => {
+    return url?.split("-")?.at(-1)
+}
+
+export const getUrlNameforDwnload = (url) => {
     return url?.split("/")?.at(-1)
+}
+
+export const getFileWithNewName = (file, userName, type) => {
+    if (!file) return ""
+    const fileName = file?.name || "";
+    const newName = `${new Date().getTime()}-${userName}-${type}-${fileName}`
+    const newFile = new File([file], newName, { type: file.type });
+    return newFile
 }

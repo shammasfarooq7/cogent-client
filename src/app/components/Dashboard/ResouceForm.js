@@ -21,7 +21,7 @@ import { CustomDocumentUploadController } from '../common/CustomDocumentUploadCo
 import { uploadDocument } from '../../services/rest-apis';
 import { CustomPhoneController } from '../common/CustomPhoneController';
 import { UserContext } from '../../context/user-context';
-import { getName } from '../../helper';
+import { getFileWithNewName, getName } from '../../helper';
 import { CutomFormRadioController } from '../common/CutomFormRadioController';
 import FileUrlDisplay from '../common/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
@@ -142,13 +142,15 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
             // return
             let resumeDocUrl = resumeUrl || "";
             if (myResume) {
-                const response = await uploadDocument(myResume);
+                const newFile = getFileWithNewName(myResume, getName(firstName, middleName, lastName), "cv")
+                const response = await uploadDocument(newFile);
                 resumeDocUrl = response?.url || "";
             };
 
             let identityDocUrl = identityUrl || "";
-            if (myResume) {
-                const response = await uploadDocument(identityDocument);
+            if (identityDocument) {
+                const newFile = getFileWithNewName(identityDocument, getName(firstName, middleName, lastName), "identity")
+                const response = await uploadDocument(newFile);
                 identityDocUrl = response?.url || "";
             };
 
@@ -280,7 +282,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                     </Box>
                     <Divider />
                     <Box sx={{ p: 2 }}>
-                        <HeaderResource heading="General Information" />
+                        <HeaderResource heading="GENERAL INFORMATION" />
                         <FormProvider {...methods}>
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <Grid container spacing={2} >
@@ -599,7 +601,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         />
                                     </Grid>
                                 </Grid>
-                                <HeaderResource heading="Payment" />
+                                <HeaderResource heading="PAYMENT" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
                                         <CustomDropDrownController

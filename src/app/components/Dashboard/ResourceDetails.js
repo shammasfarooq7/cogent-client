@@ -9,7 +9,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../common/HeaderResource';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_RESOURCE_MUTATION, GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
-import { getName, getNameFromUrl } from '../../helper';
+import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';
 import DeleteAlert from '../common/DeleteAlert';
 import { Alert } from '../common/Alert';
 import { ResourceForm } from './ResouceForm';
@@ -57,7 +57,7 @@ export const ResourceDetails = () => {
   };
 
   const handleDownloadClick = (url) => {
-    downloadFile(getNameFromUrl(url))
+    downloadFile(getUrlNameforDwnload(url))
   }
 
   if (!id) return <Navigate replace to={"/dashboard"} />
@@ -153,7 +153,10 @@ export const ResourceDetails = () => {
               {getNameFromUrl(info?.identityDocUrl) || "_ _"}
               {info?.identityDocUrl &&
                 <>
-                  <a href={info?.identityDocUrl} style={{ color: '#543F3F', marginLeft: "20px", fontWeight: 400, fontSize: "10px", textDecorationLine: "none" }}>Open</a>
+                  <a
+                    href={info?.identityDocUrl}
+                    style={{ color: '#543F3F', marginLeft: "20px", fontWeight: 400, fontSize: "10px", textDecorationLine: "none" }}
+                    target='_blank'>Open</a>
                   <Button sx={{
                     fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
                     color: "#EA3434", marginLeft: "2px",
@@ -268,7 +271,9 @@ export const ResourceDetails = () => {
               {getNameFromUrl(info?.resumeDocUrl) || "_ _"}
               {info?.resumeDocUrl &&
                 <>
-                  <a href={info?.resumeDocUrl} style={{ color: '#543F3F', fontWeight: 400, fontSize: "10px", marginLeft: "20px", textDecorationLine: "none" }}>Open</a>
+                  <a href={info?.resumeDocUrl}
+                    style={{ color: '#543F3F', fontWeight: 400, fontSize: "10px", marginLeft: "20px", textDecorationLine: "none" }}
+                    target='_blank'>Open</a>
                   <Button sx={{
                     fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
                     color: "#EA3434", marginLeft: "2px",
