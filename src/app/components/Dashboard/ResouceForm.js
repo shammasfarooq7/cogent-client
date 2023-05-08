@@ -23,7 +23,7 @@ import { CustomPhoneController } from '../common/CustomPhoneController';
 import { UserContext } from '../../context/user-context';
 import { getFileWithNewName, getName } from '../../helper';
 import { CutomFormRadioController } from '../common/CutomFormRadioController';
-import FileUrlDisplay from '../common/FileUrlDisplay';
+import FileUrlDisplay from '../common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
@@ -363,9 +363,13 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             currencies={idCardTypeOptions}
                                         />
                                     </Grid>
-                                    <Grid item xs={3} {...(getValues("identityDocUrl") && { display: "flex", alignItems: "center" })}>
-                                        {getValues("identityDocUrl")
-                                            ? <FileUrlDisplay url={getValues("identityDocUrl")} />
+                                    <Grid item xs={3} {...(getValues("identityDocUrl") && !getValues("identityDocument") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("identityDocUrl") && !getValues("identityDocument"))
+                                            ? <FileUrlDisplay
+                                                url={getValues("identityDocUrl")}
+                                                controllerName='identityDocument'
+                                                controllerLabel='Identity (Attachment)'
+                                            />
                                             : <CustomDocumentUploadController
                                                 controllerName='identityDocument'
                                                 controllerLabel='Identity (Attachment)'
@@ -530,9 +534,13 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         />
 
                                     </Grid>
-                                    <Grid item xs={7} {...(getValues("resumeDocUrl") && { display: "flex", alignItems: "center" })}>
-                                        {getValues("resumeDocUrl")
-                                            ? <FileUrlDisplay url={getValues("resumeDocUrl")} />
+                                    <Grid item xs={7} {...(getValues("resumeDocUrl") && !getValues("myResume") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("resumeDocUrl") && !getValues("myResume"))
+                                            ? <FileUrlDisplay
+                                                url={getValues("resumeDocUrl")}
+                                                controllerName='myResume'
+                                                controllerLabel='My Resume/CV (Attachment)'
+                                            />
                                             : <CustomDocumentUploadController
                                                 controllerName='myResume'
                                                 controllerLabel='My Resume/CV (Attachment)'

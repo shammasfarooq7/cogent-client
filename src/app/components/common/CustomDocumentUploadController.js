@@ -4,7 +4,7 @@ import { Controller, useFormContext, } from 'react-hook-form';
 import './style.css'
 import { Alert } from './Alert';
 
-export const CustomDocumentUploadController = ({ controllerName, controllerLabel, allowedFileTypes = ["application/pdf"], acceptFiles = ".pdf", maxFileSize = 5, isMultiLine, fieldIcon }) => {
+export const CustomDocumentUploadController = ({ controllerName, controllerLabel, allowedFileTypes = ["application/pdf", "image/jpeg"], acceptFiles = ".jpg,.jpeg,.pdf", maxFileSize = 5, isMultiLine, fieldIcon }) => {
   const { control } = useFormContext();
 
   const handleFileChange = (e, setValue) => {
@@ -21,7 +21,7 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
       }
     }
     else {
-      Alert.error("Only Pdf files are allowed!")
+      Alert.error("Only Pdf files and JPG/JPEG images are allowed!")
     }
   }
 
