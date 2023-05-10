@@ -21,7 +21,7 @@ const mdTheme = createTheme();
 export const ResourceDetails = () => {
   const navigate = useNavigate();
   const urlSearchParams = new URLSearchParams(window.location.search)
-  const id = urlSearchParams?.get("id");
+  const id = urlSearchParams?.get("id") || "";
 
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openResourceForm, setOpenResourceForm] = useState(false);
@@ -44,7 +44,6 @@ export const ResourceDetails = () => {
     await deleteResource({
       variables: {
         id
-
       }
     })
     Alert.success("Deleted Successfully!")
@@ -60,7 +59,7 @@ export const ResourceDetails = () => {
     downloadFile(getUrlNameforDwnload(url))
   }
 
-  if (!id) return <Navigate replace to={"/dashboard"} />
+  // if (!id) return <Navigate replace to={"/dashboard"} />
 
   if (error)
     return (

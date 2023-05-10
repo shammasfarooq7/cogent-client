@@ -4,11 +4,14 @@ import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER } from "../../graphql/auth";
 import { useContext, useEffect } from "react";
 import { UserContext } from "../context/user-context";
+import { getLandingPageRoute } from "../constants";
 
-export const PrivateRoute = ({ children }) => {
+export const PrivateRoute = ({ children, roles = [] }) => {
   const location = useLocation();
   const { data, error } = useQuery(GET_CURRENT_USER);
   const { user, setUser } = useContext(UserContext);
+
+  const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
 
   useEffect(() => {
     if (data?.getCurrentUser && !user) {
@@ -20,7 +23,16 @@ export const PrivateRoute = ({ children }) => {
     setUser(null);
     handleLogout();
     return <Navigate to="/login" state={{ from: location }} replace />;
-  } else {
-    return children;
   }
+
+  if (!user) {
+    return <></> // To DO : Add Loader
+  }
+
+  if (!roles.includes(userRole)) {
+    return <Navigate to={getLandingPageRoute(userRole)} state={{ from: location }} replace />;
+  }
+
+  return children;
+
 }

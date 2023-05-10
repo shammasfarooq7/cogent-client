@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { Fragment, useContext } from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,34 +11,32 @@ import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import "./style.css"
 import { useNavigate } from 'react-router-dom';
+import { getSideBarLinks } from '../../constants';
+import { UserContext } from '../../context/user-context';
 
 export const MainListItems = () => {
 
   const navigate = useNavigate();
+  const { user } = useContext(UserContext)
+  const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
 
   return (
-    <React.Fragment >
-      <ListItemButton onClick={() => navigate("/dashboard")}>
-        <ListItemIcon className='white'>
-          <DashboardIcon className='white' />
-        </ListItemIcon>
-        <ListItemText primary="Dashboard" />
-      </ListItemButton>
-
-      <ListItemButton onClick={() => navigate("/all-resource")}>
-        <ListItemIcon className='white'>
-          <DashboardIcon className='white' />
-        </ListItemIcon>
-        <ListItemText primary="Resources" />
-      </ListItemButton>
-
-    </React.Fragment >
+    <Fragment >
+      {getSideBarLinks(userRole).map(item => (
+        <ListItemButton key={item.link} onClick={() => navigate(item.link)}>
+          <ListItemIcon className='white'>
+            <DashboardIcon className='white' />
+          </ListItemIcon>
+          <ListItemText primary={item.name} />
+        </ListItemButton>
+      ))}
+    </Fragment >
 
   )
 };
 
 export const secondaryListItems = (
-  <React.Fragment>
+  <Fragment>
     <ListSubheader component="div" inset sx={{ background: "#1E1E2D", color: "white" }}>
       Saved reports
     </ListSubheader>
@@ -60,5 +58,5 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Year-end sale" />
     </ListItemButton>
-  </React.Fragment>
+  </Fragment>
 );

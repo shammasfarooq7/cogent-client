@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useContext, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -17,19 +17,21 @@ import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import cogentLogo from '../../assets/images/Cogent Logo.png';
 import cogentTextLogo from '../../assets/images/Cogent Text Logo.png';
+import { UserContext } from '../../context/user-context';
 
 
 const mdTheme = createTheme();
 
 export const MainLayout = ({ children }) => {
     const navigate = useNavigate();
+    const { setUser } = useContext(UserContext)
 
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
     };
-    const [openModal, setOpenModal] = React.useState(false);
-    const [profileAnchor, setProfileAnchor] = React.useState(false);
+    const [openModal, setOpenModal] = useState(false);
+    const [profileAnchor, setProfileAnchor] = useState(false);
 
     const getPageTitle = () => {
         return window.location.pathname.includes("resource")
@@ -48,6 +50,7 @@ export const MainLayout = ({ children }) => {
 
     const handleSignOut = () => {
         handleLogout();
+        setUser(null);
         navigate("/login")
     }
 

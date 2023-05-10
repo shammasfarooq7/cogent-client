@@ -22,7 +22,7 @@ import { CustomController } from "../common/CustomController"
 import { Alert } from "../common/Alert";
 import '../common/style.css';
 // others
-import { AUTH_TOKEN, DASHBOARD_ROUTE, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FORBIDDEN_EXCEPTION, LOGIN, LOGIN_FIELDS, WRONG_EMAIL_OR_PASSWORD } from "../../constants";
+import { AUTH_TOKEN, DASHBOARD_ROUTE, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FORBIDDEN_EXCEPTION, getLandingPageRoute, LOGIN, LOGIN_FIELDS, RESOURCE_LANDING_ROUTE, WRONG_EMAIL_OR_PASSWORD } from "../../constants";
 // import { AuthContext } from "../../context/AuthContext";
 // import { LoginUserInput, useLoginMutation } from "../../../generated";
 import { loginValidationSchema } from "../../validationSchema";
@@ -43,15 +43,17 @@ export const LoginForm = () => {
   const navigate = useNavigate()
   const [signin, { data, loading, error }] = useMutation(SIGN_IN);
 
-  if(data){
-    const {signin : {accessToken}} = data
+  if (data) {
+    const { signin: { accessToken, roles } } = data
     localStorage.setItem(AUTH_TOKEN, accessToken)
-    navigate(DASHBOARD_ROUTE)
+    const role = roles?.[0] || "";
+    const landingPageLink = getLandingPageRoute(role);
+    navigate(landingPageLink);
     Alert.success("Sign In successfully")
     // const {accessToke} = data
   }
-  if(error){
-   Alert.error(error.message)
+  if (error) {
+    Alert.error(error.message)
   }
 
   const { handleSubmit } = methods;
@@ -68,8 +70,8 @@ export const LoginForm = () => {
   return (
     <FormProvider {...methods}>
       <ThemeProvider theme={theme}>
-        <Grid container component="main" sx={{ height: '100vh' , position:"relative" }}>
-        <Box component='img' display='block' sx={{height:"112px", width:"101px", position:"absolute", top:"10px", left:"20px"}} src={images.Cogent} alt='Cogent logo' />
+        <Grid container component="main" sx={{ height: '100vh', position: "relative" }}>
+          <Box component='img' display='block' sx={{ height: "112px", width: "101px", position: "absolute", top: "10px", left: "20px" }} src={images.Cogent} alt='Cogent logo' />
           <CssBaseline />
           <Grid
             item
@@ -87,48 +89,48 @@ export const LoginForm = () => {
               backgroundPosition: 'center',
             }}
           />
-          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{background: "#1E1E1E"}}>
+          <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square sx={{ background: "#1E1E1E" }}>
             <Box
               sx={{
                 my: 8,
-                padding:"55px",
+                padding: "55px",
                 display: 'flex',
                 flexDirection: 'column',
-               
+
               }}
             >
               {/* <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar> */}
-              <Typography sx={{fontWeight :"500", fontSize:"26px", marginBottom:"15px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
+              <Typography sx={{ fontWeight: "500", fontSize: "26px", marginBottom: "15px", color: "#FFFFFF", fontFamily: "Poppins" }}>
                 Sign in
               </Typography>
-              <Typography sx={{fontSize : "14px", marginRight:"140px" ,marginBottom:"45px", color: "#FFFFFF" , fontFamily:"Poppins" }}>
-               If you don't have an account register you can
-               <Typography component={Link} to="/signup" variant="body2" sx={{cursor:"pointer" , marginLeft:"10px", fontSize:"16px" , color:"#1e81b0"}}>
-                        {" Register here!"}
-                      </Typography>
+              <Typography sx={{ fontSize: "14px", marginRight: "140px", marginBottom: "45px", color: "#FFFFFF", fontFamily: "Poppins" }}>
+                If you don't have an account register you can
+                <Typography component={Link} to="/signup" variant="body2" sx={{ cursor: "pointer", marginLeft: "10px", fontSize: "16px", color: "#1e81b0" }}>
+                  {" Register here!"}
+                </Typography>
               </Typography>
               <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <Box sx={{ mt: 2 }}>
-                  <Box  sx={{marginBottom:"25px"}}>
-                  <CustomController
-                    controllerName='email'
-                    controllerLabel='Email'
-                    fieldType='text'
-                    fieldIcon={<MailOutlineIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
-                    variantField="standard"
-                  />
+                  <Box sx={{ marginBottom: "25px" }}>
+                    <CustomController
+                      controllerName='email'
+                      controllerLabel='Email'
+                      fieldType='text'
+                      fieldIcon={<MailOutlineIcon sx={{ color: "#FFFFFF", fontSize: "15px" }} />}
+                      variantField="standard"
+                    />
                   </Box>
-                  <Box sx={{marginBottom:"15px"}}>
-                  <CustomController
-                    controllerName='password'
-                    controllerLabel='Password'
-                    fieldType='password'
-                    variantField="standard"
-                    fieldIcon={<LockOutlinedIcon sx={{color:"#FFFFFF", fontSize:"15px"}} />}
-                    isPassword
-                  />
+                  <Box sx={{ marginBottom: "15px" }}>
+                    <CustomController
+                      controllerName='password'
+                      controllerLabel='Password'
+                      fieldType='password'
+                      variantField="standard"
+                      fieldIcon={<LockOutlinedIcon sx={{ color: "#FFFFFF", fontSize: "15px" }} />}
+                      isPassword
+                    />
                   </Box>
                   {/* <Box sx={{display:"flex", }}>
                   <FormGroup>
@@ -141,17 +143,17 @@ export const LoginForm = () => {
                       </Typography>
                     </Grid>
                   </Box> */}
-                    
+
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
-                    sx={{ mt: 3, mb: 2 , borderRadius:"16px" , backgroundColor:"#2a294f"}}
+                    sx={{ mt: 3, mb: 2, borderRadius: "16px", backgroundColor: "#2a294f" }}
                   >
                     Login
                   </Button>
                   <Grid container>
-                  
+
                     {/* <Grid item>
                       <Link href="#" variant="body2">
                         {"Don't have an account? Sign Up"}

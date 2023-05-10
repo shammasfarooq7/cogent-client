@@ -35,6 +35,7 @@ export const NOT_FOUND_EMAIL_MESSAGE = "No user found with this email";
 export const FORGET_PASSWORD_SUCCESS = "An email has been sent to your registered email address";
 export const ROOT_ROUTE = "/";
 export const DASHBOARD_ROUTE = "/dashboard";
+export const RESOURCE_LANDING_ROUTE = "/resource-details";
 export const RESET_PASSWORD_FAILURE = "Reset password failed";
 export const SET_PASSWORD_FAILURE = "Set password failed";
 export const RESET_PASSWORD_SUCCESS = "Password reset successfully"
@@ -61,20 +62,32 @@ export const SPACES_REGEX = /^\S+(?: \S+)*$/
 export const phoneReg = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 export const ssnReg = /^(\d{3}-?\d{2}-?\d{4})|(xxx-xx-xxxx)$/i;
 
-
-export const sidebarLink = {
-  dashboard: "Dashboard",
-  cases: "Cases",
-  courts: "Courts",
-  users: 'Users',
+export const ROLE = {
+  RMS: 'rms',
+  SD: 'sd',
+  RESOURCE: 'resource',
+  FEOPS: 'feops',
+  ADMIN: 'admin'
 }
 
-export const DASHBOARD_LINK = [
-  { title: sidebarLink.dashboard, link: '/dashboard' },
-  { title: sidebarLink.cases, link: '/cases' },
-  { title: sidebarLink.courts, link: '/courts' },
-  { title: sidebarLink.users, link: '/users' }
-]
+export const DASHBOARD_SIDEBAR_LINKS = [
+  {
+    name: "Dashboard",
+    link: "/dashboard"
+  },
+  {
+    name: "Resources",
+    link: "/all-resource"
+  },
+];
+
+export const RESOURCE_SIDEBAR_LINKS = [
+  {
+    name: "Detail",
+    link: "/resource-details"
+  }
+];
+
 export const AUTH_LINKS = {
   FORGET_PASSWORD_LINK: '/forgot-password',
   LOGIN_LINK: '/login',
@@ -405,3 +418,30 @@ export const interviewStatusOptions = [{
   label: "Not Scheduled",
   value: "NotScheduled",
 }];
+
+export const getLandingPageRoute = (role) => {
+  switch (role) {
+    case ROLE.RMS:
+      return DASHBOARD_ROUTE
+
+    case ROLE.RESOURCE:
+      return RESOURCE_LANDING_ROUTE
+
+    default:
+      return DASHBOARD_ROUTE
+  }
+}
+
+export const getSideBarLinks = (role) => {
+
+  switch (role) {
+    case ROLE.RMS:
+      return DASHBOARD_SIDEBAR_LINKS
+
+    case ROLE.RESOURCE:
+      return RESOURCE_SIDEBAR_LINKS
+
+    default:
+      return []
+  }
+}

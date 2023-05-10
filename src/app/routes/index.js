@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login } from "../pages/auth/login";
 import { Signup } from "../pages/auth/signup";
 // other packages
-import { AUTH_LINKS, ROOT_ROUTE } from "../constants";
+import { AUTH_LINKS, ROLE, ROOT_ROUTE } from "../constants";
 import { DashboardContent } from "../components/Dashboard/Dashboard";
 import { PrivateRoute } from "./PrivateRoute";
 import { ResourceDetails } from "../components/Dashboard/ResourceDetails";
@@ -17,22 +17,22 @@ const MainRoutes = () => {
       <MainLayout>
         <Routes>
           <Route path={ROOT_ROUTE} element={
-            <PrivateRoute>
+            <PrivateRoute roles={[ROLE.RMS]}>
               <DashboardContent />
             </PrivateRoute>
           } />
           <Route path={"/dashboard"} element={
-            <PrivateRoute>
+            <PrivateRoute roles={[ROLE.RMS]}>
               <DashboardContent />
             </PrivateRoute>
           } />
           <Route path={"/resource-details"} element={
-            <PrivateRoute>
+            <PrivateRoute roles={[ROLE.RMS, ROLE.RESOURCE]}>
               <ResourceDetails />
             </PrivateRoute>
           } />
           <Route path={"/all-resource"} element={
-            <PrivateRoute>
+            <PrivateRoute roles={[ROLE.RMS]}>
               <AllResource />
             </PrivateRoute>
           } />
