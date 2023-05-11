@@ -11,11 +11,11 @@ export const PrivateRoute = ({ children, roles = [] }) => {
   const { data, error } = useQuery(GET_CURRENT_USER);
   const { user, setUser } = useContext(UserContext);
 
-  const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
+  const { userRole } = user || {};
 
   useEffect(() => {
     if (data?.getCurrentUser && !user) {
-      setUser(data?.getCurrentUser)
+      setUser({ ...data?.getCurrentUser, userRole: (data?.getCurrentUser?.roles?.[0]?.role || "")?.toLowerCase() })
     }
   }, [data]);
 

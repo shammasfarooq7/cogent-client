@@ -11,7 +11,7 @@ import { CustomFormController } from '../common/CustomFormController';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CustomDropDrownController } from '../common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { resourceFormValidationSchema } from '../../validationSchema';
+import { getResourceFormValidationSchema } from '../../validationSchema';
 import { CREATE_RESOURCE_MUTATION, UPDATE_RESOURCE_MUTATION } from '../../../graphql/resources';
 import { useMutation } from '@apollo/client';
 import { Alert } from '../common/Alert';
@@ -75,6 +75,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     const handleClose = () => setOpenModal(false);
 
     const { user } = useContext(UserContext);
+    const { userRole } = user || {};
     const [isLoading, setIsLoading] = useState(false);
 
     const urlSearchParams = new URLSearchParams(window.location.search)
@@ -91,7 +92,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
     }
 
     const methods = useForm({
-        resolver: yupResolver(resourceFormValidationSchema),
+        resolver: yupResolver(getResourceFormValidationSchema(userRole)),
         mode: "all",
         defaultValues: {
             status: "",
@@ -158,10 +159,8 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 accountType,
                 accountTitle,
                 email,
-                cogentEmail,
                 status,
                 engagementType,
-                vendorName,
                 firstName,
                 lastName,
                 idCardType,
@@ -177,11 +176,6 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 postalCode,
                 addressLine1,
                 addressLine2,
-                rpocName,
-                rpocContactNumber,
-                rpocEmail,
-                whatsappGroup,
-                whatsappGroupLink,
                 workPermitStatus,
                 hourlyRate,
                 halfDayRate,
@@ -205,13 +199,25 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 transport,
                 availability,
                 mobility,
-                isOnboarded,
                 resumeDocUrl,
                 mobileNumber,
                 contactNumber,
-                contractDocuments,
                 whatsappNumber,
-                interviewStatus
+            }
+
+            if (userRole === "rms") {
+                Object.assign(payload, {
+                    interviewStatus,
+                    isOnboarded,
+                    contractDocuments,
+                    rpocName,
+                    rpocContactNumber,
+                    rpocEmail,
+                    vendorName,
+                    cogentEmail,
+                    whatsappGroup,
+                    whatsappGroupLink,
+                })
             }
 
 
@@ -272,11 +278,11 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Box sx={{ display: "flex" }}>
+                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <Typography id="modal-modal-title" variant="h6" component="h2" sx={{ padding: "12px", fontFamily: "popins", fontWeight: "600" }}>
                             {editInfo ? "Update Resource" : "Add Resource"}
                         </Typography>
-                        <Box sx={{ position: "relative", left: "78%", top: "12px", cursor: "pointer" }} >
+                        <Box marginRight={2}>
                             <CloseIcon onClick={handleClose} />
                         </Box>
                     </Box>
@@ -291,16 +297,19 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='status'
                                             controllerLabel='Status'
                                             selectDropdown={true}
-                                            currencies={Status}
+                                            currencies={userRole === "resource"
+                                                ? Status?.filter(item => item.value !== 'INDIRECT')
+                                                : Status}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='vendorName'
-                                            controllerLabel='Vendor Name'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
+                                    {userRole === "rms" &&
+                                        <Grid item xs={4}>
+                                            <CustomFormController
+                                                controllerName='vendorName'
+                                                controllerLabel='Vendor Name'
+                                                fieldType='text'
+                                            />
+                                        </Grid>}
                                     <Grid item xs={4}>
                                         <CustomDropDrownController
                                             controllerName='engagementType'
@@ -309,27 +318,32 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             currencies={EngagementType}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='rpocName'
-                                            controllerLabel='RPOC Name'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='rpocEmail'
-                                            controllerLabel='RPOC Email'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomPhoneController
-                                            controllerName={'rpocContactNumber'}
-                                            controllerLabel='RPOC Contact Number'
-                                            inputStyle={{ height: 40 }}
-                                        />
-                                    </Grid>
+                                    
+                                    {userRole === "rms" &&
+                                        <>
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='rpocName'
+                                                    controllerLabel='RPOC Name'
+                                                    fieldType='text'
+                                                />
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='rpocEmail'
+                                                    controllerLabel='RPOC Email'
+                                                    fieldType='text'
+                                                />
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <CustomPhoneController
+                                                    controllerName={'rpocContactNumber'}
+                                                    controllerLabel='RPOC Contact Number'
+                                                    inputStyle={{ height: 40 }}
+                                                />
+                                            </Grid>
+                                        </>}
+
                                 </Grid>
                                 <HeaderResource heading="PERSONAL DETAILS" />
                                 <Grid container spacing={2}>
@@ -465,6 +479,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             controllerName='email'
                                             controllerLabel='Email ID'
                                             fieldType='text'
+                                            disabled={editInfo ? true : false}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -488,27 +503,31 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                             inputStyle={{ height: 40 }}
                                         />
                                     </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='whatsappGroup'
-                                            controllerLabel='WhatsApp Group'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='whatsappGroupLink'
-                                            controllerLabel='WhatsApp Group Link'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='cogentEmail'
-                                            controllerLabel='Cogent Email Id'
-                                            fieldType='text'
-                                        />
-                                    </Grid>
+                                    {userRole === "rms" &&
+                                        <>
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='whatsappGroup'
+                                                    controllerLabel='WhatsApp Group'
+                                                    fieldType='text'
+                                                />
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='whatsappGroupLink'
+                                                    controllerLabel='WhatsApp Group Link'
+                                                    fieldType='text'
+                                                />
+                                            </Grid>
+                                        </>}
+                                    {userRole === "rms" &&
+                                        <Grid item xs={4}>
+                                            <CustomFormController
+                                                controllerName='cogentEmail'
+                                                controllerLabel='Cogent Email Id'
+                                                fieldType='text'
+                                            />
+                                        </Grid>}
                                     <Grid item xs={4}>
                                         <CustomDropDrownController
                                             controllerName='workPermitStatus'
@@ -730,60 +749,64 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                                         />
                                     </Grid>
                                 </Grid>
-                                <HeaderResource heading="CONTRACT STATUS" />
-                                <Grid container spacing={2}>
-                                    <Grid item xs={4}>
-                                        <CustomDropDrownController
-                                            controllerName='interviewStatus'
-                                            controllerLabel='Interview Status'
-                                            fieldType='text'
-                                            currencies={interviewStatusOptions}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={1}></Grid>
-                                    <Grid item xs={3} >
-                                        <CutomFormRadioController
-                                            controllerName='contractDocuments'
-                                            controllerLabel='Contract Documents'
-                                            options={[{
-                                                label: "True",
-                                                value: true,
-                                                disabled: false
-                                            }, {
-                                                label: "False",
-                                                value: false,
-                                                disabled: false
-                                            }]}
-                                        />
-                                    </Grid>
 
-                                    <Grid item xs={4}>
-                                        <CutomFormRadioController
-                                            controllerName='isOnboarded'
-                                            controllerLabel='Onboarded Completed?'
-                                            options={[{
-                                                label: "True",
-                                                value: true,
-                                                disabled: true
-                                            }, {
-                                                label: "False",
-                                                value: false,
-                                                disabled: true
-                                            }]}
-                                        />
-                                    </Grid>
+                                {userRole === "rms" &&
+                                    <>
+                                        <HeaderResource heading="CONTRACT STATUS" />
+                                        <Grid container spacing={2}>
+                                            <Grid item xs={4}>
+                                                <CustomDropDrownController
+                                                    controllerName='interviewStatus'
+                                                    controllerLabel='Interview Status'
+                                                    fieldType='text'
+                                                    currencies={interviewStatusOptions}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={1}></Grid>
+                                            <Grid item xs={3} >
+                                                <CutomFormRadioController
+                                                    controllerName='contractDocuments'
+                                                    controllerLabel='Contract Documents'
+                                                    options={[{
+                                                        label: "True",
+                                                        value: true,
+                                                        disabled: false
+                                                    }, {
+                                                        label: "False",
+                                                        value: false,
+                                                        disabled: false
+                                                    }]}
+                                                />
+                                            </Grid>
+
+                                            <Grid item xs={4}>
+                                                <CutomFormRadioController
+                                                    controllerName='isOnboarded'
+                                                    controllerLabel='Onboarded Completed?'
+                                                    options={[{
+                                                        label: "True",
+                                                        value: true,
+                                                        disabled: true
+                                                    }, {
+                                                        label: "False",
+                                                        value: false,
+                                                        disabled: true
+                                                    }]}
+                                                />
+                                            </Grid>
 
 
-                                    <Grid item xs={4}>
-                                        <CustomFormController
-                                            controllerName='onboardedBy'
-                                            controllerLabel='Onboarded By'
-                                            fieldType='text'
-                                            disabled={true}
-                                        />
-                                    </Grid>
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='onboardedBy'
+                                                    controllerLabel='Onboarded By'
+                                                    fieldType='text'
+                                                    disabled={true}
+                                                />
+                                            </Grid>
 
-                                </Grid>
+                                        </Grid>
+                                    </>}
                                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button
                                         type="submit"
@@ -805,7 +828,7 @@ export const ResourceForm = ({ openModal, setOpenModal, editInfo, refetchResourc
                         </FormProvider>
                     </Box>
                 </Box>
-            </Modal>
-        </Box>
+            </Modal >
+        </Box >
     );
 }

@@ -100,7 +100,7 @@ export const ResourceDetails = () => {
           <Grid item xs={4} md={4} lg={5}>
 
           </Grid>
-          <Grid item xs={4} md={4} lg={3}>
+          <Grid item xs={4} md={4} lg={3} display={"flex"} justifyContent={"flex-end"}>
             {/* <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}
               onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button> */}
             <Button variant="contained" onClick={handleUpdateClick}>Update</Button>
