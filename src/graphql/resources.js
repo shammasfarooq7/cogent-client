@@ -174,10 +174,10 @@ query GetAllResourcesQuery($getAllResourcesInput: GetAllResourcesInput!) {
 `;
 
 export const GET_REQUEST_USERS_QUERY = gql`
-query GetRequestUsersQuery($getNewRequestUsersInput: GetAllUsersInput!) {
+query GetRequestUsersQuery($getNewRequestUsersInput: GetAllResourcesInput!) {
   getNewRequestUsers(getNewRequestUsersInput: $getNewRequestUsersInput) {
     count
-    users{
+    resources{
       id
       email
       firstName
