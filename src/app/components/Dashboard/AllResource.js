@@ -3,8 +3,8 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { useQuery } from "@apollo/client";
-import { ResourceCard } from '../../components/common/ResourceCard';
-import { ResourceTable } from './resource-table';
+import { ResourceCard } from '../common/ResourceCard';
+import { ResourceTable } from '../resources/resource-table';
 import { Get_RESOURCE_Dashboard_Stats } from '../../../graphql/resources';
 import { Box } from '@mui/material';
 
