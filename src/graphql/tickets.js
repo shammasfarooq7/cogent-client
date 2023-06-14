@@ -26,10 +26,10 @@ mutation Update($updateTicketInput: UpdateTicketInput!, $id:String!) {
   }
 `;
 
-export const GET_ALL_TICKETS_QUERY = gql`
-query GetAllTicketsQuery($getAllTicketsInput: GetAllTicketsInput!) {
-  getAllTickets(getAllTicketsInput: $getAllTicketsInput) {
+// export const GET_ALL_TICKETS_QUERY = gql`
+// query GetAllTicketsQuery($getAllTicketsInput: GetAllTicketsInput!) {
+//   getAllTickets(getAllTicketsInput: $getAllTicketsInput) {
   
-  }
-`;
+//   }
+// `;
     

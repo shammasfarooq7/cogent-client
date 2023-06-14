@@ -14,6 +14,10 @@ import { AllResource } from "../pages/resource/AllResource";
 import { AllTickets } from "../pages/serviceDesk/AllTickets";
 import { SDCalender } from "../pages/serviceDesk/calender/sdCalender";
 import { MainLayout } from "../components/layout/main-layout";
+import { FeopsDashboard } from "../pages/Feops/FeopsDashboard";
+import { FeopsTicket } from "../pages/Feops/FeopsTickets";
+import { FeopsAllTickets } from "../pages/Feops/FeopsAlltickets";
+import { FeopsAssignResource } from "../pages/Feops/FeopsAssignResource";
 
 const MainRoutes = () => {
   return (
@@ -31,19 +35,19 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
           <Route path={"/service-desk"} element={
-            <PrivateRoute roles={[ROLE.SD]}>
+            // <PrivateRoute roles={[ROLE.SD]}>
               <ServiceDesk />
-            </PrivateRoute>
+            // </PrivateRoute>
           } />
           <Route path={"/resource-details"} element={
             <PrivateRoute roles={[ROLE.RMS, ROLE.RESOURCE]}>
               <ResourceDetails />
-            </PrivateRoute>
+               </PrivateRoute>
           } />
            <Route path={"/ticket-details"} element={
-            <PrivateRoute roles={[ROLE.SD]}>
+            // <PrivateRoute roles={[ROLE.SD]}>
               <TicketDetails />
-            </PrivateRoute>
+            // </PrivateRoute>
           } />
           <Route path={"/sd-calender"} element={
             <PrivateRoute roles={[ROLE.SD]}>
@@ -56,9 +60,29 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
            <Route path={"/service-desk-tickets"} element={
-            <PrivateRoute roles={[ROLE.SD]}>
+            // <PrivateRoute roles={[ROLE.SD]}>
               <AllTickets />
-            </PrivateRoute>
+            // </PrivateRoute>
+          } />
+            <Route path={"/feops-command-center"} element={
+            // <PrivateRoute roles={[ROLE.FEOPS]}>
+              <FeopsDashboard />
+            // </PrivateRoute>
+          } />
+          <Route path={"/feops-ticket"} element={
+            // <PrivateRoute roles={[ROLE.FEOPS]}>
+              <FeopsTicket />
+            // </PrivateRoute>
+          } />
+           <Route path={"/feops-all-tickets"} element={
+            // <PrivateRoute roles={[ROLE.FEOPS]}>
+              <FeopsAllTickets />
+            // </PrivateRoute>
+          } />
+            <Route path={"/feops-assign-resource"} element={
+            // <PrivateRoute roles={[ROLE.FEOPS]}>
+              <FeopsAssignResource />
+            // </PrivateRoute>
           } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
           <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />
