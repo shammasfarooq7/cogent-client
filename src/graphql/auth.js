@@ -9,7 +9,6 @@ export const SIGN_UP = gql`
     signup(signUpUserInput: $signUpUserInput) {
       id
       email
-      mobileNumber
       createdAt
       updatedAt
     }
@@ -29,13 +28,10 @@ export const GET_CURRENT_USER = gql`
 query getCurrentUserQuery {
   getCurrentUser {
     email
-    mobileNumber
     firstName
     lastName
     middleName
     email
-    rpocEmail
-    cogentEmail
     roles {
       role
     }
