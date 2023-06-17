@@ -6,10 +6,11 @@ import { DashboardCard } from '../../components/common/Card';
 import { useQuery } from "@apollo/client";
 import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
-import { FeopsTable } from './FeopsTable';
+import { ServiceDeskTable } from '../serviceDesk/serviceDesk-table';
+import { AccountTable } from './AccountsTable';
 
 
-export const FeopsDashboard = () => {
+export const AccountDashboard = () => {
 
   const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ export const FeopsDashboard = () => {
 
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
-          <FeopsTable tableName="Today's Dispatch"  {...{ ticketTableRefetch, setTicketTabelRefetch, todays:true}} />
+          <AccountTable tableName="All Tickets" buttonText="Add"  {...{ ticketTableRefetch, setTicketTabelRefetch, todays:true}} />
           </Paper>
         </Grid>
 
@@ -78,7 +79,7 @@ export const FeopsDashboard = () => {
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <FeopsTable tableName="All Tickets"  {...{ ticketTableRefetch, setTicketTabelRefetch }} />
+            <AccountTable  tableName="Invoices" buttonText="Create" {...{ ticketTableRefetch, setTicketTabelRefetch }} />
           </Paper>
         </Grid>
       </Grid>

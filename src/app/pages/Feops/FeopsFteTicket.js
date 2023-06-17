@@ -15,9 +15,10 @@ import { Alert } from '../../components/common/Alert';
 import { downloadFile } from '../../services/rest-apis';
 import { renderStatus, getBorderColour } from '../../constants';
 import { SDForm } from '../serviceDesk/ServiceDeskForm';
+import { AddBoxOutlined } from '@mui/icons-material';
 
 
-export const FeopsTicket = () => {
+export const FeopsFteTicket = () => {
 
   const navigate = useNavigate();
   const urlSearchParams = new URLSearchParams(window.location.search)
@@ -25,14 +26,7 @@ export const FeopsTicket = () => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openTicketForm, setOpenTicketForm] = useState(false);
 
-//   const { data, loading, error, refetch } = useQuery(GET_A_RESOURCE_QUERY, {
-//     variables: {
-//       id
-//     },
-//     fetchPolicy: "network-only"
-//   });
 
-// error, refetch and data are replaced with above commented code once binding with api done
   const error =''
   const refetch = ''
   const data = {
@@ -131,7 +125,7 @@ export const FeopsTicket = () => {
 
       <Box sx={{ backgroundColor: "white", p: 1.5, border:2, borderColor: getBorderColour(info?.status)}}>
 
-      <Box  sx={{ mb: 2, display:'flex', justifyContent:'space-between' }}>
+        <Box  sx={{ mb: 2, display:'flex', justifyContent:'space-between' }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box sx={{ paddingLeft: "5px" }}>
               <Typography sx={{fontWeight: 'bold'}}> Ticket# {getName(info?.id)} </Typography>
