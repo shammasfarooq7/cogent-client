@@ -9,7 +9,7 @@ import dayjs, { Dayjs } from 'dayjs';
 // others
 // import palette from '../../theme/palette';
 
-export const Deposits = ()=> {
+export const Calendar = ()=> {
   const [date, setDate] = useState(dayjs(new Date()));
   const EventsDate = [
     dayjs(new Date(2022, 8, 1)).format('YYYY-MM-DD'),
@@ -18,7 +18,7 @@ export const Deposits = ()=> {
   ]
 
   return (
-    <Box >
+    <Box sx={{background:'#FFFFFF', height:'449px'}} >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <CalendarPicker date={date} onChange={(newDate) => setDate(newDate)}
           renderDay={(day, selectedDays, pickersDayProps) => {

@@ -6,6 +6,8 @@ import Edit from '../svg/Button Edit.svg'
 import DownloadPdf from '../svg/Duotone.svg'
 import UploadPdf from '../svg/Duotone1.svg'
 import CogentLogo from '../svg/Group 961.svg'
+import View from '../svg/View.svg'
+
 
 export const images = {
     Auth,
@@ -15,5 +17,6 @@ export const images = {
     Edit,
     DownloadPdf,
     UploadPdf,
-    CogentLogo
+    CogentLogo,
+    View
   }

@@ -6,7 +6,7 @@ import { useQuery } from "@apollo/client";
 import { ResourceCard } from '../../components/common/ResourceCard';
 import { Get_RESOURCE_Dashboard_Stats } from '../../../graphql/resources';
 import { Box } from '@mui/material';
-import { ResourceTable } from '../resource/resource-table';
+import { ResourceTable } from '../rms/resource-table';
 
 export const FeopsAllTickets = () => {
 
