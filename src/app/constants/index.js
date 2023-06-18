@@ -71,7 +71,8 @@ export const ROLE = {
   SD: 'sd',
   RESOURCE: 'resource',
   FEOPS: 'feops',
-  ADMIN: 'admin'
+  ADMIN: 'admin',
+  CUSTOMER:'customer'
 }
 
 export const DASHBOARD_SIDEBAR_LINKS = [

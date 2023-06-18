@@ -28,6 +28,14 @@ import { ResourceFseTicket } from "../pages/Resource/ResourceFseTicket";
 import { ResourceFteTicket } from "../pages/Resource/ResourceFteTicket";
 import { ResourceProfile } from "../pages/Resource/ResourceProfile";
 import { ResourceOpportunity } from "../pages/Resource/ResourceOportunity";
+import { CustomerDashboard } from "../pages/Customer/CustomerDashboard";
+import { CustomerFseTicket } from "../pages/Customer/CustomerFseTicket";
+import { CustomerFteTicket } from "../pages/Customer/CustomerFteTicket";
+import { CustomerOportunity } from "../pages/Customer/CustomerCreateOportunity";
+import { CustomerViewOpportunity } from "../pages/Customer/CustomerViewOpportunity";
+import { CustomerFormDetails } from "../pages/Customer/CustomerDetailsForm";
+import { CustomerProfile } from "../pages/Customer/CustomerProfile";
+import { CustomerInvoice } from "../pages/Customer/CustomerInvoice";
 
 const MainRoutes = () => {
   return (
@@ -35,14 +43,14 @@ const MainRoutes = () => {
       <MainLayout>
         <Routes>
           <Route path={ROOT_ROUTE} element={
-            // <PrivateRoute roles={[ROLE.RMS]}>
+            <PrivateRoute roles={[ROLE.RMS]}>
               <ResourceDashboard />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path={"/dashboard"} element={
-            // <PrivateRoute roles={[ROLE.RMS]}>
+            <PrivateRoute roles={[ROLE.RMS]}>
               <ResourceDashboard />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path={"/service-desk"} element={
             <PrivateRoute roles={[ROLE.SD]}>
@@ -50,9 +58,9 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
           <Route path={"/resource-details"} element={
-            // <PrivateRoute roles={[ROLE.RMS, ROLE.RESOURCE]}>
+            <PrivateRoute roles={[ROLE.RMS, ROLE.RESOURCE]}>
               <ResourceDetails />
-              //  </PrivateRoute>
+               </PrivateRoute>
           } />
            <Route path={"/ticket-details"} element={
             <PrivateRoute roles={[ROLE.SD]}>
@@ -60,14 +68,14 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
           <Route path={"/sd-calender"} element={
-            // <PrivateRoute roles={[ROLE.SD]}>
+            <PrivateRoute roles={[ROLE.SD]}>
               <SDCalender />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
           <Route path={"/all-resource"} element={
-            // <PrivateRoute roles={[ROLE.RMS]}>
+            <PrivateRoute roles={[ROLE.RMS]}>
               <AllResource />
-            // </PrivateRoute>
+            </PrivateRoute>
           } />
            <Route path={"/service-desk-tickets"} element={
             <PrivateRoute roles={[ROLE.SD]}>
@@ -90,9 +98,9 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
             <Route path={"/feops-assign-resource"} element={
-            // <PrivateRoute roles={[ROLE.FEOPS]}>
+            <PrivateRoute roles={[ROLE.FEOPS]}>
               <FeopsAssignResource />
-            // </PrivateRoute>
+             </PrivateRoute>
           } />
            <Route path={"/feops-fte-ticket"} element={
             <PrivateRoute roles={[ROLE.FEOPS]}>
@@ -149,6 +157,46 @@ const MainRoutes = () => {
               <ResourceOpportunity />
             </PrivateRoute>
           } />
+           <Route path={"/customer-dashboard"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerDashboard />
+              </PrivateRoute>
+            } />
+            <Route path={"/customer-fse-ticket"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerFseTicket />
+              </PrivateRoute>
+            } />
+             <Route path={"/customer-fte-ticket"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerFteTicket />
+              </PrivateRoute>
+            } />
+             <Route path={"/customer-opportunity"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerOportunity />
+              </PrivateRoute>
+            } />
+             <Route path={"/customer-view-opportunity"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerViewOpportunity />
+              </PrivateRoute>
+            } />
+            <Route path={"/customer-details"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerFormDetails />
+              </PrivateRoute>
+            } />
+                        <Route path={"/customer-profile"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerProfile />
+              </PrivateRoute>
+            } />
+                    <Route path={"/customer-invoice"} element={
+              <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <CustomerInvoice />
+              </PrivateRoute>
+            } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
           <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />
           <Route path={AUTH_LINKS.SIGN_UP} element={<Signup />} />
