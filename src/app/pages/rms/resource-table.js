@@ -105,8 +105,11 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
             {openResourceForm && <ResourceForm openModal={openResourceForm} setOpenModal={setOpenResourceForm} editInfo={editInfo} refetchResources={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>All Resources</Typography>
-                <Box>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{tableName}</Typography>
+                {
+                    tableName === "Active Incidents" ? ""
+                    :
+                    <Box>
                     {search && <Search sx={{ width: "200px" }}
                         onChange={(e) => { setSearchValue(e.target.value) }}
                     />}
@@ -114,6 +117,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                         onClick={() => { setEditInfo(null); setOpenResourceForm(true) }}
                     >Add</Button>
                 </Box>
+                }
 
             </Box>
             <Table size="small">
