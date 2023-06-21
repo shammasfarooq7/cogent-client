@@ -123,9 +123,9 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
              <Route path={"/resources-dashboard"} element={
-            <PrivateRoute roles={[ROLE.RESOURCE]}>
+            // <PrivateRoute roles={[ROLE.RESOURCE]}>
               <ResourcesDashboard />
-            </PrivateRoute>
+            // </PrivateRoute>
           } />
             <Route path={"/resources-calendar"} element={
             <PrivateRoute roles={[ROLE.RESOURCE]}>

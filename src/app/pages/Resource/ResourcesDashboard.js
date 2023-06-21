@@ -7,9 +7,10 @@ import { useQuery } from "@apollo/client";
 import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { TaskBox } from '../../components/common/CustomTaskBox';
-import { Calendar } from '../../components/common/Calendar';
 import CurvedChart from './CurvedChart';
 import SplineChart from './CurvedChart';
+import Calendar from '../../components/common/Calendar';
+import Incidents from '../../components/common/Calendar';
 
 
 export const ResourcesDashboard = () => {
@@ -70,7 +71,7 @@ export const ResourcesDashboard = () => {
         </Grid>
          
         <Grid item xs={12} md={6}>
-            <Calendar />
+         <Incidents />
         </Grid>
        
         <Grid item xs={12} md={6}>
