@@ -17,7 +17,7 @@ const bull = (
 export const TaskBox = ({taskName, buttontText})=> {
   return (
       <>
-         <Box sx={{background:'#FFFFFF', padding:'14px', height:'449px', overflowX:'auto'}}>
+         <Box sx={{background:'#FFFFFF', padding:'14px', height:'449px', overflowY:'auto'}}>
           <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
             <Typography sx={{fontSize:'18px', fontWeight:'600', marginBottom:'14px'}}>{taskName}</Typography>
            {buttontText &&  <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 20px", marginBottom:'8px' }}>{buttontText}</Button>}
