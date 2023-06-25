@@ -64,7 +64,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             time: "",
             country: "",
             city: "",
-            customerId: "",
+            customerId: "1",
             customerCaseNumber: "d",
             accountName: "",
             projectId: "1",
@@ -112,9 +112,9 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
         Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
     }
     const { handleSubmit, watch, setValue, getValues, formState: { errors } } = methods;
-
-    const selectedDropdownValue = watch('customerId');
-    console.log("watch", selectedDropdownValue)
+    const customerId = getValues('customerId')
+    const selectedDropdownValue = customerId !== undefined && watch('customerId');
+    console.log("watch", selectedDropdownValue, customerId)
 
 
 
@@ -126,7 +126,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     useEffect(() => {
         alert('pppp')
 
-    }, selectedDropdownValue);
+    }, [selectedDropdownValue]);
 
    
     const onSubmit = async (data) => {
