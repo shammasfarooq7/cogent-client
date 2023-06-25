@@ -34,7 +34,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     const [allTickets, setAllTickets] = useState([
         {
             id: 367322,
-            ticketType: 'FSE',
+            ticketType: 'fse',
             date: '2023-06-17',
             time: '20:48',
             country: 'Pakistan',
@@ -79,7 +79,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67323,
-            ticketType: 'PTE',
+            ticketType: 'pte',
             date: '2023-06-12',
             time: '20:58',
             country: 'India',
@@ -259,7 +259,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67323,
-            ticketType: 'PTE',
+            ticketType: 'pte',
             date: '2023-06-12',
             time: '20:58',
             country: 'India',
@@ -304,7 +304,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67324,
-            ticketType: 'FTE',
+            ticketType: 'fte',
             date: '2023-06-10',
             time: '21:30',
             country: 'United Kingdom',
@@ -349,7 +349,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67324,
-            ticketType: 'FTE',
+            ticketType: 'fte',
             date: '2023-06-10',
             time: '21:30',
             country: 'United Kingdom',
@@ -391,9 +391,10 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
             numberOfHoursReq: 8,
             numberOfResource: 2,
             attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },  {
+        },
+        {
             id: 367322,
-            ticketType: 'FSE',
+            ticketType: 'fse',
             date: '2023-06-17',
             time: '20:48',
             country: 'Pakistan',
@@ -438,7 +439,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67323,
-            ticketType: 'PTE',
+            ticketType: 'pte',
             date: '2023-06-12',
             time: '20:58',
             country: 'India',
@@ -483,7 +484,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67324,
-            ticketType: 'FTE',
+            ticketType: 'fte',
             date: '2023-06-10',
             time: '21:30',
             country: 'United Kingdom',
@@ -528,7 +529,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67324,
-            ticketType: 'FTE',
+            ticketType: 'fte',
             date: '2023-06-10',
             time: '21:30',
             country: 'United Kingdom',
@@ -570,9 +571,10 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
             numberOfHoursReq: 8,
             numberOfResource: 2,
             attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },  {
+        },
+        {
             id: 367322,
-            ticketType: 'FSE',
+            ticketType: 'fse',
             date: '2023-06-17',
             time: '20:48',
             country: 'Pakistan',
@@ -617,7 +619,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67323,
-            ticketType: 'PTE',
+            ticketType: 'pte',
             date: '2023-06-12',
             time: '20:58',
             country: 'India',
@@ -662,7 +664,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67324,
-            ticketType: 'FTE',
+            ticketType: 'fte',
             date: '2023-06-10',
             time: '21:30',
             country: 'United Kingdom',
@@ -707,7 +709,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         },
         {
             id: 67324,
-            ticketType: 'FTE',
+            ticketType: 'fte',
             date: '2023-06-10',
             time: '21:30',
             country: 'United Kingdom',

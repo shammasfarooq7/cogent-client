@@ -466,6 +466,21 @@ export const serviceType = [
     label: "OTHER",
   }
 ];
+
+export const ticketsType = [
+  {
+    value: "FSE",
+    label: "FSE",
+  },
+  {
+    value: "PTE",
+    label: "PTE",
+  },
+  {
+    value: "FTE",
+    label: "FTE",
+  }
+]
 export const countries = [
   {value: "Afghanistan", label : "Afghanistan"},
   {value: "Åland Islands", label : "Åland Islands"},

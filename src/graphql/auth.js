@@ -29,13 +29,10 @@ export const GET_CURRENT_USER = gql`
 query getCurrentUserQuery {
   getCurrentUser {
     email
-    mobileNumber
     firstName
     lastName
     middleName
     email
-    rpocEmail
-    cogentEmail
     roles {
       role
     }

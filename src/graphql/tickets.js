@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_TICKET_MUTATION = gql`
-mutation Create($createTicketInput: CreateTicketInput!) {
-    create(createTicketInput: $createTicketInput) {
+mutation CreateTicket($createTicketInput: CreateTicketInput!) {
+    createTicket(createTicketInput: $createTicketInput) {
       message
     }
 
