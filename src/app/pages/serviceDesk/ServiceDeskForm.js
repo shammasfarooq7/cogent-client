@@ -8,7 +8,7 @@ import { Button } from '@mui/material';
 import { HeaderResource } from '../../components/common/HeaderResource';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { CustomFormController } from '../../components/common/CustomFormController';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CustomDropDrownController } from '../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ticketFormValidationSchema } from '../../validationSchema';
@@ -64,7 +64,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             time: "",
             country: "",
             city: "",
-            customerId: "1",
+            customerId: "",
             customerCaseNumber: "d",
             accountName: "",
             projectId: "1",
@@ -111,7 +111,8 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     if (data || UpdateData) {
         Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
     }
-    const { handleSubmit, watch, setValue, getValues, formState: { errors } } = methods;
+
+    const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
     const customerId = getValues('customerId')
     const selectedDropdownValue = customerId !== undefined && watch('customerId');
     console.log("watch", selectedDropdownValue, customerId)
@@ -124,9 +125,11 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     }, []);
 
     useEffect(() => {
-        alert('pppp')
+       if (customerId) {
+           alert("pop")
+       }
 
-    }, [selectedDropdownValue]);
+    }, [selectedDropdownValue, customerId]);
 
    
     const onSubmit = async (data) => {
