@@ -42,7 +42,7 @@ const rpocEmailValidationSchema = {
 }
 
 const cogentEmailValidationSchema = {
-  cogentEmail: yup.string().email("Invalid Email")
+  cogentEmail: yup.string().email("Invalid Email").nullable()
 }
 
 const statusValidationSchema = {
@@ -194,17 +194,50 @@ const bankAddressValidationSchema = {
   bankAddress: yup.string(),
 }
 
-const isOnboardedValidationSchema = {
+const contractStatusSchema = {
   isOnboarded: yup.boolean().required(requiredMessage("isOnboarded")),
+  contractDocuments: yup.boolean().required(requiredMessage("Contract Document")).nullable(),
+  interviewStatus: yup.string().required("Interview Status is required.").nullable(),
+}
+
+const rpocSchema = {
+
+  rpocName: yup.string().nullable().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().required('RPOC Name is required').nullable(),
+    otherwise: yup.string().optional().nullable()
+  }),
+  rpocEmail: yup.string().nullable().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().email(INVALID_EMAIL).required('RPOC Email is required').nullable(),
+    otherwise: yup.string().email(INVALID_EMAIL).nullable()
+  }),
+  rpocContactNumber: yup.string().nullable().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().required('RPOC Contact Number is required').nullable().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
+      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
+      return true
+    }),
+    otherwise: yup.string().nullable().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
+      if (!value) return true
+      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
+      return true
+    })
+  }),
+
 }
 
 const phoneNumberValidationSchema = {
   mobileNumber: yup.string().matches(phoneReg, 'Phone number is not valid').required(requiredMessage("Phone Number")),
 }
 
-export const resourceFormValidationSchema = yup.object({
-  // ...emailValidationSchema,
-  ...isOnboardedValidationSchema,
+const rmsResourceFormRemainingFields = {
+  ...rpocSchema,
+  ...contractStatusSchema,
+  ...cogentEmailValidationSchema,
+}
+
+const resourceFormCommonValidation = {
   ...statusValidationSchema,
   ...engagementTypeValidationSchema,
   ...skillSetValidationSchema,
@@ -220,81 +253,73 @@ export const resourceFormValidationSchema = yup.object({
   ...bankAddressValidationSchema,
   ...branchNameValidationSchema,
   ...bankNameValidationSchema,
-  ...cogentEmailValidationSchema,
   ...rpocEmailValidationSchema,
   ...accountTitleValidationSchema,
   ...accountTypeValidationSchema,
   ...firstNameValidationSchema,
   ...lastNameValidationSchema,
-  rpocName: yup.string().when('status', {
-    is: 'INDIRECT',
-    then: yup.string().required('RPOC Name is required'),
-    otherwise: yup.string().optional()
-  }),
-  rpocEmail: yup.string().when('status', {
-    is: 'INDIRECT',
-    then: yup.string().email(INVALID_EMAIL).required('RPOC Email is required'),
-    otherwise: yup.string().email(INVALID_EMAIL)
-  }),
-  rpocContactNumber: yup.string().when('status', {
-    is: 'INDIRECT',
-    then: yup.string().required('RPOC Contact Number is required').test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
-      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
-      return true
-    }),
-    otherwise: yup.string().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
-      if (!value) return true
-      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
-      return true
-    })
-  }),
-  taxNumber: yup.string().required("Tax Number is required"),
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("First Name is required"),
-  nationality: yup.string().required("Nationality is required"),
-  country: yup.string().required("Country is required"),
-  mobileNumber: yup.string().required('Mobile Number is required').test('valid-mobile-number', 'Mobile Number is Invalid', function (value) {
+  taxNumber: yup.string().required("Tax Number is required").nullable(),
+  firstName: yup.string().required("First Name is required").nullable(),
+  lastName: yup.string().required("First Name is required").nullable(),
+  nationality: yup.string().required("Nationality is required").nullable(),
+  country: yup.string().required("Country is required").nullable(),
+  mobileNumber: yup.string().nullable().required('Mobile Number is required').nullable().test('valid-mobile-number', 'Mobile Number is Invalid', function (value) {
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false  // this whole validation for required phone number
     return true
   }),
-  contactNumber: yup.string().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
+  contactNumber: yup.string().nullable().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
     if (!value) return true
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
     return true
   }),
-  whatsappNumber: yup.string().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
+  whatsappNumber: yup.string().nullable().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
     if (!value) return true
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
     return true
   }),
-  addressLine1: yup.string().required("Address is required."),
-  workPermitStatus: yup.string().required("Work Permit Status is required."),
-  resumeDocUrl: yup.string().optional(),
-  identityDocUrl: yup.string().optional(),
+  addressLine1: yup.string().required("Address is required.").nullable(),
+  addressLine2: yup.string().nullable().optional(),
+  workPermitStatus: yup.string().required("Work Permit Status is required.").nullable(),
+  resumeDocUrl: yup.string().nullable().optional(),
+  identityDocUrl: yup.string().nullable().optional(),
   myResume: yup.mixed().test(
     'is-file',
     'Resume file is required',
     function (value) {
       if (this.parent.resumeDocUrl) return true;
-      return value && ['application/pdf', 'image/jpg'].includes(value?.type);
+      return value && ['application/pdf', 'image/jpg', "image/jpeg"].includes(value?.type);
     }
   ),
-  transport: yup.string().required("Mode of transport is required."),
-  availability: yup.string().required("Availability of transport is required."),
+  transport: yup.string().required("Mode of transport is required.").nullable(),
+  availability: yup.string().required("Availability of transport is required.").nullable(),
   // mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
-  mobility: yup.string().required("Mobility is required."),
-  idCardType: yup.string().required("Id Card Type is required."),
+  mobility: yup.string().required("Mobility is required.").nullable(),
+  idCardType: yup.string().required("Id Card Type is required.").nullable(),
   identityDocument: yup.mixed().test(
     'is-file',
     'Identity file is required',
     function (value) {
       if (this.parent.identityDocUrl) return true;
-      return value && ['application/pdf', 'image/jpg'].includes(value?.type);
+      return value && ['application/pdf', 'image/jpg', "image/jpeg"].includes(value?.type);
     }
   ),
-  contractDocuments: yup.boolean().required(requiredMessage("Contract Document")),
-  interviewStatus: yup.string().required("Interview Status is required."),
-})
+}
+
+export const getResourceFormValidationSchema = (role) => {
+
+  if (role === "rms") {
+    return yup.object({
+      ...resourceFormCommonValidation,
+      ...rmsResourceFormRemainingFields
+    })
+  }
+  else if (role === "resource") {
+    return yup.object({
+      ...resourceFormCommonValidation,
+    })
+  }
+}
+
 
 export const loginValidationSchema = yup.object({
   ...emailValidationSchema,

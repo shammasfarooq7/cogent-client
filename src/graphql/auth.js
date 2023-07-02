@@ -9,7 +9,6 @@ export const SIGN_UP = gql`
     signup(signUpUserInput: $signUpUserInput) {
       id
       email
-      mobileNumber
       createdAt
       updatedAt
     }

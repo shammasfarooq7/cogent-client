@@ -19,7 +19,6 @@ export const RequestUsersTable = ({ resourceTableRefetch }) => {
     const { data, loading, refetch } = useQuery(GET_REQUEST_USERS_QUERY, {
         variables: {
             getNewRequestUsersInput: {
-                role: "RESOURCE",
                 page,
                 limit,
             }
@@ -76,14 +75,14 @@ export const RequestUsersTable = ({ resourceTableRefetch }) => {
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !data?.getNewRequestUsers?.users?.length
+                        : !data?.getNewRequestUsers?.resources?.length
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : data?.getNewRequestUsers?.users?.map((resource) => (
+                            : data?.getNewRequestUsers?.resources?.map((resource) => (
                                 <TableRow key={resource.id} sx={{ mt: 2 }}>
                                     <TableCell width={"30%"}>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>

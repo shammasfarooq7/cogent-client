@@ -25,14 +25,14 @@ export const ResourceDashboard = () => {
   const [dashboardStat, setDashboardStat] = useState(null)
   const [resourceTableRefetch, setResourceTabelRefetch] = useState(null)
 
-  const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
+  const { data, loading, error } = useQuery(Get_RMS_Dashboard_Stats, {
 
     fetchPolicy: "network-only"
   });
 
   useEffect(() => {
     if (data) {
-      setDashboardStat(data.getDashboardStats);
+      setDashboardStat(data.getRMSDashboardStats);
     }
   }, [data]);
 

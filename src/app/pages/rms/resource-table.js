@@ -31,10 +31,9 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
 
     const searchQuery = useDebounce(searchValue, 500);
 
-    const { data, loading, refetch } = useQuery(GET_ALL_USERS_QUERY, {
+    const { data, loading, refetch } = useQuery(GET_ALL_RESOURCES_QUERY, {
         variables: {
-            getAllUsersInput: {
-                role: "RESOURCE",
+            getAllResourcesInput: {
                 page,
                 limit,
                 ...(searchQuery && { searchQuery })
@@ -138,14 +137,14 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !data?.getAllUsers?.users?.length
+                        : !data?.getAllResources?.resources?.length
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : data?.getAllUsers?.users?.map((resource) => (
+                            : data?.getAllResources?.resources?.map((resource) => (
                                 <TableRow key={resource.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
@@ -180,7 +179,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
             <Box display={"flex"} justifyContent={"end"} marginTop={2}>
                 <TablePagination
                     component="div"
-                    count={data?.getAllUsers?.count || 0}
+                    count={data?.getAllResources?.count || 0}
                     page={page}
                     onPageChange={handleChangePage}
                     rowsPerPage={limit}

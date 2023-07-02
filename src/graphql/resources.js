@@ -96,11 +96,88 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
   }
 `;
 
+export const GET_ALL_RESOURCES_QUERY = gql`
+query GetAllResourcesQuery($getAllResourcesInput: GetAllResourcesInput!) {
+  getAllResources(getAllResourcesInput: $getAllResourcesInput) {
+    count
+    resources{
+      id
+      status
+      vendorName
+      rpocName
+      rpocEmail
+      rpocContactNumber
+      firstName
+      lastName
+      idCardType
+      identityDocUrl
+      middleName
+      idCardNumber
+      taxNumber
+      nationality
+      region
+      country
+      state
+      city
+      postalCode
+      addressLine1
+      addressLine2
+      email
+      mobileNumber
+      contactNumber
+      whatsappNumber
+      whatsappGroup
+      whatsappGroupLink
+      cogentEmail
+      workPermitStatus
+      skillSet
+      resumeDocUrl
+      availableTools
+      hourlyRate
+      halfDayRate
+      fullDayRate
+      monthlyRate
+      anyExtraRate
+      languages
+      engagementType
+      userPaymentMethod {
+        id
+        accountType
+        accountTitle
+        beneficiaryFirstName
+        beneficiaryMiddleName
+        beneficiaryAddress
+        beneficiaryLastName
+        sortCode
+        accountNumber
+        iban
+        swiftCode
+        bankName
+        branchName
+        bankAddress
+      }
+      transport
+      availability
+      mobility
+      interviewStatus
+      contractDocuments
+      onboardedBy{
+        id
+      firstName
+      lastName
+      middleName
+      }
+      isOnboarded
+    }
+    }
+  }
+`;
+
 export const GET_REQUEST_USERS_QUERY = gql`
-query GetRequestUsersQuery($getNewRequestUsersInput: GetAllUsersInput!) {
+query GetRequestUsersQuery($getNewRequestUsersInput: GetAllResourcesInput!) {
   getNewRequestUsers(getNewRequestUsersInput: $getNewRequestUsersInput) {
     count
-    users{
+    resources{
       id
       email
       firstName
@@ -114,9 +191,9 @@ query GetRequestUsersQuery($getNewRequestUsersInput: GetAllUsersInput!) {
   }
 `;
 
-export const Get_Dashboard_Stats = gql`
-  query GetDashboardStats{
-    getDashboardStats {
+export const Get_RMS_Dashboard_Stats = gql`
+  query GetRMSDashboardStats{
+    getRMSDashboardStats {
     totalResourceCount
     newRequestCount
     newHiringCount
