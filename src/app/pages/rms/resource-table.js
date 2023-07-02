@@ -5,13 +5,13 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, TablePagination, Typography } from '@mui/material';
-import { images } from './../../assets/images';
-import { Search } from '../common/Search';
+import { images } from '../../assets/images';
+import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_RESOURCE_MUTATION, GET_ALL_RESOURCES_QUERY, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
-import DeleteAlert from '../common/DeleteAlert';
-import { ResourceForm } from '../Dashboard/ResouceForm';
-import { Alert } from '../common/Alert';
+import { DELETE_RESOURCE_MUTATION, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
+import DeleteAlert from '../../components/common/DeleteAlert';
+import { ResourceForm } from './ResouceForm';
+import { Alert } from '../../components/common/Alert';
 import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -104,8 +104,11 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
             {openResourceForm && <ResourceForm openModal={openResourceForm} setOpenModal={setOpenResourceForm} editInfo={editInfo} refetchResources={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>All Resources</Typography>
-                <Box>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{tableName}</Typography>
+                {
+                    tableName === "Active Incidents" ? ""
+                    :
+                    <Box>
                     {search && <Search sx={{ width: "200px" }}
                         onChange={(e) => { setSearchValue(e.target.value) }}
                     />}
@@ -113,6 +116,7 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                         onClick={() => { setEditInfo(null); setOpenResourceForm(true) }}
                     >Add</Button>
                 </Box>
+                }
 
             </Box>
             <Table size="small">

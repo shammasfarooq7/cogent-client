@@ -6,86 +6,80 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { Avatar, Typography, Button } from "@mui/material"
 import { Navigate, useNavigate } from 'react-router-dom';
-import { HeaderResource } from '../common/HeaderResource';
+import { HeaderResource } from '../../components/common/HeaderResource';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_RESOURCE_MUTATION, GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
 import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';
-import DeleteAlert from '../common/DeleteAlert';
-import { Alert } from '../common/Alert';
-import { ResourceForm } from './ResouceForm';
+import DeleteAlert from '../../components/common/DeleteAlert';
+import { Alert } from '../../components/common/Alert';
 import { downloadFile } from '../../services/rest-apis';
 
 
 const mdTheme = createTheme();
 
-export const ResourceDetails = () => {
-  const navigate = useNavigate();
-  const urlSearchParams = new URLSearchParams(window.location.search)
-  const id = urlSearchParams?.get("id") || "";
-
-  const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
-  const [openResourceForm, setOpenResourceForm] = useState(false);
-
-  const { data, loading, error, refetch } = useQuery(GET_A_RESOURCE_QUERY, {
-    variables: {
-      id
-    },
-    fetchPolicy: "network-only"
-  });
-
-  const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
-
-
-  const info = data?.getResource;
-  const paymentInfo = info?.userPaymentMethod?.[0]
-
-
-  const handleDeleteConfirm = async () => {
-    await deleteResource({
-      variables: {
-        id
-      }
-    })
-    Alert.success("Deleted Successfully!")
-    setOpenDeleteAlert(false);
-    navigate("/all-resource")
-  }
-
-  const handleUpdateClick = () => {
-    setOpenResourceForm(true);
-  };
-
-  const handleDownloadClick = (url) => {
-    downloadFile(getUrlNameforDwnload(url))
-  }
-
-  // if (!id) return <Navigate replace to={"/dashboard"} />
-
-  if (error)
-    return (
-      <Box padding={"30px"} sx={{ margin: "30px", border: "1px solid gray", borderRadius: "8px", background: "white" }}>
-        {error?.message || "Something went wrong"}
-      </Box>
-    )
+export const ResourceProfile = () => {
+    const navigate = useNavigate();
+    const urlSearchParams = new URLSearchParams(window.location.search)
+    const id = urlSearchParams?.get("id") || "";
+  
+    const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+    const [openResourceForm, setOpenResourceForm] = useState(false);
+  
+    // const { data, loading, error, refetch } = useQuery(GET_A_RESOURCE_QUERY, {
+    //   variables: {
+    //     id
+    //   },
+    //   fetchPolicy: "network-only"
+    // });
+  
+    // const [deleteResource, { loading: isDeleteLoading }] = useMutation(DELETE_RESOURCE_MUTATION)
+  
+  
+    const info = ""
+    const paymentInfo = info?.userPaymentMethod?.[0]
+  
+  
+    const handleDeleteConfirm = async () => {
+    //   await deleteResource({
+    //     variables: {
+    //       id
+    //     }
+    //   })
+      Alert.success("Deleted Successfully!")
+      setOpenDeleteAlert(false);
+      navigate("/all-resource")
+    }
+  
+    const handleUpdateClick = () => {
+      setOpenResourceForm(true);
+    };
+  
+    const handleDownloadClick = (url) => {
+      downloadFile(getUrlNameforDwnload(url))
+    }
+  
+    // if (!id) return <Navigate replace to={"/dashboard"} />
+  
+    // if (error)
+    //   return (
+    //     <Box padding={"30px"} sx={{ margin: "30px", border: "1px solid gray", borderRadius: "8px", background: "white" }}>
+    //       {error?.message || "Something went wrong"}
+    //     </Box>
+    //   )
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4, paddingLeft: "10px" }}>
 
-      <DeleteAlert
+      {/* <DeleteAlert
         open={openDeleteAlert}
         setOpen={setOpenDeleteAlert}
         handleConfirm={handleDeleteConfirm}
         isLoading={isDeleteLoading}
         title={"Delete Resource"}
         text={"Are you sure you want to delete this resource? This action cannot be revert back."}
-      />
+      /> */}
 
-      {openResourceForm &&
-        <ResourceForm
-          openModal={openResourceForm}
-          setOpenModal={setOpenResourceForm}
-          editInfo={info}
-          refetchResources={refetch} />}
+
 
       <Box sx={{ backgroundColor: "white", p: 2 }}>
         {/* Chart */}
@@ -93,45 +87,20 @@ export const ResourceDetails = () => {
           <Grid item xs={4} md={4} lg={4} sx={{ display: "flex", flexDirection: "row" }}>
             <Avatar src="/static/images/avatar/1.jpg" variant="rounded" />
             <Box sx={{ paddingLeft: "5px" }}>
-              <Typography> {getName(info?.firstName, info?.middleName, info?.lastName) || "_ _"} </Typography>
-              <Typography sx={{ fontSize: "9px" }}>{info?.id || "_ _"}</Typography>
+              <Typography> {getName(info?.firstName, info?.middleName, info?.lastName) || "Brand Dennis"} </Typography>
+              <Typography sx={{ fontSize: "9px" }}>{info?.id || "#1245636636"}</Typography>
             </Box>
           </Grid>
           <Grid item xs={4} md={4} lg={5}>
 
           </Grid>
-          <Grid item xs={4} md={4} lg={3} display={"flex"} justifyContent={"flex-end"}>
+          <Grid item xs={4} md={4} lg={3}>
             {/* <Button sx={{ color: "#7E8299", backgroundColor: "#F5F8FA", marginRight: "10px" }}
               onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button> */}
             <Button variant="contained" onClick={handleUpdateClick}>Update</Button>
           </Grid>
         </Grid>
         <Divider />
-        <Grid item xs={12} md={12} lg={12}>
-          <HeaderResource heading="General Information" />
-        </Grid>
-        <Grid item xs={4} md={4} lg={12} sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Status</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.status || "_ _"}</Typography>
-          </Box>
-          <Box>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Vendor Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.vendorName || "_ _"}</Typography>
-          </Box>
-          <Box>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>RPOC Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.rpocName || "_ _"}</Typography>
-          </Box>
-          <Box>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>RPOC Email</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.rpocEmail || "_ _"}</Typography>
-          </Box>
-          <Box>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>RPOC Contact Number</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.rpocContactNumber}</Typography>
-          </Box>
-        </Grid>
 
         <Grid item xs={12} md={12} lg={12}>
           <HeaderResource heading="Personal Details" />

@@ -1,6 +1,6 @@
 // packages block
-import React from 'react';
-import { Box, InputAdornment, TextField ,Input, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, InputAdornment, TextField ,Input, MenuItem, Select } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
@@ -21,7 +21,8 @@ import './style.css'
 
 
 
-export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType , currencies}) => {
+export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType , currencies, onchange=false}) => {
+  
   const { control } = useFormContext();
   return (
     <Controller
@@ -43,13 +44,16 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
           InputLabelProps={{
             style: { color: "#222B45", fontFamily:"popins" },
           }}
-        >
-             {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+        >   
+        {
+          currencies && 
+            currencies.map((option) => (
+            <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
+              {onchange ? option.name : option.label}
             </MenuItem>
-          ))}
-            </TextField> 
+          ))
+        }
+          </TextField> 
       )}
     />
   );

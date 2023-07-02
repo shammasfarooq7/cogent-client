@@ -1,43 +1,19 @@
 import { useState } from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Modal from '@mui/material/Modal';
-import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Avatar, MenuItem, Typography, Menu, Button } from "@mui/material"
-import { MainListItems, secondaryListItems } from '../common/ListItems';
-import { Drawer } from '../common/Drawer';
-import { AppBar } from '../common/AppBar';
-import { Chart } from '../common/Chart';
-import { Deposits } from '../common/Calendar';
-import { Orders } from '../common/TableSchduel';
-import { DashboardCard } from '../common/Card';
+import { DashboardCard } from '../../components/common/Card';
 import { useQuery } from "@apollo/client";
-import { ResourceForm } from './ResouceForm';
 import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
-import cogentLogo from '../../assets/images/Cogent Logo.png';
-import cogentTextLogo from '../../assets/images/Cogent Text Logo.png';
-import { ResourceTable } from '../resources/resource-table';
+import { ResourceTable } from './resource-table';
 import { useEffect } from 'react';
-import { Get_RMS_Dashboard_Stats } from '../../../graphql/resources';
-import { RequestUsersTable } from '../requestUsers/request-users-table';
+import { Get_Dashboard_Stats } from '../../../graphql/resources';
+import { RequestUsersTable } from '../../components/requestUsers/request-users-table';
 
 
-const mdTheme = createTheme();
 
-export const DashboardContent = () => {
+export const ResourceDashboard = () => {
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(true);
@@ -126,7 +102,6 @@ export const DashboardContent = () => {
         {/* Recent Orders */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            {/* <Orders tableName="Active Incidents" /> */}
             <RequestUsersTable {...{ resourceTableRefetch }} />
           </Paper>
         </Grid>
@@ -140,7 +115,6 @@ export const DashboardContent = () => {
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            {/* <Orders tableName="Add Resources" /> */}
             <ResourceTable  {...{ resourceTableRefetch, setResourceTabelRefetch }} />
           </Paper>
         </Grid>
