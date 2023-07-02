@@ -31,7 +31,7 @@ import cogentLogo from '../../assets/images/Cogent Logo.png';
 import cogentTextLogo from '../../assets/images/Cogent Text Logo.png';
 import { ResourceTable } from '../resources/resource-table';
 import { useEffect } from 'react';
-import { Get_Dashboard_Stats } from '../../../graphql/resources';
+import { Get_RMS_Dashboard_Stats } from '../../../graphql/resources';
 import { RequestUsersTable } from '../requestUsers/request-users-table';
 
 
@@ -49,14 +49,14 @@ export const DashboardContent = () => {
   const [dashboardStat, setDashboardStat] = useState(null)
   const [resourceTableRefetch, setResourceTabelRefetch] = useState(null)
 
-  const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
+  const { data, loading, error } = useQuery(Get_RMS_Dashboard_Stats, {
 
     fetchPolicy: "network-only"
   });
 
   useEffect(() => {
     if (data) {
-      setDashboardStat(data.getDashboardStats);
+      setDashboardStat(data.getRMSDashboardStats);
     }
   }, [data]);
 
