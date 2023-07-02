@@ -8,7 +8,7 @@ import { Box, Button, TablePagination, Typography } from '@mui/material';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_TICKET_MUTATION, GET_ALL_TICKETSS_QUERY } from '../../../graphql/tickets';
+import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY } from '../../../graphql/tickets';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { SDForm } from './ServiceDeskForm';
 import { Alert } from '../../components/common/Alert';
@@ -30,7 +30,10 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     const [limit, setLimit] = useState(10);
     const [editInfo, setEditInfo] = useState(null);
 
-    
+
+   
+
+    //dummyData this need to be replaced with api data
     const [allTickets, setAllTickets] = useState([
         {
             id: 367322,
@@ -757,24 +760,19 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
 
     const searchQuery = useDebounce(searchValue, 500);
 
-
-    // const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
-    //     variables: {
-    //         getAllTicketsInput: {
-    //             role: "SD",
-    //             page,
-    //             limit,
-    //             ...(searchQuery && { searchQuery })
-    //         }
-    //     },
-    //     fetchPolicy: "network-only"
-    // });
+    const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
+        variables: {
+            getAllTicketsInput: {
+                page,
+                limit,
+                ...(searchQuery && { searchQuery })
+            }
+        },
+        fetchPolicy: "network-only"
+    });
 
 
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
-    const loading = '';
-    const data = '';
-    const refetch = '';
    
     const handleChangePage = (event, newPage) => {
         console.log({ newPage });

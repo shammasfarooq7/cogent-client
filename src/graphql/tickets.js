@@ -26,10 +26,46 @@ mutation Update($updateTicketInput: UpdateTicketInput!, $id:String!) {
   }
 `;
 
-// export const GET_ALL_TICKETS_QUERY = gql`
-// query GetAllTicketsQuery($getAllTicketsInput: GetAllTicketsInput!) {
-//   getAllTickets(getAllTicketsInput: $getAllTicketsInput) {
-  
-//   }
-// `;
-    
+export const GET_All_CUSTOMERS_QUERY = gql`
+query GetCustomersQuery($getAllCustomerInput: GetAllCustomersInput!) {
+  getAllCustomer(getAllCustomerInput: $getAllCustomerInput) {
+    count
+    customers{
+      id
+      name
+    }
+    }
+  }
+`;
+
+export const GET_PROJECT_BY_CUSTOMERS_QUERY = gql`
+query GetProjectByCustomerQuery($id: String!) {
+  getProjectByCustomer(id: $id) {
+    Project {
+      id
+      name
+    }
+    }
+  }
+`;
+
+export const GET_ALL_TICKETS_QUERY = gql`
+query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
+  getAllTickets(getAllTicketsInput: $getAllTicketsInput) {
+    count
+    tickets {
+      id
+      customerTicketNumber
+      cogentCaseNumber
+      cogentWorkOrderNumber
+      ticketDetail {
+        id
+        region
+      }
+      createdAt
+      updatedAt
+      ticketReceivedTime
+    }
+    }
+  }
+`;

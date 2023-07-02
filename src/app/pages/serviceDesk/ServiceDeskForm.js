@@ -12,8 +12,8 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CustomDropDrownController } from '../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ticketFormValidationSchema } from '../../validationSchema';
-import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION } from '../../../graphql/tickets';
-import { useMutation } from '@apollo/client';
+import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION, GET_All_CUSTOMERS_QUERY, GET_PROJECT_BY_CUSTOMERS_QUERY } from '../../../graphql/tickets';
+import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from '../../components/common/Alert';
 import { SimpleDropDownController } from '../../components/common/SimpleDropDownController';
 import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType } from '../../constants';
@@ -22,7 +22,6 @@ import { CustomDocumentUploadController } from '../../components/common/CustomDo
 import { uploadDocument } from '../../services/rest-apis';
 import { UserContext } from '../../context/user-context';
 import { getFileWithNewName, getName } from '../../helper';
-import { CutomFormRadioController } from '../../components/common/CutomFormRadioController';
 import FileUrlDisplay from '../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -45,7 +44,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
 
     const { user } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-    const [customer, setCustomer] = useState([{value:"--", label:"--"}]);
+    const [customer, setCustomer] = useState('');
 
     const urlSearchParams = new URLSearchParams(window.location.search)
     const id = urlSearchParams?.get("id");
@@ -101,13 +100,18 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
         }
     });
 
-    const pp = () => {
-        alert('pp')
-    }
    
     const [createTicket, { data, loading }] = useMutation(CREATE_TICKET_MUTATION);
     const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
-
+    const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
+        variables: {
+            getAllCustomerInput: {
+                role: "SD",
+            }
+        },
+        fetchPolicy: "network-only"
+    });
+    
     if (data || UpdateData) {
         Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
     }
@@ -118,15 +122,9 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     console.log("watch", selectedDropdownValue, customerId)
 
 
-
-    useEffect(() => {
-        setCustomer([{id:1,value:"uu", label:"uu"}, {id:2,value:"rr", label:"rr"}]);
-
-    }, []);
-
     useEffect(() => {
        if (customerId) {
-           alert("pop")
+        //    Pp();
        }
 
     }, [selectedDropdownValue, customerId]);
@@ -293,7 +291,8 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerName='customerId'
                                             controllerLabel='Customer'
                                             fieldType='text'
-                                            currencies={customer}
+                                            currencies={getAllCustomerData?.getAllCustomer?.customers}
+                                            onchange={true}
                                         />
                                         </Grid>
                                         <Grid item xs={4}>
@@ -333,7 +332,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerLabel='Select Project'
                                             fieldType='text'
                                             currencies={projects}
-                                            onChange={pp}
                                         />
                                     </Grid>
 
