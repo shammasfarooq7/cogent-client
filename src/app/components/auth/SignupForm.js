@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PersonIcon from '@mui/icons-material/Person';
 import Paper from '@mui/material/Paper';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -33,8 +34,10 @@ export const SignupForm = () => {
     resolver: yupResolver(signUpValidationSchema),
 
     defaultValues: {
+      firstName: '',
+      lastName: '',
+      middleName: '',
       email: '',
-      mobileNumber: '',
       password: "",
       confirmPassword: ""
     }
@@ -51,14 +54,16 @@ export const SignupForm = () => {
   const { handleSubmit, control, reset, formState: { errors } } = methods;
 
   const onSubmit = async (data) => {
-    const { email, password, mobileNumber } = data
+    const { email, password, mobileNumber, firstName, lastName, middleName } = data
     console.log(data)
     await signup({
       variables: {
         signUpUserInput: {
           email,
+          firstName,
+          middleName,
+          lastName,
           password,
-          mobileNumber
         }
       }
     })
@@ -113,6 +118,31 @@ export const SignupForm = () => {
               </Typography>
               <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                 <Box sx={{ mt: 1 }}>
+                <Box sx={{ marginBottom: "25px" }}>
+                    <CustomController
+                      controllerName='firstName'
+                      controllerLabel='First Name '
+                      fieldType='text'
+                      fieldIcon={<PersonIcon sx={{ color: "#FFFFFF", fontSize: "15px" }} />}
+                      variantField="standard"
+                    />
+
+                    <CustomController
+                      controllerName='middleName'
+                      controllerLabel='Middle Name '
+                      fieldType='text'
+                      fieldIcon={<PersonIcon sx={{ color: "#FFFFFF", fontSize: "15px" }} />}
+                      variantField="standard"
+                    />
+
+                    <CustomController
+                      controllerName='lastName'
+                      controllerLabel='Last Name '
+                      fieldType='text'
+                      fieldIcon={<PersonIcon sx={{ color: "#FFFFFF", fontSize: "15px" }} />}
+                      variantField="standard"
+                    />
+                  </Box>
                   <Box sx={{ marginBottom: "25px" }}>
                     <CustomController
                       controllerName='email'
@@ -122,11 +152,7 @@ export const SignupForm = () => {
                       variantField="standard"
                     />
                   </Box>
-                  {/* <CustomController
-                    controllerName='username'
-                    controllerLabel='Enter your username'
-                    fieldType='text'
-                  /> */}
+
                   <Box sx={{ marginBottom: "25px" }}>
                     <CustomController
                       controllerName='password'
@@ -146,13 +172,6 @@ export const SignupForm = () => {
                       variantField="standard"
                       fieldIcon={<LockOutlinedIcon sx={{ color: "#FFFFFF", fontSize: "15px" }} />}
                       isPassword
-                    />
-                  </Box>
-
-                  <Box sx={{ marginBottom: "25px" }}>
-                    <CustomPhoneController
-                      controllerName='mobileNumber'
-                      controllerLabel='Phone Number'
                     />
                   </Box>
 

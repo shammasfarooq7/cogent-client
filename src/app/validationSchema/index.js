@@ -29,11 +29,11 @@ const emailValidationSchema = {
 }
 
 const firstNameValidationSchema = {
-  firstName: yup.string().required(requiredMessage("Email"))
+  firstName: yup.string().required(requiredMessage("First Name"))
 }
 
 const lastNameValidationSchema = {
-  lastName: yup.string().required(requiredMessage("Email"))
+  lastName: yup.string().required(requiredMessage("Last Name"))
 }
 
 
@@ -330,5 +330,6 @@ export const signUpValidationSchema = yup.object({
   ...rpocEmailValidationSchema,
   ...passwordValidationSchema,
   ...confirmPasswordValidationSchema,
-  ...phoneNumberValidationSchema
+  ...firstNameValidationSchema,
+  ...lastNameValidationSchema
 })
