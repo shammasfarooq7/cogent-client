@@ -32,13 +32,13 @@ export const MainListItems = () => {
       ))
     :
      <>
-    <ListItemButton >
+    <ListItemButton onClick={() => navigate('/admin/user')} >
       <ListItemIcon className='white'>
         <DashboardIcon className='white' />
       </ListItemIcon>
       <ListItemText primary="Users" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/customer')}>
         <ListItemIcon className='white'>
         <DashboardIcon className='white' />
       </ListItemIcon>
