@@ -33,8 +33,64 @@ const firstNameValidationSchema = {
 }
 
 const lastNameValidationSchema = {
-  lastName: yup.string().required(requiredMessage("Last Name"))
+  lastName: yup.string().required(requiredMessage("Last name"))
 }
+
+const roleValidationSchema = {
+  roles: yup.string().required(requiredMessage("Role"))
+}
+
+export const userValidationSchema = {
+  ...emailValidationSchema,
+  ...firstNameValidationSchema,
+  ...lastNameValidationSchema,
+  ...passwordValidationSchema,
+  ...roleValidationSchema
+}
+
+export const customerValidationSchema = {
+  name: yup.string().required(requiredMessage("Name")),
+  vendorReference: yup.string().required(requiredMessage("Vendor Reference")),
+  website: yup.string().required(requiredMessage("Website")),
+  establishYear: yup.string().required(requiredMessage("EstablishYear")),
+  employeesCount: yup.string().required(requiredMessage("Employees Count")),
+  dispatchGroupEmail: yup.string().required(requiredMessage("Dispatch GroupEmail")),
+  city: yup.string().required(requiredMessage("City")),
+  employeeCountLinkedin: yup.string().required(requiredMessage("Employee Count Linkedin")),
+  phone: yup.string().required(requiredMessage("Phone")),
+  country: yup.string().required(requiredMessage("Country")),
+  postCode: yup.string().required(requiredMessage("Post Code")),
+  linkedinUrl: yup.string().required(requiredMessage("Linkedin Url")),
+  email: yup.string().required(requiredMessage("Email")),
+  stateProvince: yup.string().required(requiredMessage("State Province")),
+  address: yup.string().required(requiredMessage("Address")),
+  annualRevenue: yup.string().required(requiredMessage("Annual Revenue")),
+  revenueSoftware: yup.string().required(requiredMessage("Revenue Software")),
+  revenueConsultancy: yup.string().required(requiredMessage("Revenue Consultancy")),
+  revenueSupport: yup.string().required(requiredMessage("Revenue Support")),
+  revenueLogistics: yup.string().required(requiredMessage("Revenue Logistics")),
+  revenueOther: yup.string().required(requiredMessage("Revenue Other")),
+  contactNumber: yup.string().required(requiredMessage("Contact Number")),
+  addressLine1: yup.string().required(requiredMessage("Address Line1")),
+  addressLine2: yup.string().required(requiredMessage("Address Line2")),
+  emailId: yup.string().required(requiredMessage("Email Id")),
+  mobile: yup.string().required(requiredMessage("Mobile")),
+  whatsappNumber: yup.string().required(requiredMessage("Whatsapp Number")),
+  whatsappGroup: yup.string().required(requiredMessage("Whatsapp Group")),
+  whatsappLink: yup.string().required(requiredMessage("Whatsapp Link")),
+  cogentEmailId: yup.string().required(requiredMessage("Cogent Email Id")),
+  workPermitStatus: yup.string().required(requiredMessage("Work Permit Status")),
+  primaryTechService: yup.string().required(requiredMessage("Primary Tech Service")),
+  fieldService: yup.string().required(requiredMessage("Field Service")),
+  keyCustomerSupport: yup.string().required(requiredMessage("Key Customer Support")),
+  languageSupport: yup.string().required(requiredMessage("Language Support")),
+  countrySupported: yup.string().required(requiredMessage("Country Supported")),
+  certification: yup.string().required(requiredMessage("Certification")),
+  customerAbbr: yup.string().required(requiredMessage("Customer Abbr")),
+
+
+}
+
 
 
 const rpocEmailValidationSchema = {

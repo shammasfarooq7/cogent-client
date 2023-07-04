@@ -11,12 +11,12 @@ import { CustomFormController } from '../../../components/common/CustomFormContr
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CustomDropDrownController } from '../../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ticketFormValidationSchema } from '../../../validationSchema';
+import { ticketFormValidationSchema, userValidationSchema } from '../../../validationSchema';
 import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION, GET_All_CUSTOMERS_QUERY, GET_PROJECT_BY_CUSTOMERS_QUERY } from '../../../../graphql/tickets';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from '../../../components/common/Alert';
 import { SimpleDropDownController } from '../../../components/common/SimpleDropDownController';
-import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType } from '../../../constants';
+import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType, roles } from '../../../constants';
 import { CustomDocumentUploadController } from '../../../components/common/CustomDocumentUploadController';
 // import { MultiDatePicker } from '../../components/common/CustomMultiDate';
 import { uploadDocument } from '../../../services/rest-apis';
@@ -55,15 +55,15 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
     }
 
     const methods = useForm({
+        resolver : yupResolver(userValidationSchema),
         mode: "all",
         defaultValues: {
              roles:'',
              email:'',
              firstName:'',
-             middleName:'',
              lastName:'',
              password:'',
-            ...editDefaultState
+            
         }
     });
 
@@ -98,6 +98,7 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
 
    
     const onSubmit = async (data) => {
+        console.log("dta>>>>>>>...",data)
         try {
             setIsLoading(true);
 
@@ -109,19 +110,10 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                 attachments : attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime} = data
             // return
             let serviceDocUrl = serviceDocuments || "";
-            if (myServiceDocument) {
-                const newFile = getFileWithNewName(myServiceDocument, getName(customerId), "serviceDocuments")
-                const response = await uploadDocument(newFile);
-                alert(response?.url)
-                serviceDocUrl = response?.url || "";
-            };
+         
 
             let attachments = attachment || "";
-            if (myAttachment) {
-                const newFile = getFileWithNewName(myAttachment, getName(customerId), "attachment");
-                const response = await uploadDocument(newFile);
-                attachments = response?.url || "";
-            };
+        
 
             const payload = {
                 jobSiteId,
@@ -225,7 +217,7 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             controllerName='roles'
                                             controllerLabel='Roles'
                                             fieldType='text'
-                                            currencies={getAllCustomerData?.getAllCustomer?.customers}
+                                            currencies={roles}
                                             onchange={true}
                                         />
                                         </Grid>

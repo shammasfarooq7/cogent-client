@@ -49,12 +49,12 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
           {
             currencies &&
             currencies.map((option) => (
-              <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
-                {onchange ? option.name : option.label}
-              </MenuItem>
-            ))
-          }
-        </TextField>
+            <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.value : option.value}>
+              {onchange ? option.value : option.label}
+            </MenuItem>
+          ))
+        }
+          </TextField> 
       )}
     />
   );

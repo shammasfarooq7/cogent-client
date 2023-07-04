@@ -11,7 +11,7 @@ import { CustomFormController } from '../../../components/common/CustomFormContr
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CustomDropDrownController } from '../../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ticketFormValidationSchema } from '../../../validationSchema';
+import { customerValidationSchema, ticketFormValidationSchema } from '../../../validationSchema';
 import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION, GET_All_CUSTOMERS_QUERY, GET_PROJECT_BY_CUSTOMERS_QUERY } from '../../../../graphql/tickets';
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from '../../../components/common/Alert';
@@ -55,15 +55,47 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
     }
 
     const methods = useForm({
+        resolver: yupResolver(customerValidationSchema),
         mode: "all",
         defaultValues: {
-             roles:'',
+             name:'',
+             vendorReference:'',
+             website:'',
+             establishYear:'',
+             employeesCount:'',
+             dispatchGroupEmail:'',
+             city:'',
+             employeeCountLinkedin:'',
+             phone:'',
+             country:'',
+             postCode:'',
+             linkedinUrl:'',
              email:'',
-             firstName:'',
-             middleName:'',
-             lastName:'',
-             password:'',
-            ...editDefaultState
+             stateProvince:'',
+             address:'',
+             annualRevenue:'',
+             revenueSoftware:'',
+             revenueConsultancy:'',
+             revenueSupport:'',
+             revenueLogistics:'',
+             revenueOther:'',
+             contactNumber:'',
+             addressLine1:'',
+             addressLine2:'',
+             emailId:'',
+             mobile:'',
+             whatsappNumber:'',
+             whatsappGroup:'',
+             whatsappLink:'',
+             cogentEmailId:'',
+             workPermitStatus:'',
+             primaryTechService:'',
+             fieldService:'',
+             keyCustomerSupport:'',
+             languageSupport:'',
+             countrySupported:'',
+             certification:'',
+             customerAbbr:''
         }
     });
 

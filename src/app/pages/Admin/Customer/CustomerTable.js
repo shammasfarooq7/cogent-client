@@ -828,7 +828,7 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
             <Table >
                 <TableHead>
                     <TableRow sx={{ backgroundColor: "#F5F8FA", borderRadius: "10px" }}>
-                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Customer ID</TableCell>
+                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Customer Post Code</TableCell>
                         <TableCell>Customer Name</TableCell>
                         <TableCell>Customer Email</TableCell>
                         <TableCell >Actions</TableCell>

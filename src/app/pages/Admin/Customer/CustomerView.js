@@ -127,7 +127,7 @@ export const CustomerView = () => {
         <Box  sx={{ mb: 2, display:'flex', justifyContent:'space-between' }}>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <Box sx={{ paddingLeft: "5px" }}>
-              <Typography sx={{fontWeight: 'bold'}}> User# {getName(info?.id)} </Typography>
+              <Typography sx={{fontWeight: 'bold'}}> Customer# {getName(info?.id)} </Typography>
             </Box>
           </Box>
           <Box>
@@ -146,10 +146,6 @@ export const CustomerView = () => {
           {/* <HeaderResource heading="General Information" /> */}
         </Grid>
         <Grid container>
-          <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>User ID</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.time || "_ _"}</Typography>
-          </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Name</Typography>
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.date || "_ _"}</Typography>
