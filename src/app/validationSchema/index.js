@@ -35,20 +35,24 @@ const firstNameValidationSchema = {
 const lastNameValidationSchema = {
   lastName: yup.string().required(requiredMessage("Last name"))
 }
+const middleNameValidationSchema = {
+  middleName: yup.string().required(requiredMessage("Last name")).nullable()
+}
 
 const roleValidationSchema = {
   roles: yup.string().required(requiredMessage("Role"))
 }
 
-export const userValidationSchema = {
-  ...emailValidationSchema,
-  ...firstNameValidationSchema,
-  ...lastNameValidationSchema,
-  ...passwordValidationSchema,
-  ...roleValidationSchema
-}
+export const userValidationSchema = yup.object({
+  firstName: yup.string().required(requiredMessage("First Name")),
+  lastName: yup.string().required(requiredMessage("Last name")),
+  middleName: yup.string().required(requiredMessage("Last name")).nullable(),
+  roles: yup.string().required(requiredMessage("Role")),
+  email: yup.string().email(INVALID_EMAIL).required(requiredMessage("Email")),
+  password: yup.string().required(requiredMessage("Password")),
+})
 
-export const customerValidationSchema = {
+export const customerValidationSchema = yup.object({
   name: yup.string().required(requiredMessage("Name")),
   vendorReference: yup.string().required(requiredMessage("Vendor Reference")),
   website: yup.string().required(requiredMessage("Website")),
@@ -87,9 +91,101 @@ export const customerValidationSchema = {
   countrySupported: yup.string().required(requiredMessage("Country Supported")),
   certification: yup.string().required(requiredMessage("Certification")),
   customerAbbr: yup.string().required(requiredMessage("Customer Abbr")),
+})
 
+export const projectValidationSchema = yup.object({
+  startDate : yup.string().required(requiredMessage("Start Date")),
+  endDate : yup.string().required(requiredMessage("End Date")),
+  customerId: yup.string().required(requiredMessage("Customer Id")),
+  status: yup.string().required(requiredMessage("Status")),
+  name: yup.string().required(requiredMessage("Name")),
+  clientPartnerName: yup.string().required(requiredMessage("Client Partner Name")),
+  custSdmName: yup.string().required(requiredMessage("Cust Sdm Name")),
+  custSdmEmail: yup.string().required(requiredMessage("Cust Sdm Email")),
+  custSdmContNum: yup.string().required(requiredMessage("Cust Sdm ContNum")),
+  cogSdmName: yup.string().required(requiredMessage("Cog Sdm Name")),
+  cogSdmNum: yup.string().required(requiredMessage("Cog Sdm Num")),
+  cogSdmCont: yup.string().required(requiredMessage("Cog Sdm Cont")),
+  cogSdEmail: yup.string().required(requiredMessage("Cog Sd Email")),
+  cogSdContNum: yup.string().required(requiredMessage("Cog Sd ContNum")),
+  agreedSla: yup.string().required(requiredMessage("Agreed Sla")),
+  coverage: yup.string().required(requiredMessage("Coverage")),
+  technologyType: yup.string().required(requiredMessage("Technology Type")),
+  serviceType: yup.string().required(requiredMessage("Service Type")),
+  supportModel: yup.string().required(requiredMessage("Support Model")),
+  talentLevel: yup.string().required(requiredMessage("Talent Level")),
+  cancelPolicy: yup.string().required(requiredMessage("Cancel Policy")),
+  dispatchAgreed: yup.string().required(requiredMessage("Dispatch Agreed")),
+  incrementTime: yup.string().required(requiredMessage("Increment Time")),
+  sow: yup.string().required(requiredMessage("Sow")),
+  sowDesc: yup.string().required(requiredMessage("Sow Desc")),
+  owJd: yup.string().required(requiredMessage("OwJd")),
+  serviceDeliv: yup.string().required(requiredMessage("Service Deliv")),
+  ssInst: yup.string().required(requiredMessage("SsInst")),
+  asInst: yup.string().required(requiredMessage("AsInst")),
+  toolsReq: yup.string().required(requiredMessage("Tools Req")),
+  namedWorker: yup.string().required(requiredMessage("Named Worker")),
+  assignedWorker: yup.string().required(requiredMessage("Assigned Worker")),
+  technicalSkill: yup.string().required(requiredMessage("Technical Skill")),
+  behSkills: yup.string().required(requiredMessage("Beh Skills")),
+  experienceReq: yup.string().required(requiredMessage("Experience Req")),
+  langReq: yup.string().required(requiredMessage("Lang Req")),
+  trainReq: yup.string().required(requiredMessage("Train Req")),
+  trainDoc: yup.string().required(requiredMessage("Train Doc")),
+  reqTools: yup.string().required(requiredMessage("Req Tools")),
+  reqSoft: yup.string().required(requiredMessage("Req Soft")),
+  specReq: yup.string().required(requiredMessage("Spec Req")),
+  cl1ee: yup.string().required(requiredMessage("Cl1ee")),
+  cl1ec: yup.string().required(requiredMessage("Cl1ec")),
+  cl2ee: yup.string().required(requiredMessage("Cl2ee")),
+  cl2ec: yup.string().required(requiredMessage("Cl2ec")),
+  cgl1ee: yup.string().required(requiredMessage("Cgl1ee")),
+  cgl1ec: yup.string().required(requiredMessage("Cgl1ec")),
+  cfl2ee: yup.string().required(requiredMessage("Cfl2ee")),
+  cgl2ec: yup.string().required(requiredMessage("Cgl2ec")),
+  code: yup.string().required(requiredMessage("Code")),
+})
 
-}
+export const JobsValidationSchema = yup.object({
+  name : yup.string().required(requiredMessage("Name")),
+  country : yup.string().required(requiredMessage("Country")),
+  city: yup.string().required(requiredMessage("City")),
+  state: yup.string().required(requiredMessage("State")),
+  province: yup.string().required(requiredMessage("Province")),
+  postcode: yup.string().required(requiredMessage("Post Code")),
+  siteAddress: yup.string().required(requiredMessage("Site Address")),
+  pocName: yup.string().required(requiredMessage("Poc Name")),
+  custSdmContNum: yup.string().required(requiredMessage("Cust Sdm ContNum")),
+  pocContactNumber: yup.string().required(requiredMessage("Poc Contact Number")),
+  pocEmailAdrress: yup.string().required(requiredMessage("Poc Email Adrress")),
+  ppe1h: yup.string().required(requiredMessage("Ppe1h")),
+  ppe2h: yup.string().required(requiredMessage("Ppe2h")),
+  ppe3h: yup.string().required(requiredMessage("Ppe3h")),
+  ppe4h: yup.string().required(requiredMessage("Ppe4h")),
+  ppe5h: yup.string().required(requiredMessage("Ppe5h")),
+  ppe6h: yup.string().required(requiredMessage("Ppe6h")),
+  ppe7h: yup.string().required(requiredMessage("Ppe7h")),
+  ppe8h: yup.string().required(requiredMessage("Ppe8h")),
+  tandm30: yup.string().required(requiredMessage("Tandm30")),
+  tandm1h: yup.string().required(requiredMessage("Tandm1h")),
+  afth: yup.string().required(requiredMessage("Afth")),
+  wknd: yup.string().required(requiredMessage("Wknd")),
+  ph: yup.string().required(requiredMessage("Ph")),
+  sat: yup.string().required(requiredMessage("Sat")),
+  sun: yup.string().required(requiredMessage("Sun")),
+  siteTiming: yup.string().required(requiredMessage("Site Timing")),
+  timeZone: yup.string().required(requiredMessage("Time Zone")),
+  dispatchAgreed: yup.string().required(requiredMessage("Dispatch Agreed")),
+  incrementTime: yup.string().required(requiredMessage("Increment Time")),
+  serviceType: yup.string().required(requiredMessage("Service Type")),
+  supportType: yup.string().required(requiredMessage("Support Type")),
+  serviceCatItem: yup.string().required(requiredMessage("Service CatItem")),
+  agreedSla: yup.string().required(requiredMessage("Agreed Sla")),
+  coverage: yup.string().required(requiredMessage("Coverage")),
+  technologyType: yup.string().required(requiredMessage("Technology Type")),
+  currency: yup.string().required(requiredMessage("Currency")),
+  projectId: yup.string().required(requiredMessage("Project Id"))
+})
 
 
 

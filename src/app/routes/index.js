@@ -41,6 +41,10 @@ import { UserListing } from "../pages/Admin/User/UserListing";
 import { UserView } from "../pages/Admin/User/UserView";
 import { CustomerView } from "../pages/Admin/Customer/CustomerView";
 import { CustomerListing } from "../pages/Admin/Customer/CustomerListing";
+import { ProjectListing } from "../pages/Admin/Project/ProjectListing";
+import { ProjectView } from "../pages/Admin/Project/ProjectView";
+import { JobsListing } from "../pages/Admin/Jobs/JobsListing";
+import { JobsView } from "../pages/Admin/Jobs/JobsView";
 
 const MainRoutes = () => {
   return (
@@ -220,6 +224,26 @@ const MainRoutes = () => {
                 <Route path={"/admin/customerview"} element={
               // <PrivateRoute roles={[ROLE.CUSTOMER]}>
                 <CustomerView />
+              // </PrivateRoute>
+            } />
+              <Route path={"/admin/project"} element={
+              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <ProjectListing />
+              // </PrivateRoute>
+            } />
+                <Route path={"/admin/projectview"} element={
+              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <ProjectView />
+              // </PrivateRoute>
+            } />
+             <Route path={"/admin/job"} element={
+              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <JobsListing />
+              // </PrivateRoute>
+            } />
+                <Route path={"/admin/jobview"} element={
+              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+                <JobsView />
               // </PrivateRoute>
             } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}

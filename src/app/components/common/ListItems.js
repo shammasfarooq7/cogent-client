@@ -44,13 +44,13 @@ export const MainListItems = () => {
       </ListItemIcon>
       <ListItemText primary="Customers" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/project')}>
         <ListItemIcon className='white'>
         <DashboardIcon className='white' />
       </ListItemIcon>
       <ListItemText primary="Projects" />
     </ListItemButton>
-    <ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/job')}>
         <ListItemIcon className='white'>
         <DashboardIcon className='white' />
       </ListItemIcon>

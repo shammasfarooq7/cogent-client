@@ -61,6 +61,7 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
              roles:'',
              email:'',
              firstName:'',
+             middleName:'',
              lastName:'',
              password:'',
             
