@@ -22,7 +22,7 @@ export const MainListItems = () => {
   console.log("userrole >>>>", userRole)
   return (
     <Fragment >
-      {userRole ? getSideBarLinks(userRole).map(item => (
+      {userRole && userRole != 'admin' ? getSideBarLinks(userRole).map(item => (
         <ListItemButton key={item.link} onClick={() => navigate(item.link)}>
           <ListItemIcon className='white'>
             <DashboardIcon className='white' />

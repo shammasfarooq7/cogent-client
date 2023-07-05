@@ -47,9 +47,8 @@ export const userValidationSchema = yup.object({
   firstName: yup.string().required(requiredMessage("First Name")),
   lastName: yup.string().required(requiredMessage("Last name")),
   middleName: yup.string().required(requiredMessage("Last name")).nullable(),
-  roles: yup.string().required(requiredMessage("Role")),
+  role: yup.string().required(requiredMessage("Role")),
   email: yup.string().email(INVALID_EMAIL).required(requiredMessage("Email")),
-  password: yup.string().required(requiredMessage("Password")),
 })
 
 export const customerValidationSchema = yup.object({

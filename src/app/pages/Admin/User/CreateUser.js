@@ -5,24 +5,16 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
-import { HeaderResource } from '../../../components/common/HeaderResource';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { CustomFormController } from '../../../components/common/CustomFormController';
 import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CustomDropDrownController } from '../../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ticketFormValidationSchema, userValidationSchema } from '../../../validationSchema';
-import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION, GET_All_CUSTOMERS_QUERY, GET_PROJECT_BY_CUSTOMERS_QUERY } from '../../../../graphql/tickets';
+import { CREATE_USER_MUTATION} from '../../../../graphql/admin';
+import {roles} from  '../../../constants'
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from '../../../components/common/Alert';
-import { SimpleDropDownController } from '../../../components/common/SimpleDropDownController';
-import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType, roles } from '../../../constants';
-import { CustomDocumentUploadController } from '../../../components/common/CustomDocumentUploadController';
-// import { MultiDatePicker } from '../../components/common/CustomMultiDate';
-import { uploadDocument } from '../../../services/rest-apis';
 import { UserContext } from '../../../context/user-context';
-import { getFileWithNewName, getName } from '../../../helper';
-import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
@@ -63,25 +55,24 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
              firstName:'',
              middleName:'',
              lastName:'',
-             password:'',
             
         }
     });
 
    
-    const [createTicket, { data, loading }] = useMutation(CREATE_TICKET_MUTATION);
-    const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
-    const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
-        variables: {
-            getAllCustomerInput: {
-                role: "SD",
-            }
-        },
-        fetchPolicy: "network-only"
-    });
+    const [createUser, { data, loading }] = useMutation(CREATE_USER_MUTATION);
+    // const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
+    // const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
+    //     variables: {
+    //         getAllCustomerInput: {
+    //             role: "SD",
+    //         }
+    //     },
+    //     fetchPolicy: "network-only"
+    // });
     
-    if (data || UpdateData) {
-        Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
+    if (data) {
+        Alert.success(data ? "User created successfully!" : "User updated successfully!")
     }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
@@ -89,69 +80,22 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
     const selectedDropdownValue = customerId !== undefined && watch('customerId');
     console.log("watch", selectedDropdownValue, customerId)
 
-
-    useEffect(() => {
-       if (customerId) {
-        //    Pp();
-       }
-
-    }, [selectedDropdownValue, customerId]);
-
    
     const onSubmit = async (data) => {
-        console.log("dta>>>>>>>...",data)
         try {
             setIsLoading(true);
 
-            const {jobSiteId, ticketType, country, city, customerId, customerCaseNumber,
-                accountName, projectId, endClientName, siteName, region, provinceState, siteAddress, postCode, spocName,
-                spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
-                scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl : serviceDocuments,
-                hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments : attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime} = data
-            // return
-            let serviceDocUrl = serviceDocuments || "";
-         
-
-            let attachments = attachment || "";
-        
-
+            const {email, firstName, middleName, lastName, role} = data
             const payload = {
-                jobSiteId,
-                ticketType,
-                customerId,
-                customerCaseNumber,
-                accountName,
-                projectId,
-                endClientName,
-                spocName,
-                spocContactNumber,
-                spocEmailAddress,
-                siteAccessInstruction,
-                technologyType,
-                jobSummary,
-                caseDetails,
-                scopeOfWork,
-                instructions,
-                addInstruction,
-                specialInstruction,
-                toolsRequested,
-                serviceDocUrl,
-                hardwareSN,
-                serviceType,
-                serviceLevel,
-                servicePriority,
-                slaPriority,
-                numberOfHoursReq,
-                numberOfResource,
-                // attachments,
-                ticketDates,
-                scheduledTime
+                email,
+                firstName,
+                middleName,
+                lastName,
+                role,
             }
 
-
             if (editInfo) {
-                await updateTicket({
+                await createUser({
                     variables: {
                         updateResourceInput: {
                             ...payload
@@ -161,11 +105,9 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                 })
             }
             else {
-                alert(payload)
-                console.log(payload)
-                await createTicket({
+                await createUser({
                     variables: {
-                        createTicketInput: {
+                        createUserInput: {
                             ...payload
                         }
                     }
@@ -215,7 +157,7 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                 
                                         <Grid item xs={12}>
                                             <CustomDropDrownController
-                                            controllerName='roles'
+                                            controllerName='role'
                                             controllerLabel='Roles'
                                             fieldType='text'
                                             currencies={roles}
@@ -254,15 +196,6 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                                 
                                             />
                                         </Grid>
-
-                                        <Grid item xs={12}>
-                                            <CustomFormController
-                                                controllerName='password'
-                                                controllerLabel='Password'
-                                                fieldType='text'
-                                                
-                                            />
-                                        </Grid>
                                      
                                     </Grid>
                                
@@ -271,9 +204,9 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                         type="submit"
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
-                                        disabled={isLoading || loading || updateLoading}
+                                        disabled={isLoading || loading}
                                     >
-                                        {(isLoading || loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
+                                        {(isLoading || loading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
                                     </Button>
                                     <Button
                                         onClick={handleClose}

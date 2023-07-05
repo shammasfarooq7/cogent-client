@@ -207,14 +207,14 @@ const MainRoutes = () => {
               </PrivateRoute>
             } />
               <Route path={"/admin/user"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <UserListing />
-              // </PrivateRoute>
+              </PrivateRoute>
             } />
              <Route path={"/admin/userview"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <UserView />
-              // </PrivateRoute>
+              </PrivateRoute>
             } />
              <Route path={"/admin/customer"} element={
               // <PrivateRoute roles={[ROLE.CUSTOMER]}>
