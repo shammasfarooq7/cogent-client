@@ -17,6 +17,7 @@ import { renderStatus } from '../../../constants';
 import { Search } from '../../../components/common/Search';
 import { GET_ALL_TICKETS_QUERY } from '../../../../graphql/tickets';
 import { CreateCustomer } from './CreateCustomer';
+import { GET_ALL_CUSTOMERS_QUERY, GET_ALL_USERS_QUERY } from '../../../../graphql/admin';
 
 
 export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
@@ -761,9 +762,9 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
 
     const searchQuery = useDebounce(searchValue, 500);
 
-    const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
+    const { data, loading, refetch } = useQuery(GET_ALL_CUSTOMERS_QUERY, {
         variables: {
-            getAllTicketsInput: {
+            getAllCustomerInput: {
                 page,
                 limit,
                 ...(searchQuery && { searchQuery })
@@ -842,23 +843,23 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !allTickets.length
+                        : data?.count && data.count == 0
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : allTickets.map((ticket) => (
+                            : data?.getAllCustomer?.customers.map((ticket) => (
                                 <TableRow key={ticket.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
-                                            <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {ticket.id}</Box>
+                                            <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {ticket.postCode}</Box>
                 
                                         </Box>
                                     </TableCell>
-                                    <TableCell>{ticket.date}</TableCell>
-                                    <TableCell>{ticket.time}</TableCell>
+                                    <TableCell>{ticket.name}</TableCell>
+                                    <TableCell>{ticket.email}</TableCell>
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}

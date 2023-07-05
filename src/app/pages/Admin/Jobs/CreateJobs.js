@@ -24,6 +24,7 @@ import { UserContext } from '../../../context/user-context';
 import { getFileWithNewName, getName } from '../../../helper';
 import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
+import { CREATE_JOBSITE_MUTATION } from '../../../../graphql/admin';
 
 const style = {
     position: 'absolute',
@@ -98,7 +99,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
     });
 
    
-    const [createTicket, { data, loading }] = useMutation(CREATE_TICKET_MUTATION);
+    const [createJobsite, { data, loading }] = useMutation(CREATE_JOBSITE_MUTATION);
     const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
     const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
         variables: {
@@ -109,8 +110,8 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
         fetchPolicy: "network-only"
     });
     
-    if (data || UpdateData) {
-        Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
+    if (data) {
+        Alert.success("Job created successfully!")
     }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
@@ -130,67 +131,60 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
     const onSubmit = async (data) => {
         try {
             setIsLoading(true);
-
-            const {jobSiteId, ticketType, country, city, customerId, customerCaseNumber,
-                accountName, projectId, endClientName, siteName, region, provinceState, siteAddress, postCode, spocName,
-                spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
-                scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl : serviceDocuments,
-                hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments : attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime} = data
-            // return
-            let serviceDocUrl = serviceDocuments || "";
-            if (myServiceDocument) {
-                const newFile = getFileWithNewName(myServiceDocument, getName(customerId), "serviceDocuments")
-                const response = await uploadDocument(newFile);
-                alert(response?.url)
-                serviceDocUrl = response?.url || "";
-            };
-
-            let attachments = attachment || "";
-            if (myAttachment) {
-                const newFile = getFileWithNewName(myAttachment, getName(customerId), "attachment");
-                const response = await uploadDocument(newFile);
-                attachments = response?.url || "";
-            };
-
+             
+            const {name, country, city, state, province, postcode,
+                siteAddress, pocName, pocContactNumber, pocEmailAdrress, ppe1h, ppe2h, ppe3h, ppe4h, ppe5h, ppe6h, ppe7h,
+                ppe8h, tandm30, tandm1h, afth, wknd, ph, sat, sun,
+                siteTiming, timeZone, dispatchAgreed, incrementTime, serviceType, supportType, serviceCatItem,
+                agreedSla, coverage, technologyType, currency, projectId
+            
+            } = data
             const payload = {
-                jobSiteId,
-                ticketType,
-                customerId,
-                customerCaseNumber,
-                accountName,
-                projectId,
-                endClientName,
-                spocName,
-                spocContactNumber,
-                spocEmailAddress,
-                siteAccessInstruction,
-                technologyType,
-                jobSummary,
-                caseDetails,
-                scopeOfWork,
-                instructions,
-                addInstruction,
-                specialInstruction,
-                toolsRequested,
-                serviceDocUrl,
-                hardwareSN,
+                name,
+                country,
+                city,
+                state,
+                province,
+                siteAddress,
+                pocName,
+                pocContactNumber,
+                pocEmailAdrress,
+                ppe1h,
+                ppe2h,
+                ppe3h,
+                ppe4h,
+                ppe5h,
+                ppe6h,
+                ppe7h,
+                postcode,
+                ppe8h,
+                tandm30,
+                tandm1h,
+                afth,
+                wknd,
+                ph,
+                sat,
+                sun,
+                siteTiming,
+                timeZone,
+                dispatchAgreed,
+                incrementTime,
                 serviceType,
-                serviceLevel,
-                servicePriority,
-                slaPriority,
-                numberOfHoursReq,
-                numberOfResource,
+                supportType,
+                serviceCatItem,
                 // attachments,
-                ticketDates,
-                scheduledTime
+                agreedSla,
+                coverage,
+                technologyType,
+                currency,
+                projectId
+
             }
 
-
             if (editInfo) {
-                await updateTicket({
+                await createJobsite({
                     variables: {
-                        updateResourceInput: {
+                        updateJobsiteInput: {
                             ...payload
                         },
                         id: info?.id
@@ -198,17 +192,14 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                 })
             }
             else {
-                alert(payload)
-                console.log(payload)
-                await createTicket({
+                await createJobsite({
                     variables: {
-                        createTicketInput: {
+                        createJobsiteInput: {
                             ...payload
                         }
                     }
                 })
             }
-
 
             if (refetchTickets) {
                 await refetchTickets()

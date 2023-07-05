@@ -113,7 +113,7 @@ export const UserTable = ({ tableName, search, setUserTabelRefetch, userTableRef
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : data.count == 0
+                        : data?.count && data.count == 0
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >

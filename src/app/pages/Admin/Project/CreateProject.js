@@ -24,6 +24,7 @@ import { UserContext } from '../../../context/user-context';
 import { getFileWithNewName, getName } from '../../../helper';
 import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
+import { CREATE_PROJECT_MUTATION } from '../../../../graphql/admin';
 
 const style = {
     position: 'absolute',
@@ -112,7 +113,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
     });
 
    
-    const [createTicket, { data, loading }] = useMutation(CREATE_TICKET_MUTATION);
+    const [createProject, { data, loading }] = useMutation(CREATE_PROJECT_MUTATION);
     const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
     const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
         variables: {
@@ -123,8 +124,8 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
         fetchPolicy: "network-only"
     });
     
-    if (data || UpdateData) {
-        Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
+    if (data) {
+        Alert.success("Project created successfully!")
     }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
@@ -142,71 +143,76 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
 
    
     const onSubmit = async (data) => {
-        console.log("data>>>>>..",data)
-        debugger
         try {
             setIsLoading(true);
 
-            const {jobSiteId, ticketType, country, city, customerId, customerCaseNumber,
-                accountName, projectId, endClientName, siteName, region, provinceState, siteAddress, postCode, spocName,
-                spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
-                scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl : serviceDocuments,
-                hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments : attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime} = data
-            // return
-            let serviceDocUrl = serviceDocuments || "";
-            if (myServiceDocument) {
-                const newFile = getFileWithNewName(myServiceDocument, getName(customerId), "serviceDocuments")
-                const response = await uploadDocument(newFile);
-                alert(response?.url)
-                serviceDocUrl = response?.url || "";
-            };
-
-            let attachments = attachment || "";
-            if (myAttachment) {
-                const newFile = getFileWithNewName(myAttachment, getName(customerId), "attachment");
-                const response = await uploadDocument(newFile);
-                attachments = response?.url || "";
-            };
-
+            const {startDate, endDate, customerId, status, name, clientPartnerName, custSdmName,
+                custSdmEmail, custSdmContNum, cogSdmName, cogSdmNum, cogSdmCont, cogSdEmail, cogSdContNum, agreedSla, coverage, technologyType, serviceType,
+                supportModel, talentLevel, cancelPolicy, dispatchAgreed, incrementTime, sow, sowDesc, owJd,
+                serviceDeliv, ssInst, asInst, toolsReq, namedWorker, assignedWorker, technicalSkill,
+                behSkills, experienceReq, langReq, trainReq, trainDoc, reqTools, reqSoft, specReq, cl1ee, cl1ec,
+                cl2ee, cl2ec, cgl1ee, cgl1ec, cfl2ee, cgl2ec, code
+            
+            } = data
             const payload = {
-                jobSiteId,
-                ticketType,
+                startDate,
+                endDate,
                 customerId,
-                customerCaseNumber,
-                accountName,
-                projectId,
-                endClientName,
-                spocName,
-                spocContactNumber,
-                spocEmailAddress,
-                siteAccessInstruction,
+                status,
+                name,
+                clientPartnerName,
+                custSdmEmail,
+                custSdmContNum,
+                cogSdmName,
+                cogSdmNum,
+                cogSdmCont,
+                cogSdEmail,
+                cogSdContNum,
+                agreedSla,
+                coverage,
                 technologyType,
-                jobSummary,
-                caseDetails,
-                scopeOfWork,
-                instructions,
-                addInstruction,
-                specialInstruction,
-                toolsRequested,
-                serviceDocUrl,
-                hardwareSN,
                 serviceType,
-                serviceLevel,
-                servicePriority,
-                slaPriority,
-                numberOfHoursReq,
-                numberOfResource,
+                custSdmName,
+                supportModel,
+                talentLevel,
+                cancelPolicy,
+                dispatchAgreed,
+                incrementTime,
+                sow,
+                sowDesc,
+                owJd,
+                serviceDeliv,
+                ssInst,
+                asInst,
+                toolsReq,
+                namedWorker,
+                assignedWorker,
+                technicalSkill,
                 // attachments,
-                ticketDates,
-                scheduledTime
+                behSkills,
+                experienceReq,
+                langReq,
+                trainReq,
+                trainDoc,
+                reqTools,
+                reqSoft,
+                specReq,
+                cl1ee,
+                cl1ec,
+                cl2ee,
+                cl2ec,
+                cgl1ee,
+                cgl1ec,
+                cfl2ee,
+                code,
+                cgl2ec
+
             }
 
-
             if (editInfo) {
-                await updateTicket({
+                await createProject({
                     variables: {
-                        updateResourceInput: {
+                        updateProjectInput: {
                             ...payload
                         },
                         id: info?.id
@@ -214,16 +220,20 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                 })
             }
             else {
-                alert(payload)
-                console.log(payload)
-                await createTicket({
+                await createProject({
                     variables: {
-                        createTicketInput: {
+                        createProjectInput: {
                             ...payload
                         }
                     }
                 })
             }
+
+      
+
+
+
+       
 
 
             if (refetchTickets) {

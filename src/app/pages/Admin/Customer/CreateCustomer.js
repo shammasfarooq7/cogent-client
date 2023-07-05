@@ -24,6 +24,7 @@ import { UserContext } from '../../../context/user-context';
 import { getFileWithNewName, getName } from '../../../helper';
 import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
+import { CREATE_CUSTOMER_MUTATION } from '../../../../graphql/admin';
 
 const style = {
     position: 'absolute',
@@ -53,6 +54,7 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
     const editDefaultState = {
         ...info
     }
+
 
     const methods = useForm({
         resolver: yupResolver(customerValidationSchema),
@@ -98,9 +100,10 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
              customerAbbr:''
         }
     });
-
    
-    const [createTicket, { data, loading }] = useMutation(CREATE_TICKET_MUTATION);
+    
+   
+    const [createCustomer, { data, loading }] = useMutation(CREATE_CUSTOMER_MUTATION);
     const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
     const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
         variables: {
@@ -111,8 +114,8 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
         fetchPolicy: "network-only"
     });
     
-    if (data || UpdateData) {
-        Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
+    if (data) {
+        Alert.success("Customer created successfully!")
     }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
@@ -133,64 +136,57 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
         try {
             setIsLoading(true);
 
-            const {jobSiteId, ticketType, country, city, customerId, customerCaseNumber,
-                accountName, projectId, endClientName, siteName, region, provinceState, siteAddress, postCode, spocName,
-                spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
-                scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl : serviceDocuments,
-                hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments : attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime} = data
-            // return
-            let serviceDocUrl = serviceDocuments || "";
-            if (myServiceDocument) {
-                const newFile = getFileWithNewName(myServiceDocument, getName(customerId), "serviceDocuments")
-                const response = await uploadDocument(newFile);
-                alert(response?.url)
-                serviceDocUrl = response?.url || "";
-            };
-
-            let attachments = attachment || "";
-            if (myAttachment) {
-                const newFile = getFileWithNewName(myAttachment, getName(customerId), "attachment");
-                const response = await uploadDocument(newFile);
-                attachments = response?.url || "";
-            };
-
+         
+           const {name, vendorReference, establishYear, employeesCount, dispatchGroupEmail, city, employeeCountLinkedin,
+                phone, country, postCode, linkedinUrl, email, stateProvince, address, annualRevenue, revenueSoftware, revenueConsultancy, revenueSupport,
+                revenueLogistics, revenueOther, contactNumber, addressLine1, addressLine2, emailId, mobile, whatsappNumber,
+                whatsappGroup, whatsappLink, cogentEmailId, workPermitStatus, primaryTechService, fieldService, keyCustomerSupport,
+                languageSupport, countrySupported, certification, customerAbbr
+            } = data
             const payload = {
-                jobSiteId,
-                ticketType,
-                customerId,
-                customerCaseNumber,
-                accountName,
-                projectId,
-                endClientName,
-                spocName,
-                spocContactNumber,
-                spocEmailAddress,
-                siteAccessInstruction,
-                technologyType,
-                jobSummary,
-                caseDetails,
-                scopeOfWork,
-                instructions,
-                addInstruction,
-                specialInstruction,
-                toolsRequested,
-                serviceDocUrl,
-                hardwareSN,
-                serviceType,
-                serviceLevel,
-                servicePriority,
-                slaPriority,
-                numberOfHoursReq,
-                numberOfResource,
+                name,
+                vendorReference,
+                establishYear,
+                employeesCount,
+                dispatchGroupEmail,
+                dispatchGroupEmail,
+                city,
+                phone,
+                country,
+                postCode,
+                linkedinUrl,
+                email,
+                stateProvince,
+                address,
+                annualRevenue,
+                revenueSupport,
+                revenueSoftware,
+                revenueConsultancy,
+                employeeCountLinkedin,
+                revenueLogistics,
+                revenueOther,
+                contactNumber,
+                addressLine1,
+                addressLine2,
+                emailId,
+                mobile,
+                whatsappNumber,
+                whatsappGroup,
+                whatsappLink,
+                cogentEmailId,
+                workPermitStatus,
+                primaryTechService,
+                fieldService,
+                keyCustomerSupport,
                 // attachments,
-                ticketDates,
-                scheduledTime
+                languageSupport,
+                countrySupported,
+                certification,
+                customerAbbr
             }
 
-
             if (editInfo) {
-                await updateTicket({
+                await createCustomer({
                     variables: {
                         updateResourceInput: {
                             ...payload
@@ -200,11 +196,9 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
                 })
             }
             else {
-                alert(payload)
-                console.log(payload)
-                await createTicket({
+                await createCustomer({
                     variables: {
-                        createTicketInput: {
+                        createCustomerInput: {
                             ...payload
                         }
                     }
