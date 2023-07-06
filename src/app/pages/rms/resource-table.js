@@ -8,7 +8,7 @@ import { Box, Button, TablePagination, Typography } from '@mui/material';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_RESOURCE_MUTATION, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
+import { DELETE_RESOURCE_MUTATION, GET_ALL_RESOURCES_QUERY } from '../../../graphql/resources';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { ResourceForm } from './ResouceForm';
 import { Alert } from '../../components/common/Alert';
@@ -107,15 +107,15 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{tableName}</Typography>
                 {
                     tableName === "Active Incidents" ? ""
-                    :
-                    <Box>
-                    {search && <Search sx={{ width: "200px" }}
-                        onChange={(e) => { setSearchValue(e.target.value) }}
-                    />}
-                    <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
-                        onClick={() => { setEditInfo(null); setOpenResourceForm(true) }}
-                    >Add</Button>
-                </Box>
+                        :
+                        <Box>
+                            {search && <Search sx={{ width: "200px" }}
+                                onChange={(e) => { setSearchValue(e.target.value) }}
+                            />}
+                            <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
+                                onClick={() => { setEditInfo(null); setOpenResourceForm(true) }}
+                            >Add</Button>
+                        </Box>
                 }
 
             </Box>

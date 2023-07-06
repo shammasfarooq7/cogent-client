@@ -375,7 +375,7 @@ export const slaPriority = [
     label: "NBD"
   },
   {
-    value: "3BD",
+    value: "t3BD",
     label: "3BD"
   },
   {
@@ -387,7 +387,7 @@ export const slaPriority = [
     label: "SBD4H"
   },
   {
-    value: "24x7",
+    value: "t4x7",
     label: "24x7"
   }
 ];
@@ -772,12 +772,12 @@ export const transportOptions = [
 
 export const technology = [
   {
-    value: 'Network',
+    value: 'NETWORK',
     label: 'NETWORK',
   },
   {
-    value: 'Other',
-    label: 'Other',
+    value: 'OTHER',
+    label: 'OTHER',
   },
   {
     value: 'EUC',
