@@ -41,10 +41,26 @@ query GetCustomersQuery($getAllCustomerInput: GetAllCustomersInput!) {
 export const GET_PROJECT_BY_CUSTOMERS_QUERY = gql`
 query GetProjectByCustomerQuery($id: String!) {
   getProjectByCustomer(id: $id) {
-    Project {
-      id
-      name
+    id
+    name
+    code
     }
+  }
+`;
+
+export const GET_JOBSITE_BY_PROJECT = gql`
+query GetJobsiteByProjectQuery($id: String!) {
+  getJobsitesByProject(id: $id) {
+    id
+    name
+    country
+    city
+    province
+    postcode
+    siteAddress
+    pocName
+    pocContactNumber
+    pocEmailAdrress
     }
   }
 `;

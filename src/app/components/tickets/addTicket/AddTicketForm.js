@@ -1,29 +1,34 @@
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import DatePicker from "react-multi-date-picker";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
-import { Button } from '@mui/material';
-import { HeaderResource } from '../../components/common/HeaderResource';
+import { Button, FormHelperText, TextField } from '@mui/material';
+import { HeaderResource } from '../../common/HeaderResource';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import { CustomFormController } from '../../components/common/CustomFormController';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { CustomDropDrownController } from '../../components/common/CustomDropDownController';
+import { CustomFormController } from '../../common/CustomFormController';
+import { FormProvider, useForm, } from 'react-hook-form';
+import { CustomDropDrownController } from '../../common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ticketFormValidationSchema } from '../../validationSchema';
-import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION, GET_All_CUSTOMERS_QUERY, GET_PROJECT_BY_CUSTOMERS_QUERY } from '../../../graphql/tickets';
-import { useMutation, useQuery } from '@apollo/client';
-import { Alert } from '../../components/common/Alert';
-import { SimpleDropDownController } from '../../components/common/SimpleDropDownController';
-import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType } from '../../constants';
-import { CustomDocumentUploadController } from '../../components/common/CustomDocumentUploadController';
-// import { MultiDatePicker } from '../../components/common/CustomMultiDate';
-import { uploadDocument } from '../../services/rest-apis';
-import { UserContext } from '../../context/user-context';
-import { getFileWithNewName, getName } from '../../helper';
-import FileUrlDisplay from '../../components/common/FileUrlDisplay/FileUrlDisplay';
+import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION } from '../../../../graphql/tickets';
+import { useMutation } from '@apollo/client';
+import { Alert } from '../../common/Alert';
+import { SimpleDropDownController } from '../../common/SimpleDropDownController';
+import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, regions, countries, ticketsType } from '../../../constants';
+import { CustomDocumentUploadController } from '../../common/CustomDocumentUploadController';
+import { uploadDocument } from '../../../services/rest-apis';
+import { getFileWithNewName, getFutureDate, getName } from '../../../helper';
+import FileUrlDisplay from '../../common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
+import { CustomerDropdown } from '../../common/CustomerDropdown';
+import { CustomFormCheckboxController } from '../../common/CustomFormCheckboxController';
+import { ProjectDropdown } from './ProjectDropdown';
+import { JobSiteDropdown } from './JobSiteDropdown';
+import '../../common/style.css'
+import { addTicketFormValidationSchema } from './AddTicketFormValidationSchema';
+
 
 const style = {
     position: 'absolute',
@@ -42,12 +47,7 @@ const style = {
 export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) => {
     const handleClose = () => setOpenModal(false);
 
-    const { user } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(false);
-    const [customer, setCustomer] = useState('');
-
-    const urlSearchParams = new URLSearchParams(window.location.search)
-    const id = urlSearchParams?.get("id");
     const { ...info } = editInfo || {};
 
     const editDefaultState = {
@@ -55,18 +55,18 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     }
 
     const methods = useForm({
+        resolver: yupResolver(addTicketFormValidationSchema),
         mode: "all",
         defaultValues: {
-            jobSiteId: "1",
+            jobSiteId: "",
             ticketType: "",
             date: "",
-            time: "",
             country: "",
             city: "",
-            customerId: "",
-            customerCaseNumber: "d",
+            customer: "",
+            customerCaseNumber: "",
             accountName: "",
-            projectId: "1",
+            projectId: "",
             endClientName: "",
             siteName: "",
             region: "",
@@ -84,68 +84,51 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             instructions: "",
             addInstruction: "",
             specialInstruction: "",
-            toolsRequested: ['Macbook'],
+            toolsRequested: [],
             serviceDocUrl: "",
             hardwareSN: "",
             serviceType: "",
             serviceLevel: "",
             servicePriority: "",
             slaPriority: "",
-            numberOfHoursReq: "",
-            numberOfResource: "",
+            numberOfHoursReq: null,
+            numberOfResource: null,
             attachments: "",
-            ticketDates: "",
+            ticketDates: [],
+            projectCode: "",
             scheduledTime: "23:03:00",
+            isAdhoc: false,
             ...editDefaultState
         }
     });
 
-   
+
     const [createTicket, { data, loading }] = useMutation(CREATE_TICKET_MUTATION);
     const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
-    const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
-        variables: {
-            getAllCustomerInput: {
-                role: "SD",
-            }
-        },
-        fetchPolicy: "network-only"
-    });
-    
+
     if (data || UpdateData) {
-        Alert.success(UpdateData ? "Resource updated successfully!" : "Resource created successfully!")
+        debugger
+        Alert.success(UpdateData ? "Ticket updated successfully!" : "Ticket created successfully!")
     }
 
-    const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
-    const customerId = getValues('customerId')
-    const selectedDropdownValue = customerId !== undefined && watch('customerId');
-    console.log("watch", selectedDropdownValue, customerId)
+    const { handleSubmit, setValue, watch, getValues, formState: { errors } } = methods;
 
-
-    useEffect(() => {
-       if (customerId) {
-        //    Pp();
-       }
-
-    }, [selectedDropdownValue, customerId]);
-
-   
     const onSubmit = async (data) => {
         try {
             setIsLoading(true);
 
-            const {jobSiteId, ticketType, country, city, customerId, customerCaseNumber,
+            const { jobSiteId, ticketType, country, city, customer, customerCaseNumber,
                 accountName, projectId, endClientName, siteName, region, provinceState, siteAddress, postCode, spocName,
                 spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
-                scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl : serviceDocuments,
+                scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl: serviceDocuments,
                 hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments : attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime} = data
-            // return
+                attachments: attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime, projectCode } = data
+            const customerId = customer?.value
+
             let serviceDocUrl = serviceDocuments || "";
             if (myServiceDocument) {
                 const newFile = getFileWithNewName(myServiceDocument, getName(customerId), "serviceDocuments")
                 const response = await uploadDocument(newFile);
-                alert(response?.url)
                 serviceDocUrl = response?.url || "";
             };
 
@@ -175,18 +158,22 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 instructions,
                 addInstruction,
                 specialInstruction,
-                toolsRequested,
+                toolsRequested: toolsRequested?.map(item => item?.value),
                 serviceDocUrl,
                 hardwareSN,
                 serviceType,
                 serviceLevel,
                 servicePriority,
                 slaPriority,
-                numberOfHoursReq,
-                numberOfResource,
+                numberOfHoursReq: String(numberOfHoursReq),
+                numberOfResource: String(numberOfResource),
                 // attachments,
                 ticketDates,
-                scheduledTime
+                scheduledTime,
+                siteName: typeof siteName === "string" ? siteName : siteName?.name,
+                region, siteAddress, postCode, country, city,
+                province: provinceState,
+                projectCode
             }
 
 
@@ -201,8 +188,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 })
             }
             else {
-                alert(payload)
-                console.log(payload)
                 await createTicket({
                     variables: {
                         createTicketInput: {
@@ -211,7 +196,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                     }
                 })
             }
-
 
             if (refetchTickets) {
                 await refetchTickets()
@@ -226,6 +210,43 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
 
         }
     };
+
+    useEffect(() => {
+        resetProjectStates()
+        resetJobsiteStates()
+    }, [watch("customer")])
+
+    useEffect(() => {
+        if (!watch("isAdhoc"))
+            resetJobsiteStates()
+    }, [watch("project")])
+
+    useEffect(() => {
+        resetProjectStates()
+        setValue("siteName", "")
+    }, [watch("isAdhoc")])
+
+    const resetProjectStates = () => {
+        setValue("project", null)
+        setValue("projectId", "")
+        setValue("projectCode", "")
+    }
+
+    const resetJobsiteStates = () => {
+        setValue("country", "")
+        setValue("city", "")
+        setValue("provinceState", "")
+        setValue("siteAddress", "")
+        setValue("spocName", "")
+        setValue("spocContactNumber", "")
+        setValue("spocEmailAddress", "")
+        setValue("postCode", "")
+        setValue("siteName", "")
+        setValue("jobSiteId", "")
+    }
+
+    console.log("values:::", watch());
+    console.log({ errors });
 
     return (
         <Box sx={{ overflowY: "auto" }}>
@@ -247,78 +268,76 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                     <Divider />
                     <Box sx={{ p: 2 }}>
 
-                    <FormProvider {...methods}>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <HeaderResource heading="Ticket Type" />
-                            <Grid container spacing={2} >
-                                <Grid item xs={12}>
-                                    <CustomDropDrownController
-                                        controllerName='ticketType'
-                                        controllerLabel='Ticket Type'
-                                        fieldType='text'
-                                        currencies={ticketsType}
-                                    />
-                                </Grid>
-                            </Grid>
-                                <HeaderResource heading="GENERAL INFORMATION" />
-                                    <Grid container spacing={2} >
-                                    {editInfo &&
-                                    <Grid>
-
-                                        <Grid item xs={4}>
-                                            <CustomFormController
-                                                controllerName='time'
-                                                controllerLabel='Ticket Received Time'
-                                                fieldType='time'
-                                                InputLabelProps={{ shrink: true }}  
-                                                value={editInfo?.time ?? ""}
-                                                disabled
-                                            />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <CustomFormController
-                                                controllerName='date'
-                                                controllerLabel='Ticket Received Date'
-                                                fieldType='date'
-                                                value={editInfo?.date ?? ""}
-                                                disabled
-                                            />
-                                        </Grid>
+                        <FormProvider {...methods}>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <HeaderResource heading="Ticket Type" />
+                                <Grid container spacing={2} >
+                                    <Grid item xs={12}>
+                                        <CustomDropDrownController
+                                            controllerName='ticketType'
+                                            controllerLabel='Ticket Type'
+                                            fieldType='text'
+                                            currencies={ticketsType}
+                                        />
                                     </Grid>
+                                </Grid>
+                                <HeaderResource heading="GENERAL INFORMATION" />
+                                <Grid container spacing={2} >
+                                    {editInfo &&
+                                        <Grid>
+
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='time'
+                                                    controllerLabel='Ticket Received Time'
+                                                    fieldType='time'
+                                                    InputLabelProps={{ shrink: true }}
+                                                    value={editInfo?.time ?? ""}
+                                                    disabled
+                                                />
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <CustomFormController
+                                                    controllerName='date'
+                                                    controllerLabel='Ticket Received Date'
+                                                    fieldType='date'
+                                                    value={editInfo?.date ?? ""}
+                                                    disabled
+                                                />
+                                            </Grid>
+                                        </Grid>
                                     }
-                                        <Grid item xs={4}>
-                                            <CustomDropDrownController
+                                    <Grid item xs={4}>
+                                        {/* <CustomDropDrownController
                                             controllerName='customerId'
                                             controllerLabel='Customer'
                                             fieldType='text'
                                             currencies={getAllCustomerData?.getAllCustomer?.customers}
                                             onchange={true}
+                                        /> */}
+                                        <CustomerDropdown
+                                            placeholder="Customer"
+                                            controllerName="customer"
                                         />
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <CustomFormController
-                                                controllerName='customerTicketNumber'
-                                                controllerLabel='Customer Ticket Number'
-                                                fieldType='text'
-                                                disabled
-                                            />
-                                        </Grid>
-
-                                        <Grid item xs={4}>
-                                            <CustomFormController
-                                                controllerName='customerCaseNumber'
-                                                controllerLabel='Customer Case Number'
-                                                fieldType='text'
-                                                disabled
-                                            />
-                                        </Grid>
-                                     
                                     </Grid>
-                                
-                                <HeaderResource heading="PROJECT INFORMATION" />
-                                <Grid container spacing={2}>
 
                                     <Grid item xs={4}>
+                                        <CustomFormController
+                                            controllerName='customerCaseNumber'
+                                            controllerLabel='Customer Case Number'
+                                            fieldType='text'
+                                        />
+                                    </Grid>
+
+                                </Grid>
+
+                                <HeaderResource heading="PROJECT INFORMATION" />
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <CustomFormCheckboxController controllerName='isAdhoc' controllerLabel="isAdhoc" />
+                                    </Grid>
+
+                                    <Grid item xs={4} display={"flex"} alignItems={"center"}>
                                         <CustomFormController
                                             controllerName='accountName'
                                             controllerLabel='Account Name'
@@ -326,13 +345,38 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         />
                                     </Grid>
 
-                                    <Grid item xs={4}>
-                                        <CustomDropDrownController
+                                    <Grid item xs={4} sx={{ marginTop: !watch("isAdhoc") ? "8px" : "0px" }}>
+                                        {/* <CustomDropDrownController
                                             controllerName='project'
                                             controllerLabel='Select Project'
                                             fieldType='text'
                                             currencies={projects}
-                                        />
+                                        /> */}
+                                        {!watch("isAdhoc") ?
+                                            <Box>
+                                                <ProjectDropdown
+                                                    controllerName="project"
+                                                    placeholder='Select Project'
+                                                    customerId={watch("customer")?.value}
+                                                    isDisabled={!watch("customer")}
+                                                    selected={watch("project")}
+                                                    setSelected={(val) => {
+                                                        setValue("project", val)
+                                                        setValue("projectId", val?.id)
+                                                        setValue("projectCode", val?.code)
+                                                    }}
+                                                />
+                                                {errors.project &&
+                                                    <FormHelperText style={{ color: "#d32f2f", marginLeft: "12px" }}>{errors.project?.message}</FormHelperText>
+                                                }
+                                            </Box>
+                                            :
+                                            <CustomFormController
+                                                controllerName='projectCode'
+                                                controllerLabel='Project Code'
+                                                fieldType='text'
+                                            />
+                                        }
                                     </Grid>
 
                                     <Grid item xs={4}>
@@ -373,13 +417,44 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                 <HeaderResource heading="SERVICE DETAILS" />
                                 <Grid container spacing={2}>
 
-                                    <Grid item xs={4}>
-                                        <CustomDropDrownController
+                                    <Grid item xs={4} sx={{ marginTop: !watch("isAdhoc") ? "8px" : "0px" }}>
+                                        {/* <CustomDropDrownController
                                             controllerName='siteName'
                                             controllerLabel='Site Name'
                                             fieldType='text'
                                             currencies={sites}
-                                        />
+                                        /> */}
+                                        {!watch("isAdhoc") ?
+                                            <Box>
+                                                <JobSiteDropdown
+                                                    projectId={watch("project")?.id}
+                                                    isDisabled={!watch("project")}
+                                                    selected={watch("siteName")}
+                                                    setSelected={(val) => {
+                                                        const { country, city, province, postcode, siteAddress, pocContactNumber, pocEmailAdrress, pocName } = val || {};
+                                                        setValue("country", country)
+                                                        setValue("city", city)
+                                                        setValue("provinceState", province)
+                                                        setValue("siteAddress", siteAddress)
+                                                        setValue("spocName", pocName)
+                                                        setValue("spocContactNumber", pocContactNumber)
+                                                        setValue("spocEmailAddress", pocEmailAdrress)
+                                                        setValue("postCode", postcode)
+                                                        setValue("siteName", val)
+                                                        setValue("jobSiteId", val?.id)
+                                                    }}
+                                                />
+                                                {errors.siteName &&
+                                                    <FormHelperText style={{ color: "#d32f2f", marginLeft: "12px" }}>{errors.siteName?.message}</FormHelperText>
+                                                }
+                                            </Box>
+                                            :
+                                            <CustomFormController
+                                                controllerName='siteName'
+                                                controllerLabel='Site Name'
+                                                fieldType='text'
+                                            />
+                                        }
                                     </Grid>
 
                                     <Grid item xs={4}>
@@ -397,6 +472,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerLabel='Country'
                                             fieldType='text'
                                             currencies={countries}
+                                            disabled={!watch("isAdhoc")}
                                         />
                                     </Grid>
 
@@ -405,6 +481,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerName='city'
                                             controllerLabel='City'
                                             fieldType='text'
+                                            disabled={!watch("isAdhoc")}
                                         />
                                     </Grid>
 
@@ -413,6 +490,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerName='provinceState'
                                             controllerLabel='Province/State'
                                             fieldType='text'
+                                            disabled={!watch("isAdhoc")}
                                         />
                                     </Grid>
 
@@ -420,6 +498,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='postCode'
                                             controllerLabel='Post Code'
+                                            disabled={!watch("isAdhoc")}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -428,6 +507,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='siteAddress'
                                             controllerLabel='Site Address'
+                                            disabled={!watch("isAdhoc")}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -436,6 +516,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='spocName'
                                             controllerLabel='SPOC Name'
+                                            disabled={!watch("isAdhoc")}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -444,6 +525,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='spocContactNumber'
                                             controllerLabel='SPOC Contact Number'
+                                            disabled={!watch("isAdhoc")}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -452,6 +534,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='spocEmailAddress'
                                             controllerLabel='SPOC Email Address'
+                                            disabled={!watch("isAdhoc")}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -545,7 +628,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             isMulti={true}
                                         />
                                     </Grid>
- 
+
                                     <Grid item xs={6} {...(getValues("serviceDocUrl") && !getValues("myServiceDocument") && { display: "flex", alignItems: "center" })}>
                                         {(getValues("serviceDocUrl") && !getValues("myServiceDocument"))
                                             ? <FileUrlDisplay
@@ -561,7 +644,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                                 </AttachFileIcon>}
                                             />
                                         }
-                                    </Grid> 
+                                    </Grid>
 
                                     <Grid item xs={6}>
                                         <CustomFormController
@@ -612,31 +695,67 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                     </Grid>
 
                                     <Grid item xs={4}>
-                                        <CustomFormController
+                                        <CustomDropDrownController
                                             controllerName='numberOfHoursReq'
-                                            controllerLabel='Default NumberOf Hours Requested'
+                                            controllerLabel='Default number of Hours Requested'
                                             fieldType='text'
+                                            currencies={new Array(10).fill().map((item, index) => ({
+                                                value: index + 1,
+                                                label: index + 1,
+                                            }))}
                                         />
                                     </Grid>
 
                                     <Grid item xs={4}>
-                                        <CustomFormController
+                                        <CustomDropDrownController
                                             controllerName='numberOfResource'
-                                            controllerLabel='Number of FSE Requested'
+                                            controllerLabel='Number of Resources Requested'
                                             fieldType='text'
+                                            currencies={new Array(5).fill().map((item, index) => ({
+                                                value: index + 1,
+                                                label: index + 1,
+                                            }))}
                                         />
                                     </Grid>
 
-                                   
+
                                 </Grid>
                                 <HeaderResource heading="VISIT DETAILS" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <CustomFormController
-                                            controllerName='ticketDates'
-                                            controllerLabel='Select Date'
-                                            fieldType='date'
-                                        />
+                                        <Box display={"flex"} alignItems={"center"}>Select Dates:{" "}
+                                            <DatePicker
+                                                value={watch("ticketDates")}
+                                                placeholder='Ticket Dates'
+                                                multiple
+                                                numberOfMonths={2}
+                                                minDate={getFutureDate()}
+                                                editable={false}
+                                                maxDate={getFutureDate(60)}
+                                                style={{ width: "500px", marginLeft: "4px", height: "40px", borderRadius: '8px' }}
+                                                onChange={(val, val2) => { setValue("ticketDates", val2?.validatedValue?.filter(item => typeof item === "string")) }}
+                                            />
+                                        </Box>
+                                        {errors.ticketDates &&
+                                            <FormHelperText style={{ color: "#d32f2f" }}>{errors.ticketDates?.message}</FormHelperText>
+                                        }
+                                    </Grid>
+
+                                    <Grid item xs={6}>
+                                        {/* <Label> */}
+                                        <Box display={"flex"} alignItems={"center"}>Pick Time:{" "}
+                                            <TextField
+                                                placeholder='Select Time'
+                                                type='time'
+                                                value={watch("scheduledTime")}
+                                                size='small'
+                                                onChange={(e) => { setValue("scheduledTime", `${e.target.value}:00`) }}
+                                                sx={{ marginLeft: "4px", height: "40px", borderRadius: '8px' }}
+                                            />
+                                        </Box>
+                                        {errors.scheduledTime &&
+                                            <FormHelperText style={{ color: "#d32f2f" }}>{errors.scheduledTime?.message}</FormHelperText>
+                                        }
                                     </Grid>
                                 </Grid>
                                 <HeaderResource heading="FILE UPLOAD" />
@@ -657,11 +776,11 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                                 </AttachFileIcon>}
                                             />
                                         }
-                                    </Grid> 
+                                    </Grid>
 
-                                   
+
                                 </Grid>
-                               
+
                                 <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                                     <Button
                                         type="submit"

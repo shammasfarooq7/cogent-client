@@ -12,7 +12,7 @@ import { DELETE_TICKET_MUTATION, GET_A_TICKET_QUERY } from '../../../graphql/tic
 import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { Alert } from '../../components/common/Alert';
-import { SDForm } from './ServiceDeskForm';
+import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 import { downloadFile } from '../../services/rest-apis';
 import { renderStatus, getBorderColour } from '../../constants';
 

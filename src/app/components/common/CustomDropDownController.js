@@ -1,6 +1,6 @@
 // packages block
 import React, { useState } from 'react';
-import { Box, InputAdornment, TextField ,Input, MenuItem, Select } from '@mui/material';
+import { Box, InputAdornment, TextField, Input, MenuItem, Select } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
@@ -21,8 +21,8 @@ import './style.css'
 
 
 
-export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType , currencies, onchange=false}) => {
-  
+export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType, currencies, onchange = false, disabled = false }) => {
+
   const { control } = useFormContext();
   return (
     <Controller
@@ -32,28 +32,29 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
         <TextField
           type={fieldType}
           select
-          sx={{borderRadius:"18px"}}
+          sx={{ borderRadius: "18px" }}
           margin='dense'
           size='small'
           error={invalid}
+          disabled={disabled}
           label={controllerLabel}
           fullWidth
           {...field}
           helperText={message}
           variant="outlined"
           InputLabelProps={{
-            style: { color: "#222B45", fontFamily:"popins" },
+            style: { color: "#222B45", fontFamily: "popins" },
           }}
-        >   
-        {
-          currencies && 
+        >
+          {
+            currencies &&
             currencies.map((option) => (
-            <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
-              {onchange ? option.name : option.label}
-            </MenuItem>
-          ))
-        }
-          </TextField> 
+              <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
+                {onchange ? option.name : option.label}
+              </MenuItem>
+            ))
+          }
+        </TextField>
       )}
     />
   );

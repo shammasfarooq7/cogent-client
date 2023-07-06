@@ -23,9 +23,9 @@ export const ServiceDesk = () => {
   const [inProgressCount, setInProgressCount] = useState(10)
   const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
 
-  const { data, loading, error } = useQuery(Get_RESOURCE_Dashboard_Stats, {
-    fetchPolicy: "network-only"
-  });
+  // const { data, loading, error } = useQuery(Get_RESOURCE_Dashboard_Stats, {
+  //   fetchPolicy: "network-only"
+  // });
 
 
   // useEffect(() => {

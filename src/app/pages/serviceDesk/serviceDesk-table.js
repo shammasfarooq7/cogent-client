@@ -10,7 +10,7 @@ import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY } from '../../../graphql/tickets';
 import DeleteAlert from '../../components/common/DeleteAlert';
-import { SDForm } from './ServiceDeskForm';
+import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 import { Alert } from '../../components/common/Alert';
 import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';

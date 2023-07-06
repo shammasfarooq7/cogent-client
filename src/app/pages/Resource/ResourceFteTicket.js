@@ -14,7 +14,7 @@ import DeleteAlert from '../../components/common/DeleteAlert';
 import { Alert } from '../../components/common/Alert';
 import { downloadFile } from '../../services/rest-apis';
 import { renderStatus, getBorderColour } from '../../constants';
-import { SDForm } from '../serviceDesk/ServiceDeskForm';
+import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 import { AddBoxOutlined } from '@mui/icons-material';
 import { ResourceForm } from './ResourceForm';
 
