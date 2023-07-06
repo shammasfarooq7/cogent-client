@@ -153,7 +153,6 @@ export const JobsValidationSchema = yup.object({
   postcode: yup.string().required(requiredMessage("Post Code")),
   siteAddress: yup.string().required(requiredMessage("Site Address")),
   pocName: yup.string().required(requiredMessage("Poc Name")),
-  custSdmContNum: yup.string().required(requiredMessage("Cust Sdm ContNum")),
   pocContactNumber: yup.string().required(requiredMessage("Poc Contact Number")),
   pocEmailAdrress: yup.string().required(requiredMessage("Poc Email Adrress")),
   ppe1h: yup.string().required(requiredMessage("Ppe1h")),

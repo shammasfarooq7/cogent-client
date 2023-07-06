@@ -89,6 +89,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
             dispatchAgreed:'',
             incrementTime:'',
             serviceType:'',
+            supportType:'',
             serviceCatItem:'',
             agreedSla:'',
             coverage:'',
@@ -100,34 +101,13 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
 
    
     const [createJobsite, { data, loading }] = useMutation(CREATE_JOBSITE_MUTATION);
-    const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
-    const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
-        variables: {
-            getAllCustomerInput: {
-                role: "SD",
-            }
-        },
-        fetchPolicy: "network-only"
-    });
     
     if (data) {
         Alert.success("Job created successfully!")
     }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
-    const customerId = getValues('customerId')
-    const selectedDropdownValue = customerId !== undefined && watch('customerId');
-    console.log("watch", selectedDropdownValue, customerId)
-
-
-    useEffect(() => {
-       if (customerId) {
-        //    Pp();
-       }
-
-    }, [selectedDropdownValue, customerId]);
-
-   
+  
     const onSubmit = async (data) => {
         try {
             setIsLoading(true);
@@ -180,18 +160,6 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                 projectId
 
             }
-
-            if (editInfo) {
-                await createJobsite({
-                    variables: {
-                        updateJobsiteInput: {
-                            ...payload
-                        },
-                        id: info?.id
-                    }
-                })
-            }
-            else {
                 await createJobsite({
                     variables: {
                         createJobsiteInput: {
@@ -199,11 +167,6 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                         }
                     }
                 })
-            }
-
-            if (refetchTickets) {
-                await refetchTickets()
-            }
             handleClose();
 
         } catch (error) {
@@ -284,7 +247,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                         <Grid item xs={6}>
                                             <CustomFormController
                                                 controllerName='postcode'
-                                                controllerLabel='Postcode'
+                                                controllerLabel='Post Code'
                                                 fieldType='text'
                                                 
                                             />
@@ -403,7 +366,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                         </Grid>
                                         <Grid item xs={6}>
                                             <CustomFormController
-                                                controllerName='Afth'
+                                                controllerName='afth'
                                                 controllerLabel='Afth'
                                                 fieldType='text'
                                                 
@@ -445,14 +408,6 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             <CustomFormController
                                                 controllerName='siteTiming'
                                                 controllerLabel='Site Timing'
-                                                fieldType='text'
-                                                
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <CustomFormController
-                                                controllerName='owJd'
-                                                controllerLabel='Ow Jd'
                                                 fieldType='text'
                                                 
                                             />
@@ -516,7 +471,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                         <Grid item xs={6}>
                                             <CustomDropDrownController
                                                 controllerName='coverage'
-                                                controllerLabel='coverage'
+                                                controllerLabel='Coverage'
                                                 fieldType='text'
                                                 currencies={coverage}
                                             />
@@ -554,9 +509,9 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                         type="submit"
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
-                                        disabled={isLoading || loading || updateLoading}
+                                        disabled={isLoading || loading}
                                     >
-                                        {(isLoading || loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
+                                       ADD
                                     </Button>
                                     <Button
                                         onClick={handleClose}

@@ -104,121 +104,126 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
     
    
     const [createCustomer, { data, loading }] = useMutation(CREATE_CUSTOMER_MUTATION);
-    const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
-    const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
-        variables: {
-            getAllCustomerInput: {
-                role: "SD",
-            }
-        },
-        fetchPolicy: "network-only"
-    });
+
     
     if (data) {
         Alert.success("Customer created successfully!")
     }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
-    const customerId = getValues('customerId')
-    const selectedDropdownValue = customerId !== undefined && watch('customerId');
-    console.log("watch", selectedDropdownValue, customerId)
+    // const customerId = getValues('customerId')
+    // const selectedDropdownValue = customerId !== undefined && watch('customerId');
+    // console.log("watch", selectedDropdownValue, customerId)
 
 
-    useEffect(() => {
-       if (customerId) {
-        //    Pp();
-       }
+    // useEffect(() => {
+    //    if (customerId) {
+    //     //    Pp();
+    //    }
 
-    }, [selectedDropdownValue, customerId]);
+    // }, [selectedDropdownValue, customerId]);
 
    
-    const onSubmit = async (data) => {
+    const onSubmit = async ({
+        name,
+        vendorReference,
+        establishYear,
+        employeesCount,
+        dispatchGroupEmail,
+        city,
+        phone,
+        country,
+        postCode,
+        revenueSupport,
+        linkedinUrl,
+        email,
+        revenueOther,
+        employeeCountLinkedin,
+        revenueLogistics,
+        revenueSoftware,
+        stateProvince,
+        address,
+        annualRevenue,
+        revenueConsultancy,
+        contactNumber,
+        addressLine1,
+        addressLine2,
+        emailId,
+        mobile,
+        whatsappNumber,
+        whatsappGroup,
+        whatsappLink,
+        cogentEmailId,
+        workPermitStatus,
+        primaryTechService,
+        fieldService,
+        keyCustomerSupport,
+        languageSupport,
+        countrySupported,
+        certification,
+        customerAbbr
+      }) => {
+       
+      
         try {
-            setIsLoading(true);
-
-         
-           const {name, vendorReference, establishYear, employeesCount, dispatchGroupEmail, city, employeeCountLinkedin,
-                phone, country, postCode, linkedinUrl, email, stateProvince, address, annualRevenue, revenueSoftware, revenueConsultancy, revenueSupport,
-                revenueLogistics, revenueOther, contactNumber, addressLine1, addressLine2, emailId, mobile, whatsappNumber,
-                whatsappGroup, whatsappLink, cogentEmailId, workPermitStatus, primaryTechService, fieldService, keyCustomerSupport,
-                languageSupport, countrySupported, certification, customerAbbr
-            } = data
-            const payload = {
-                name,
-                vendorReference,
-                establishYear,
-                employeesCount,
-                dispatchGroupEmail,
-                dispatchGroupEmail,
-                city,
-                phone,
-                country,
-                postCode,
-                linkedinUrl,
-                email,
-                stateProvince,
-                address,
-                annualRevenue,
-                revenueSupport,
-                revenueSoftware,
-                revenueConsultancy,
-                employeeCountLinkedin,
-                revenueLogistics,
-                revenueOther,
-                contactNumber,
-                addressLine1,
-                addressLine2,
-                emailId,
-                mobile,
-                whatsappNumber,
-                whatsappGroup,
-                whatsappLink,
-                cogentEmailId,
-                workPermitStatus,
-                primaryTechService,
-                fieldService,
-                keyCustomerSupport,
-                // attachments,
-                languageSupport,
-                countrySupported,
-                certification,
-                customerAbbr
+          setIsLoading(true);
+      
+          const payload = {
+            name,
+            vendorReference,
+            establishYear,
+            employeesCount,
+            dispatchGroupEmail,
+            revenueLogistics,
+            employeeCountLinkedin,
+            city,
+            phone,
+            revenueOther,
+            revenueSoftware,
+            country,
+            postCode,
+            linkedinUrl,
+            revenueSupport,
+            email,
+            stateProvince,
+            address,
+            annualRevenue,
+            revenueConsultancy,
+            contactNumber,
+            addressLine1,
+            addressLine2,
+            emailId,
+            mobile,
+            whatsappNumber,
+            whatsappGroup,
+            whatsappLink,
+            cogentEmailId,
+            workPermitStatus,
+            primaryTechService,
+            fieldService,
+            keyCustomerSupport,
+            languageSupport,
+            countrySupported,
+            certification,
+            customerAbbr
+          };
+      
+          await createCustomer({
+            variables: {
+              createCustomerInput: {
+                ...payload
+              }
             }
-
-            if (editInfo) {
-                await createCustomer({
-                    variables: {
-                        updateResourceInput: {
-                            ...payload
-                        },
-                        id: info?.id
-                    }
-                })
-            }
-            else {
-                await createCustomer({
-                    variables: {
-                        createCustomerInput: {
-                            ...payload
-                        }
-                    }
-                })
-            }
-
-
-            if (refetchTickets) {
-                await refetchTickets()
-            }
-            handleClose();
-
+          });
+      
+          handleClose();
         } catch (error) {
-
+          console.error(error);
+        } finally {
+          setIsLoading(false);
         }
-        finally {
-            setIsLoading(false);
-
-        }
-    };
+      };
+      
 
     return (
         <Box sx={{ overflowY: "auto" }}>
@@ -256,8 +261,16 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
                                         </Grid>
                                         <Grid item xs={6}>
                                             <CustomFormController
-                                                controllerName='vendorRefernce'
+                                                controllerName='vendorReference'
                                                 controllerLabel='Vendor Refernce'
+                                                fieldType='text'
+                                                
+                                            />
+                                            </Grid>
+                                             <Grid item xs={6}>
+                                            <CustomFormController
+                                                controllerName='employeeCountLinkedin'
+                                                controllerLabel='Employee Count Linkedin'
                                                 fieldType='text'
                                                 
                                             />
@@ -355,6 +368,14 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
                                             <CustomFormController
                                                 controllerName='address'
                                                 controllerLabel='Address'
+                                                fieldType='text'
+                                                
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <CustomFormController
+                                                controllerName='annualRevenue'
+                                                controllerLabel='Annual Revenue'
                                                 fieldType='text'
                                                 
                                             />
@@ -545,9 +566,9 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
                                         type="submit"
                                         variant="contained"
                                         sx={{ mt: 3, mb: 2, paddingLeft: "40px", paddingRight: "40px", background: "#0095FF", borderRadius: "12px", fontWeight: "600" }}
-                                        disabled={isLoading || loading || updateLoading}
+                                        // disabled={isLoading || loading}
                                     >
-                                        {(isLoading || loading || updateLoading) ? editInfo ? "UPDATING..." : "ADDING..." : editInfo ? "UPDATE" : "ADD"}
+                                        ADD
                                     </Button>
                                     <Button
                                         onClick={handleClose}

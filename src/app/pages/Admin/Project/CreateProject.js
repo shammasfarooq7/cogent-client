@@ -209,17 +209,6 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
 
             }
 
-            if (editInfo) {
-                await createProject({
-                    variables: {
-                        updateProjectInput: {
-                            ...payload
-                        },
-                        id: info?.id
-                    }
-                })
-            }
-            else {
                 await createProject({
                     variables: {
                         createProjectInput: {
@@ -227,18 +216,6 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                         }
                     }
                 })
-            }
-
-      
-
-
-
-       
-
-
-            if (refetchTickets) {
-                await refetchTickets()
-            }
             handleClose();
 
         } catch (error) {
@@ -479,14 +456,6 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                         </Grid>
                                         <Grid item xs={6}>
                                             <CustomFormController
-                                                controllerName='whatsappGroup'
-                                                controllerLabel='Whatsapp Group'
-                                                fieldType='text'
-                                                
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <CustomFormController
                                                 controllerName='owJd'
                                                 controllerLabel='Ow Jd'
                                                 fieldType='text'
@@ -553,14 +522,6 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             <CustomFormController
                                                 controllerName='behSkills'
                                                 controllerLabel='Beh Skills'
-                                                fieldType='text'
-                                                
-                                            />
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <CustomFormController
-                                                controllerName='experienceReq'
-                                                controllerLabel='Experience Req'
                                                 fieldType='text'
                                                 
                                             />
