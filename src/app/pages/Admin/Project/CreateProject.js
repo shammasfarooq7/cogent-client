@@ -118,7 +118,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
     const {data: getAllCustomerData, loading: customerLoading} = useQuery(GET_All_CUSTOMERS_QUERY, {
         variables: {
             getAllCustomerInput: {
-                role: "SD",
+                role: "ADMIN",
             }
         },
         fetchPolicy: "network-only"
@@ -136,7 +136,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
 
     useEffect(() => {
        if (customerId) {
-        //    Pp();
+        setValue('customerId',customerId )
        }
 
     }, [selectedDropdownValue, customerId]);

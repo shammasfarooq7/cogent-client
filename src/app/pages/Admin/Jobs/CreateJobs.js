@@ -24,7 +24,7 @@ import { UserContext } from '../../../context/user-context';
 import { getFileWithNewName, getName } from '../../../helper';
 import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
-import { CREATE_JOBSITE_MUTATION } from '../../../../graphql/admin';
+import { CREATE_JOBSITE_MUTATION, GET_ALL_PROJECTS_QUERY } from '../../../../graphql/admin';
 
 const style = {
     position: 'absolute',
@@ -101,7 +101,14 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
 
    
     const [createJobsite, { data, loading }] = useMutation(CREATE_JOBSITE_MUTATION);
-    
+    const {data: getAllProjectsData, loading: projectLoading} = useQuery(GET_ALL_PROJECTS_QUERY, {
+        variables: {
+            getAllProjectInput: {
+                role: "ADMIN",
+            }
+        },
+        fetchPolicy: "network-only"
+    });
     if (data) {
         Alert.success("Job created successfully!")
     }

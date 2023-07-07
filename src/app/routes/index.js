@@ -217,34 +217,34 @@ const MainRoutes = () => {
                </PrivateRoute>
             } />
              <Route path={"/admin/customer"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <CustomerListing />
-              // </PrivateRoute>
+               </PrivateRoute>
             } />
                 <Route path={"/admin/customerview"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <CustomerView />
-              // </PrivateRoute>
+               </PrivateRoute>
             } />
               <Route path={"/admin/project"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <ProjectListing />
-              // </PrivateRoute>
+               </PrivateRoute>
             } />
                 <Route path={"/admin/projectview"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <ProjectView />
-              // </PrivateRoute>
+               </PrivateRoute>
             } />
              <Route path={"/admin/job"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <JobsListing />
-              // </PrivateRoute>
+               </PrivateRoute>
             } />
                 <Route path={"/admin/jobview"} element={
-              // <PrivateRoute roles={[ROLE.CUSTOMER]}>
+              <PrivateRoute roles={[ROLE.ADMIN]}>
                 <JobsView />
-              // </PrivateRoute>
+               </PrivateRoute>
             } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
           <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />

@@ -160,6 +160,7 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
         keyCustomerSupport,
         languageSupport,
         countrySupported,
+        website,
         certification,
         customerAbbr
       }) => {
@@ -178,6 +179,7 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
             employeeCountLinkedin,
             city,
             phone,
+            website,
             revenueOther,
             revenueSoftware,
             country,

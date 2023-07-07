@@ -11,7 +11,7 @@ mutation CreateUser($createUserInput: CreateUserInput!) {
 
 export const CREATE_CUSTOMER_MUTATION = gql`
 mutation CreateCustomer($createCustomerInput: CreateCustomerInput!) {
-    createcustomer(createCustomerInput: $createCustomerInput) {
+    createCustomer(createCustomerInput: $createCustomerInput) {
       message
     }
 
@@ -20,7 +20,7 @@ mutation CreateCustomer($createCustomerInput: CreateCustomerInput!) {
 
 export const CREATE_PROJECT_MUTATION = gql`
 mutation CreateProject($createProjectInput: CreateProjectInput!) {
-    createproject(createProjectInput: $createProjectInput) {
+    createProject(createProjectInput: $createProjectInput) {
       message
     }
 
@@ -29,7 +29,7 @@ mutation CreateProject($createProjectInput: CreateProjectInput!) {
 
 export const CREATE_JOBSITE_MUTATION = gql`
 mutation CreateJobsite($createJobsiteInput: CreateJobsiteInput!) {
-    createjobsite(createJobsiteInput: $createJobsiteInput) {
+    createJobsite(createJobsiteInput: $createJobsiteInput) {
       message
     }
 
@@ -64,9 +64,6 @@ query GetAllProjectsQuery($getAllProjectsInput: GetAllProjectsInput!) {
       status
       customerId
       projectNumber
-      roles {
-        role
-      }
     }
     }
   }
@@ -76,61 +73,13 @@ query GetAllProjectsQuery($getAllProjectsInput: GetAllProjectsInput!) {
 
 export const GET_ALL_CUSTOMERS_QUERY = gql`
 query GetAllCustomersQuery($getAllCustomerInput: GetAllCustomersInput!) {
-  getAllCustomers(getAllCustomerInput: $getAllCustomerInput) {
+  getAllCustomer(getAllCustomerInput: $getAllCustomerInput) {
     count
     customers{
       id
       name
-      vendorReference
-      website
-      establishYear
-      employeesCount
-      dispatchGroupEmail
-      city
-      employeeCountLinkedin
-      phone
-      country
-      postCode
-      linkedinUrl
       email
-      stateProvince
-      address
-      annualRevenue
-      revenueSoftware
-      revenueConsultancy
-      revenueSupport
-      revenueLogistics
-      revenueOther
-      contactNumber
-      addressLine1
-      addressLine2
-      emailId
-      mobile
-      whatsappNumber
-      whatsappGroup
-      whatsappLink
-      cogentEmailId
-      workPermitStatus
-      primaryTechService
-      fieldService
-      keyCustomerSupport
-      languageSupport
-      countrySupported
-      certification
-      customerAbbr
-      onboardedBy {
-        id
-        email
-        firstName
-        lastName
-      }
-      onboardedAt
-      createdAt
-      updatedAt
-      deletedAt
-      roles {
-        role
-      }
+      postCode
     }
     }
   }
