@@ -93,7 +93,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             slaPriority: "",
             numberOfHoursReq: null,
             numberOfResource: null,
-            attachments: "",
             ticketDates: [],
             projectCode: "",
             scheduledTime: "23:03:00",
@@ -107,7 +106,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     const [updateTicket, { data: UpdateData, loading: updateLoading }] = useMutation(UPDATE_TICKET_MUTATION);
 
     if (data || UpdateData) {
-        debugger
         Alert.success(UpdateData ? "Ticket updated successfully!" : "Ticket created successfully!")
     }
 
@@ -122,22 +120,26 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
                 scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl: serviceDocuments,
                 hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments: attachment, myServiceDocument, myAttachment, ticketDates, scheduledTime, projectCode } = data
+                attachments: attachment, myServiceDocument, myAttachment1, myAttachment2, myAttachment3, ticketDates, scheduledTime, projectCode } = data
             const customerId = customer?.value
 
             let serviceDocUrl = serviceDocuments || "";
             if (myServiceDocument) {
-                const newFile = getFileWithNewName(myServiceDocument, getName(customerId), "serviceDocuments")
+                const newFile = getFileWithNewName(myServiceDocument, customer?.label, "serviceDocuments")
                 const response = await uploadDocument(newFile);
                 serviceDocUrl = response?.url || "";
             };
 
-            let attachments = attachment || "";
-            if (myAttachment) {
-                const newFile = getFileWithNewName(myAttachment, getName(customerId), "attachment");
-                const response = await uploadDocument(newFile);
-                attachments = response?.url || "";
-            };
+            const attachedFiles = [...new Set([myAttachment1, myAttachment2, myAttachment3])]
+
+            let attachments = [];
+            for (const file of attachedFiles) {
+                if (file) {
+                    const newFile = getFileWithNewName(file, customer?.label, "attachment");
+                    const response = await uploadDocument(newFile);
+                    attachments.push(response?.url || "");
+                };
+            }
 
             const payload = {
                 jobSiteId,
@@ -167,7 +169,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 slaPriority,
                 numberOfHoursReq: String(numberOfHoursReq),
                 numberOfResource: String(numberOfResource),
-                // attachments,
+                attachments,
                 ticketDates,
                 scheduledTime,
                 siteName: typeof siteName === "string" ? siteName : siteName?.name,
@@ -639,6 +641,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             : <CustomDocumentUploadController
                                                 controllerName='myServiceDocument'
                                                 controllerLabel='Service Document (Attachment)'
+                                                isClearable={true}
                                                 fieldIcon={<AttachFileIcon>
                                                     <input type="file" />
                                                 </AttachFileIcon>}
@@ -732,7 +735,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                                 minDate={getFutureDate()}
                                                 editable={false}
                                                 maxDate={getFutureDate(60)}
-                                                style={{ width: "500px", marginLeft: "4px", height: "40px", borderRadius: '8px' }}
+                                                style={{ width: "100%", marginLeft: "4px", height: "40px", borderRadius: '8px' }}
                                                 onChange={(val, val2) => { setValue("ticketDates", val2?.validatedValue?.filter(item => typeof item === "string")) }}
                                             />
                                         </Box>
@@ -761,7 +764,43 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                 <HeaderResource heading="FILE UPLOAD" />
 
                                 <Grid container spacing={2}>
-                                    <Grid item xs={6} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
+                                    <Grid item xs={4} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("attachments") && !getValues("myAttachment"))
+                                            ? <FileUrlDisplay
+                                                url={getValues("attachments")}
+                                                controllerName='myAttachment1'
+                                                controllerLabel='Upload File (Attachment)'
+                                            />
+                                            : <CustomDocumentUploadController
+                                                controllerName='myAttachment1'
+                                                controllerLabel='Upload File (Attachment 1)'
+                                                isClearable={true}
+                                                fieldIcon={<AttachFileIcon>
+                                                    <input type="file" />
+                                                </AttachFileIcon>}
+                                            />
+                                        }
+                                    </Grid>
+
+                                    <Grid item xs={4} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("attachments") && !getValues("myAttachment"))
+                                            ? <FileUrlDisplay
+                                                url={getValues("attachments")}
+                                                controllerName='myAttachment2'
+                                                controllerLabel='Upload File (Attachment)'
+                                            />
+                                            : <CustomDocumentUploadController
+                                                controllerName='myAttachment2'
+                                                controllerLabel='Upload File (Attachment 2)'
+                                                isClearable={true}
+                                                fieldIcon={<AttachFileIcon>
+                                                    <input type="file" />
+                                                </AttachFileIcon>}
+                                            />
+                                        }
+                                    </Grid>
+
+                                    <Grid item xs={4} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
                                         {(getValues("attachments") && !getValues("myAttachment"))
                                             ? <FileUrlDisplay
                                                 url={getValues("attachments")}
@@ -769,8 +808,9 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                                 controllerLabel='Upload File (Attachment)'
                                             />
                                             : <CustomDocumentUploadController
-                                                controllerName='myAttachment'
-                                                controllerLabel='Upload File (Attachment)'
+                                                controllerName='myAttachment3'
+                                                controllerLabel='Upload File (Attachment 3)'
+                                                isClearable={true}
                                                 fieldIcon={<AttachFileIcon>
                                                     <input type="file" />
                                                 </AttachFileIcon>}
