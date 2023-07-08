@@ -168,7 +168,7 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
       
         try {
           setIsLoading(true);
-      
+
           const payload = {
             name,
             vendorReference,

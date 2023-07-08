@@ -25,6 +25,9 @@ import { getFileWithNewName, getName } from '../../../helper';
 import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 import { CREATE_JOBSITE_MUTATION, GET_ALL_PROJECTS_QUERY } from '../../../../graphql/admin';
+import { CustomRenderingStore } from '@fullcalendar/core';
+import { CustomTimeRange } from '../../../components/common/CustomTimeRange';
+import { CustomMultiSelect } from '../../../components/common/CustomMultiSelect';
 
 const style = {
     position: 'absolute',
@@ -103,12 +106,21 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
     const [createJobsite, { data, loading }] = useMutation(CREATE_JOBSITE_MUTATION);
     const {data: getAllProjectsData, loading: projectLoading} = useQuery(GET_ALL_PROJECTS_QUERY, {
         variables: {
-            getAllProjectInput: {
+            getAllProjectsInput: {
                 role: "ADMIN",
             }
         },
         fetchPolicy: "network-only"
     });
+    const getAllProjects = getAllProjectsData && getAllProjectsData.getAllProjects.projects
+    const getProjectIds = getAllProjects && getAllProjects.map((project) => project.id) 
+    const projectIds = getProjectIds && getProjectIds.map((id) => {
+
+        return {
+              value : id,
+              label : id
+        }
+    })
     if (data) {
         Alert.success("Job created successfully!")
     }
@@ -119,13 +131,21 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
         try {
             setIsLoading(true);
              
-            const {name, country, city, state, province, postcode,
+            let {name, country, city, state, province, postcode,
                 siteAddress, pocName, pocContactNumber, pocEmailAdrress, ppe1h, ppe2h, ppe3h, ppe4h, ppe5h, ppe6h, ppe7h,
                 ppe8h, tandm30, tandm1h, afth, wknd, ph, sat, sun,
                 siteTiming, timeZone, dispatchAgreed, incrementTime, serviceType, supportType, serviceCatItem,
                 agreedSla, coverage, technologyType, currency, projectId
             
             } = data
+            agreedSla = agreedSla && agreedSla.map((option)=> option.value);
+            coverage = coverage && coverage.map((option)=> option.value);
+            technologyType = technologyType && technologyType.map((option)=> option.value);
+            serviceType = serviceType && serviceType.map((option)=> option.value);
+            supportType = supportType && supportType.map((option)=> option.value);
+            serviceCatItem = serviceCatItem && serviceCatItem.map((option)=> option.value);
+            currency = currency && currency.map((option)=> option.value);
+
             const payload = {
                 name,
                 country,
@@ -444,7 +464,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='serviceType'
                                                 controllerLabel='Service Type'
                                                 fieldType='text'
@@ -452,7 +472,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='supportType'
                                                 controllerLabel='Support Type'
                                                 fieldType='text'
@@ -460,7 +480,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='serviceCatItem'
                                                 controllerLabel='Service CatItem'
                                                 fieldType='text'
@@ -468,7 +488,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='agreedSla'
                                                 controllerLabel='Agreed Sla'
                                                 fieldType='text'
@@ -476,7 +496,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='coverage'
                                                 controllerLabel='Coverage'
                                                 fieldType='text'
@@ -484,7 +504,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='technologyType'
                                                 controllerLabel='Technology Type'
                                                 fieldType='text'
@@ -492,7 +512,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='currency'
                                                 controllerLabel='Currency'
                                                 fieldType='text'
@@ -500,11 +520,11 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomFormController
+                                            <CustomDropDrownController
                                                 controllerName='projectId'
                                                 controllerLabel='Project Id'
                                                 fieldType='text'
-                                                
+                                                currencies={projectIds}
                                             />
                                         </Grid>
 

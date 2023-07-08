@@ -880,19 +880,19 @@ export const agreedSla = [
   },
   {
     value: 'twoBD',
-    label: 'twoBD',
+    label: '2BD',
   },
   {
     value: 'threeBD',
-    label: 'threeBD',
+    label: '3BD',
   },
   {
     value: 'fiveBD',
-    label: 'fiveBD',
+    label: '5BD',
   },
   {
     value: 'tenBD',
-    label: 'tenBD',
+    label: '10BD',
   },
 ];
 

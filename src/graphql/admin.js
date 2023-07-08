@@ -69,6 +69,56 @@ query GetAllProjectsQuery($getAllProjectsInput: GetAllProjectsInput!) {
   }
 `;
 
+export const GET_ALL_JOBS_QUERY = gql`
+query GetAllJobsQuery($getAllJobsitesInput: GetAllJobsitesInput!) {
+  getAllJobsites(getAllJobsitesInput: $getAllJobsitesInput) {
+    jobsites{
+      id
+      name
+     postcode
+    }
+    }
+  }
+`;
+
+export const GET_ALL_TICKETS_QUERY = gql`
+query GetAllTicketsQuery($getAllTicketsInput: GetAllTicketsInput!) {
+  getAllTickets(getAllTicketsInput: $getAllTicketsInput) {
+    tickets{
+      id
+      customerTicketNumber
+      customerName
+    }
+    }
+  }
+`;
+
+export const GET_TICKET_QUERY = gql`
+query GetTicketQuery($id: String!) {
+  getTicket(id: $id) {    
+      id
+      customerTicketNumber
+      customerName
+      cogentCaseNumber
+      cogentWorkOrderNumber
+      ticketType
+      status
+      numberOfHoursReq
+      numberOfResource
+      ticketDetailId
+      projectId
+      jobSiteId
+      customerId
+      ticketReceivedTime
+      createdAt
+      updatedAt
+      deletedAt
+    }
+  }
+`;
+
+
+
 
 
 export const GET_ALL_CUSTOMERS_QUERY = gql`

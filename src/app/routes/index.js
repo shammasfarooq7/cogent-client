@@ -45,6 +45,8 @@ import { ProjectListing } from "../pages/Admin/Project/ProjectListing";
 import { ProjectView } from "../pages/Admin/Project/ProjectView";
 import { JobsListing } from "../pages/Admin/Jobs/JobsListing";
 import { JobsView } from "../pages/Admin/Jobs/JobsView";
+import { TicketsListing } from "../pages/Admin/Tickets/TicketsListing";
+import { TicketView } from "../pages/Admin/Tickets/TicketView";
 
 const MainRoutes = () => {
   return (
@@ -244,6 +246,16 @@ const MainRoutes = () => {
                 <Route path={"/admin/jobview"} element={
               <PrivateRoute roles={[ROLE.ADMIN]}>
                 <JobsView />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/ticket"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <TicketsListing />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/ticketview/:id"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <TicketView />
                </PrivateRoute>
             } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}

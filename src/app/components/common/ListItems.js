@@ -56,6 +56,12 @@ export const MainListItems = () => {
       </ListItemIcon>
       <ListItemText primary="Jobs" />
     </ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/ticket')}>
+        <ListItemIcon className='white'>
+        <DashboardIcon className='white' />
+      </ListItemIcon>
+      <ListItemText primary="Tickets" />
+    </ListItemButton>
     </>
     }
     </Fragment >

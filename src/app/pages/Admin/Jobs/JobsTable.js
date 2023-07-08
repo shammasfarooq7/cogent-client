@@ -17,6 +17,7 @@ import { renderStatus } from '../../../constants';
 import { Search } from '../../../components/common/Search';
 import { GET_ALL_TICKETS_QUERY } from '../../../../graphql/tickets';
 import { CreateJobs } from './CreateJobs';
+import { GET_ALL_JOBS_QUERY } from '../../../../graphql/admin';
 
 
 export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
@@ -761,9 +762,9 @@ export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTabl
 
     const searchQuery = useDebounce(searchValue, 500);
 
-    const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
+    const { data, loading, refetch } = useQuery(GET_ALL_JOBS_QUERY, {
         variables: {
-            getAllTicketsInput: {
+            getAllJobsitesInput: {
                 page,
                 limit,
                 ...(searchQuery && { searchQuery })
@@ -828,9 +829,9 @@ export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTabl
             <Table >
                 <TableHead>
                     <TableRow sx={{ backgroundColor: "#F5F8FA", borderRadius: "10px" }}>
-                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Job Name</TableCell>
+                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Job Id</TableCell>
+                        <TableCell>Job Name</TableCell>
                         <TableCell>Post Code</TableCell>
-                        <TableCell>Country</TableCell>
                         <TableCell >Actions</TableCell>
                     </TableRow>
                 </TableHead>
@@ -842,23 +843,23 @@ export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTabl
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !allTickets.length
+                        : data?.getAllJobsites?.length == 0
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : allTickets.map((ticket) => (
-                                <TableRow key={ticket.id} sx={{ mt: 2 }}>
+                            : data?.getAllJobsites?.jobsites.map((job) => (
+                                <TableRow key={job.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
-                                            <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {ticket.id}</Box>
+                                            <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {job.id}</Box>
                 
                                         </Box>
                                     </TableCell>
-                                    <TableCell>{ticket.date}</TableCell>
-                                    <TableCell>{ticket.time}</TableCell>
+                                    <TableCell>{job.name}</TableCell>
+                                    <TableCell>{job.postcode}</TableCell>
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
@@ -868,7 +869,7 @@ export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTabl
                                             {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
                                                  src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} /> */}
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(ticket?.id) }}
+                                                src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(job?.id) }}
                                         />
 
                                         </Box>

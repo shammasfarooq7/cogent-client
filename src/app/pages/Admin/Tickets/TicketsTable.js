@@ -16,11 +16,10 @@ import useDebounce from '../../../customHooks/useDebounce';
 import { renderStatus } from '../../../constants';
 import { Search } from '../../../components/common/Search';
 import { GET_ALL_TICKETS_QUERY } from '../../../../graphql/tickets';
-import { CreateProject } from './CreateProject';
-import { GET_ALL_PROJECTS_QUERY } from '../../../../graphql/admin';
+import { GET_ALL_JOBS_QUERY } from '../../../../graphql/admin';
 
 
-export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
+export const TicketsTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
 
     const navigate = useNavigate();
 
@@ -762,9 +761,9 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
 
     const searchQuery = useDebounce(searchValue, 500);
 
-    const { data, loading, refetch } = useQuery(GET_ALL_PROJECTS_QUERY, {
+    const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
         variables: {
-            getAllProjectsInput: {
+            getAllTicketsInput: {
                 page,
                 limit,
                 ...(searchQuery && { searchQuery })
@@ -812,26 +811,21 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
 
-            {openSDForm && <CreateProject openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
-
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>Project's Listing</Typography>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>Job's Listing</Typography>
                 <Box>
                     {search && <Search sx={{ width: "200px" }}
                         onChange={(e) => { setSearchValue(e.target.value) }}
                     />}
-                    <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
-                        onClick={() => { setEditInfo(null); setOpenSDForm(true) }}
-                    >Add</Button>
                 </Box>
 
             </Box>
             <Table >
                 <TableHead>
                     <TableRow sx={{ backgroundColor: "#F5F8FA", borderRadius: "10px" }}>
-                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Project Id</TableCell>
-                        <TableCell>Project Name</TableCell>
-                        <TableCell>Status</TableCell>
+                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Ticket Id</TableCell>
+                        <TableCell>Customer Ticket Number</TableCell>
+                        <TableCell>Customer Name</TableCell>
                         <TableCell >Actions</TableCell>
                     </TableRow>
                 </TableHead>
@@ -843,14 +837,14 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : data?.count && data.count == 0
+                        : data?.count && data?.count == 0
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : data?.getAllProjects?.projects.map((ticket) => (
+                            : data?.getAllTickets?.tickets.map((ticket) => (
                                 <TableRow key={ticket.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
@@ -858,19 +852,17 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
                 
                                         </Box>
                                     </TableCell>
-                                    <TableCell>{ticket.name}</TableCell>
-                                    <TableCell>{ticket.status}</TableCell>
+                                    <TableCell>{ticket.customerTicketNumber || "--"}</TableCell>
+                                    <TableCell>{ticket.customerName || "--"}</TableCell>
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => { navigate(`/admin/projectview`) }} >
+                                                onClick={() => { navigate(`/admin/ticketview/${ticket.id}`) }} >
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
                                                  src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} /> */}
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(ticket?.id) }}
-                                        />
+    
 
                                         </Box>
                                     </TableCell>

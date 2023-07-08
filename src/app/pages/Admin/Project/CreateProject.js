@@ -16,7 +16,7 @@ import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION, GET_All_CUSTOMERS_QUERY
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from '../../../components/common/Alert';
 import { SimpleDropDownController } from '../../../components/common/SimpleDropDownController';
-import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType, agreedSla, coverage, technologyType, serviceTypeProject, supportModel, talentLevel, IncrementTime, sowDesc } from '../../../constants';
+import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects, ticketsType, agreedSla, coverage, technologyType, serviceTypeProject, supportModel, talentLevel, IncrementTime, sowDesc, status } from '../../../constants';
 import { CustomDocumentUploadController } from '../../../components/common/CustomDocumentUploadController';
 // import { MultiDatePicker } from '../../components/common/CustomMultiDate';
 import { uploadDocument } from '../../../services/rest-apis';
@@ -25,6 +25,7 @@ import { getFileWithNewName, getName } from '../../../helper';
 import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 import { CREATE_PROJECT_MUTATION } from '../../../../graphql/admin';
+import { CustomMultiSelect, CustomMultiSelectController } from '../../../components/common/CustomMultiSelect';
 
 const style = {
     position: 'absolute',
@@ -123,6 +124,16 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
         },
         fetchPolicy: "network-only"
     });
+    const getAllCustomer = getAllCustomerData && getAllCustomerData.getAllCustomer.customers
+    const getCustomerIds = getAllCustomer && getAllCustomer.map((customers) => customers.id) 
+    const customerIds = getCustomerIds && getCustomerIds.map((id) => {
+
+        return {
+              value : id,
+              label : id
+        }
+    })
+    console.log("getAllCustomerData", customerIds)
     
     if (data) {
         Alert.success("Project created successfully!")
@@ -143,10 +154,11 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
 
    
     const onSubmit = async (data) => {
+        debugger
         try {
             setIsLoading(true);
 
-            const {startDate, endDate, customerId, status, name, clientPartnerName, custSdmName,
+            let {startDate, endDate, customerId, status, name, clientPartnerName, custSdmName,
                 custSdmEmail, custSdmContNum, cogSdmName, cogSdmNum, cogSdmCont, cogSdEmail, cogSdContNum, agreedSla, coverage, technologyType, serviceType,
                 supportModel, talentLevel, cancelPolicy, dispatchAgreed, incrementTime, sow, sowDesc, owJd,
                 serviceDeliv, ssInst, asInst, toolsReq, namedWorker, assignedWorker, technicalSkill,
@@ -154,6 +166,17 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                 cl2ee, cl2ec, cgl1ee, cgl1ec, cfl2ee, cgl2ec, code
             
             } = data
+
+             agreedSla = agreedSla && agreedSla.map((option)=> option.value);
+             coverage = coverage && coverage.map((option)=> option.value);
+             technologyType = technologyType && technologyType.map((option)=> option.value);
+             serviceType = serviceType && serviceType.map((option)=> option.value);
+             supportModel = supportModel && supportModel.map((option)=> option.value);
+             talentLevel = talentLevel && talentLevel.map((option)=> option.value);
+
+
+
+
             const payload = {
                 startDate,
                 endDate,
@@ -270,19 +293,19 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomFormController
+                                            <CustomDropDrownController
                                                 controllerName='customerId'
                                                 controllerLabel='Customer Id'
                                                 fieldType='text'
-                                                
+                                                currencies={customerIds}
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomFormController
+                                            <CustomDropDrownController
                                                 controllerName='status'
                                                 controllerLabel='status'
                                                 fieldType='text'
-                                                
+                                                currencies = {status}
                                             />
                                         </Grid>
 
@@ -367,7 +390,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='agreedSla'
                                                 controllerLabel='Agreed Sla'
                                                 fieldType='text'
@@ -375,7 +398,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='coverage'
                                                 controllerLabel='coverage'
                                                 fieldType='text'
@@ -383,7 +406,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='technologyType'
                                                 controllerLabel='Technology Type'
                                                 fieldType='text'
@@ -391,7 +414,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='serviceType'
                                                 controllerLabel='Service Type'
                                                 fieldType='text'
@@ -399,7 +422,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='supportModel'
                                                 controllerLabel='Support Model'
                                                 fieldType='text'
@@ -407,7 +430,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomDropDrownController
+                                            <CustomMultiSelect
                                                 controllerName='talentLevel'
                                                 controllerLabel='Talent Level'
                                                 fieldType='text'
