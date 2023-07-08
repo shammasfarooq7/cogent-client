@@ -106,7 +106,7 @@ export const CustomerView = () => {
         <Grid item xs={12} md={12} lg={12}>
           {/* <HeaderResource heading="General Information" /> */}
         </Grid>
-        <Grid container>
+        <Grid container sx={{ mt: 2 }}>
           <Grid item xs={4} md={4} lg={3} sx={{marginTop:'10px'}}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Name</Typography>
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{customerData?.getCustomer.name || "_ _"}</Typography>
@@ -119,7 +119,6 @@ export const CustomerView = () => {
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Website</Typography>
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{customerData?.getCustomer.website || "_ _"}</Typography>
           </Grid>
-          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3} sx={{marginTop:'10px'}}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Establish Year</Typography>
                 <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{customerData?.getCustomer.establishYear || "_ _"}</Typography>
@@ -259,9 +258,7 @@ export const CustomerView = () => {
             <Grid item xs={4} md={4} lg={3} sx={{marginTop:'10px'}}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Customer Abbriviation</Typography>
                 <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{customerData?.getCustomer.customerAbbr}</Typography>
-            </Grid>
-          </Grid>
-          
+            </Grid>          
         </Grid>
       </Box>
     </Container>

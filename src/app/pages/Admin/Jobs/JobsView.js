@@ -118,7 +118,6 @@ export const JobsView = () => {
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>City</Typography>
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{jobData?.getJobsite?.city || "_ _"}</Typography>
           </Grid>
-          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3} sx={{marginTop:'10px'}}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>State</Typography>
                 <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{jobData?.getJobsite?.state || "_ _"}</Typography>
@@ -255,7 +254,6 @@ export const JobsView = () => {
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Project Id</Typography>
                 <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{jobData?.getJobsite?.projectId || "_ _"}</Typography>
             </Grid>
-          </Grid>        
         </Grid>
       </Box>
     </Container>
