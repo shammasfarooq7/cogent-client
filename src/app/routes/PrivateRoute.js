@@ -1,4 +1,4 @@
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, Navigate, json } from "react-router-dom";
 import { getToken, handleLogout } from "../utils";
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER } from "../../graphql/auth";
@@ -16,6 +16,7 @@ export const PrivateRoute = ({ children, roles = [] }) => {
   useEffect(() => {
     if (data?.getCurrentUser && !user) {
       setUser({ ...data?.getCurrentUser, userRole: (data?.getCurrentUser?.roles?.[0]?.role || "")?.toLowerCase() })
+      localStorage.setItem("userRole", data?.getCurrentUser?.roles?.[0]?.role)
     }
   }, [data]);
 

@@ -133,17 +133,11 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
               label : id
         }
     })
-    console.log("getAllCustomerData", customerIds)
     
-    if (data) {
-        Alert.success("Project created successfully!")
-    }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
     const customerId = getValues('customerId')
     const selectedDropdownValue = customerId !== undefined && watch('customerId');
-    console.log("watch", selectedDropdownValue, customerId)
-
 
     useEffect(() => {
        if (customerId) {
@@ -239,6 +233,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                         }
                     }
                 })
+                Alert.success("Project created successfully!")
             handleClose();
 
         } catch (error) {

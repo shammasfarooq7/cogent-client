@@ -812,7 +812,7 @@ export const TicketsTable = ({ tableName, search, setTicketTabelRefetch, ticketT
             />
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>Job's Listing</Typography>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>Ticket's Listing</Typography>
                 <Box>
                     {search && <Search sx={{ width: "200px" }}
                         onChange={(e) => { setSearchValue(e.target.value) }}

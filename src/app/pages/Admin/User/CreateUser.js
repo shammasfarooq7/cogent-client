@@ -10,7 +10,7 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form';
 import { CustomDropDrownController } from '../../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ticketFormValidationSchema, userValidationSchema } from '../../../validationSchema';
-import { CREATE_USER_MUTATION} from '../../../../graphql/admin';
+import { CREATE_USER_MUTATION, GET_ALL_USERS_QUERY} from '../../../../graphql/admin';
 import {roles} from  '../../../constants'
 import { useMutation, useQuery } from '@apollo/client';
 import { Alert } from '../../../components/common/Alert';
@@ -70,17 +70,11 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
     //     },
     //     fetchPolicy: "network-only"
     // });
-    
-    if (data) {
-        Alert.success(data ? "User created successfully!" : "User updated successfully!")
-    }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
     const customerId = getValues('customerId')
     const selectedDropdownValue = customerId !== undefined && watch('customerId');
-    console.log("watch", selectedDropdownValue, customerId)
 
-   
     const onSubmit = async (data) => {
         try {
             setIsLoading(true);
@@ -110,8 +104,11 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
                         createUserInput: {
                             ...payload
                         }
-                    }
+                    },
                 })
+                Alert.success("User created successfully!")
+
+
             }
 
 

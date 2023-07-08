@@ -863,7 +863,7 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => { navigate(`/admin/projectview`) }} >
+                                                onClick={() => { navigate(`/admin/projectview/${ticket.id}`) }} >
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}

@@ -223,7 +223,7 @@ const MainRoutes = () => {
                 <CustomerListing />
                </PrivateRoute>
             } />
-                <Route path={"/admin/customerview"} element={
+                <Route path={"/admin/customerview/:id"} element={
               <PrivateRoute roles={[ROLE.ADMIN]}>
                 <CustomerView />
                </PrivateRoute>
@@ -233,7 +233,7 @@ const MainRoutes = () => {
                 <ProjectListing />
                </PrivateRoute>
             } />
-                <Route path={"/admin/projectview"} element={
+                <Route path={"/admin/projectview/:id"} element={
               <PrivateRoute roles={[ROLE.ADMIN]}>
                 <ProjectView />
                </PrivateRoute>
@@ -243,7 +243,7 @@ const MainRoutes = () => {
                 <JobsListing />
                </PrivateRoute>
             } />
-                <Route path={"/admin/jobview"} element={
+                <Route path={"/admin/jobview/:id"} element={
               <PrivateRoute roles={[ROLE.ADMIN]}>
                 <JobsView />
                </PrivateRoute>

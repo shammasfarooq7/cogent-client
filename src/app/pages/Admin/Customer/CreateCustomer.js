@@ -105,23 +105,7 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
    
     const [createCustomer, { data, loading }] = useMutation(CREATE_CUSTOMER_MUTATION);
 
-    
-    if (data) {
-        Alert.success("Customer created successfully!")
-    }
-
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
-    // const customerId = getValues('customerId')
-    // const selectedDropdownValue = customerId !== undefined && watch('customerId');
-    // console.log("watch", selectedDropdownValue, customerId)
-
-
-    // useEffect(() => {
-    //    if (customerId) {
-    //     //    Pp();
-    //    }
-
-    // }, [selectedDropdownValue, customerId]);
 
    
     const onSubmit = async ({
@@ -217,7 +201,8 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
               }
             }
           });
-      
+          Alert.success("Customer created successfully!")
+
           handleClose();
         } catch (error) {
           console.error(error);

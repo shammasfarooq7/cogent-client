@@ -829,7 +829,7 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
             <Table >
                 <TableHead>
                     <TableRow sx={{ backgroundColor: "#F5F8FA", borderRadius: "10px" }}>
-                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Customer Post Code</TableCell>
+                        <TableCell sx={{ fontFamily: "Poppins, sans-serif" }}>Customer Id</TableCell>
                         <TableCell>Customer Name</TableCell>
                         <TableCell>Customer Email</TableCell>
                         <TableCell >Actions</TableCell>
@@ -854,7 +854,7 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
                                 <TableRow key={ticket.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
-                                            <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {ticket.postCode}</Box>
+                                            <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {ticket.id}</Box>
                 
                                         </Box>
                                     </TableCell>
@@ -863,7 +863,7 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => { navigate(`/admin/customerview`) }} >
+                                                onClick={() => { navigate(`/admin/customerview/${ticket?.id}`) }} >
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}

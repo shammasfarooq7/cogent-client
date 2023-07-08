@@ -117,7 +117,146 @@ query GetTicketQuery($id: String!) {
   }
 `;
 
+export const GET_CUSTOMER_QUERY = gql`
+query GetCustomerQuery($id: String!) {
+  getCustomer(id: $id) {    
+      id
+      name
+      vendorReference
+      website
+      establishYear
+      employeesCount
+      dispatchGroupEmail
+      city
+      employeeCountLinkedin
+      phone
+      country
+      postCode
+      linkedinUrl
+      email
+      stateProvince
+      address
+      annualRevenue
+      revenueSoftware
+      revenueConsultancy
+      revenueSupport
+      revenueLogistics
+      revenueOther
+      contactNumber
+      addressLine1
+      addressLine2
+      emailId
+      mobile
+      whatsappNumber
+      whatsappGroup
+      whatsappLink
+      cogentEmailId
+      workPermitStatus
+      primaryTechService
+      fieldService
+      keyCustomerSupport
+      languageSupport
+      countrySupported
+      certification
+      customerAbbr
+      onboardedAt
+      createdAt
+      updatedAt
+      deletedAt
+    }
+  }
+`;
 
+export const GET_PROJECT_QUERY = gql`
+query GetProjectQuery($id: String!) {
+  getProject(id: $id) {    
+      id
+      startDate
+      endDate
+      status
+      projectNumber
+      name
+      clientPartnerName
+      custSdmName
+      custSdmEmail
+      custSdmContNum
+      cogSdmName
+      cogSdmNum
+      cogSdmCont
+      cogSdEmail
+      cogSdContNum
+      cancelPolicy
+      dispatchAgreed
+      incrementTime
+      sow
+      sowDesc
+      owJd
+      serviceDeliv
+      ssInst
+      asInst
+      toolsReq
+      namedWorker
+      assignedWorker
+      technicalSkill
+      behSkills
+      experienceReq
+      langReq
+      trainReq
+      trainDoc
+      reqTools
+      reqSoft
+      specReq
+      cl1ee
+      cl1ec
+      cl2ee
+      cl2ec
+      cgl1ee
+      cgl1ec
+      cfl2ee
+      cgl2ec
+      code
+      customerId
+    }
+  }
+`;
+
+export const GET_JOB_QUERY = gql`
+query GetJobQuery($id: String!) {
+  getJobsite(id: $id) {    
+      id
+      name
+      country
+      city
+      state
+      province
+      postcode
+      siteAddress
+      pocName
+      pocContactNumber
+      pocEmailAdrress
+      ppe1h
+      ppe2h
+      ppe3h
+      ppe4h
+      ppe5h
+      ppe6h
+      ppe7h
+      ppe8h
+      tandm30
+      tandm1h
+      afth
+      wknd
+      ph
+      sat
+      sun
+      siteTiming
+      timeZone
+      dispatchAgreed
+      incrementTime
+      projectId
+    }
+  }
+`;
 
 
 

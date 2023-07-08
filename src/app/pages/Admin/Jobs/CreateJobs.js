@@ -121,9 +121,6 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
               label : id
         }
     })
-    if (data) {
-        Alert.success("Job created successfully!")
-    }
 
     const { handleSubmit, setValue, watch , getValues, formState: { errors } } = methods;
   
@@ -194,6 +191,7 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                         }
                     }
                 })
+                Alert.success("Job created successfully!")
             handleClose();
 
         } catch (error) {
