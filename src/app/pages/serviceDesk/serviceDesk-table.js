@@ -8,7 +8,7 @@ import { Box, Button, TablePagination, Typography } from '@mui/material';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY } from '../../../graphql/tickets';
+import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 import { Alert } from '../../components/common/Alert';
@@ -18,7 +18,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { renderStatus } from '../../constants';
 
 
-export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
+export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, label='All Tickets', todays=false, external=null}) => {
 
     const navigate = useNavigate();
 
@@ -31,18 +31,19 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     const [editInfo, setEditInfo] = useState(null);
 
     const searchQuery = useDebounce(searchValue, 500);
+ 
 
     const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
         variables: {
             getAllTicketsInput: {
                 page,
                 limit,
-                ...(searchQuery && { searchQuery })
+                ...(searchQuery && { searchQuery }),
+                external
             }
         },
         fetchPolicy: "network-only"
     });
-
 
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
    
@@ -85,7 +86,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
             {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>All Tickets</Typography>
+                <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{label}</Typography>
                 <Box>
                     {search && <Search sx={{ width: "200px" }}
                         onChange={(e) => { setSearchValue(e.target.value) }}

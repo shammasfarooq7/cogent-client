@@ -146,3 +146,27 @@ query GetTicketQuery($id: String!) {
   }
 `;
 
+export const GET_TODAY_TICKET_QUERY = gql`
+query GetTodayTicketQuery {
+  getTodayTicket {
+    id
+    date
+    scheduledTime
+    ticketId
+    ticket {
+      id
+      customerTicketNumber
+      cogentCaseNumber
+      status
+      ticketDetail {
+        id
+        region
+        country
+      }
+      createdAt
+      updatedAt
+      ticketReceivedTime
+    }
+  }
+}
+`;

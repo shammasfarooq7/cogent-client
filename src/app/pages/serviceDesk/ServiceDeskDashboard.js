@@ -23,16 +23,22 @@ export const ServiceDesk = () => {
   const [inProgressCount, setInProgressCount] = useState(10)
   const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
 
-  // const { data, loading, error } = useQuery(Get_RESOURCE_Dashboard_Stats, {
-  //   fetchPolicy: "network-only"
-  // });
+  const [searchValue, setSearchValue] = useState(null);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
 
+//   const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
+//     variables: {
+//         getAllTicketsInput: {
+//             page,
+//             limit,
+//             ...(searchQuery && { searchQuery }),
+//             external:true,
+//         }
+//     },
+//     fetchPolicy: "network-only"
+// });
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setDashboardStat(data.getDashboardStats);
-  //   }
-  // }, [data]);
 
   const handleOpen = () => setOpenModal(true);
 
@@ -67,7 +73,7 @@ export const ServiceDesk = () => {
 
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
-          <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, todays:true}} />
+          <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, todays:true, label:'Today\'s Tickets'}} />
           </Paper>
         </Grid>
 
@@ -81,7 +87,7 @@ export const ServiceDesk = () => {
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch }} />
+            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, external:true, label:'External Tickets' }} />
           </Paper>
         </Grid>
       </Grid>
