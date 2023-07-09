@@ -337,7 +337,7 @@ export const TicketDetails = () => {
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Ticket Dates</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600", textOverflow: "hidden", whiteSpace: "nowrap", maxWidth: "100%"}}>{ticketDateData}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600", textOverflow: "hidden", whiteSpace: "pre-wrap", maxWidth: "100%"}}>{ticketDateData}</Typography>
           </Grid>
 
           <Grid container sx={{mt: 2}}>

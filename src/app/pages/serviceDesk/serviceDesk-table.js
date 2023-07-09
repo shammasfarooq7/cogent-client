@@ -18,7 +18,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { renderStatus } from '../../constants';
 
 
-export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, label='All Tickets', todays=false, external=null}) => {
+export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, label = 'All Tickets', todays = false, external = false, hideAddTicketButton = false }) => {
 
     const navigate = useNavigate();
 
@@ -31,7 +31,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     const [editInfo, setEditInfo] = useState(null);
 
     const searchQuery = useDebounce(searchValue, 500);
- 
+
 
     const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
         variables: {
@@ -46,7 +46,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     });
 
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
-   
+
     const handleChangePage = (event, newPage) => {
         console.log({ newPage });
         setPage(newPage);
@@ -58,7 +58,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     };
 
     const handleDeleteConfirm = async () => {
-       
+
         Alert.success("Deleted Successfully!")
         setOpenDeleteAlert(false);
     }
@@ -83,18 +83,19 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
 
-            {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
+            {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchTickets={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{label}</Typography>
-                <Box>
-                    {search && <Search sx={{ width: "200px" }}
-                        onChange={(e) => { setSearchValue(e.target.value) }}
-                    />}
-                    <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
-                        onClick={() => { setEditInfo(null); setOpenSDForm(true) }}
-                    >Add</Button>
-                </Box>
+                {!hideAddTicketButton &&
+                    <Box>
+                        {search && <Search sx={{ width: "200px" }}
+                            onChange={(e) => { setSearchValue(e.target.value) }}
+                        />}
+                        <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 30px", marginLeft: "6px" }}
+                            onClick={() => { setEditInfo(null); setOpenSDForm(true) }}
+                        >Add</Button>
+                    </Box>}
 
             </Box>
             <Table size="small">
@@ -150,7 +151,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
-                                                 src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} />
+                                                src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} />
 
                                         </Box>
                                     </TableCell>

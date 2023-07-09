@@ -27,17 +27,17 @@ export const ServiceDesk = () => {
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
 
-//   const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
-//     variables: {
-//         getAllTicketsInput: {
-//             page,
-//             limit,
-//             ...(searchQuery && { searchQuery }),
-//             external:true,
-//         }
-//     },
-//     fetchPolicy: "network-only"
-// });
+  //   const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
+  //     variables: {
+  //         getAllTicketsInput: {
+  //             page,
+  //             limit,
+  //             ...(searchQuery && { searchQuery }),
+  //             external:true,
+  //         }
+  //     },
+  //     fetchPolicy: "network-only"
+  // });
 
 
   const handleOpen = () => setOpenModal(true);
@@ -62,18 +62,18 @@ export const ServiceDesk = () => {
         <Grid item xs={4} md={4} lg={4}>
           <DashboardCard hiring={todaysIncidentCount} text={"Today's Incidents"} color="#56A0C2" />
         </Grid>
-        
+
         <Grid item xs={4} md={4} lg={4}>
           <DashboardCard hiring={inProgressCount} text={"Inprogress"} color="#242D60" />
         </Grid>
-        
+
         <Grid item xs={4} md={4} lg={4}>
           <DashboardCard hiring={upcommingIncidentsCount} text={"Upcomming Incidents"} color="#212121" />
         </Grid>
 
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
-          <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, todays:true, label:'Today\'s Tickets'}} />
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, todays: true, label: "Today's Tickets" }} />
           </Paper>
         </Grid>
 
@@ -87,7 +87,7 @@ export const ServiceDesk = () => {
         </Grid>
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, external:true, label:'External Tickets' }} />
+            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, external: true, label: 'External Tickets', hideAddTicketButton: true }} />
           </Paper>
         </Grid>
       </Grid>
