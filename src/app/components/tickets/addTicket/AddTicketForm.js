@@ -95,7 +95,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             numberOfResource: null,
             ticketDates: [],
             projectCode: "",
-            scheduledTime: "23:03:00",
+            scheduledTime: "",
             isAdhoc: false,
             ...editDefaultState
         }
@@ -202,6 +202,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             if (refetchTickets) {
                 await refetchTickets()
             }
+            // console.log("data||UpdateData:::", data || UpdateData);
             handleClose();
 
         } catch (error) {
@@ -225,6 +226,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
 
     useEffect(() => {
         resetProjectStates()
+        setValue("jobSiteId", "")
         setValue("siteName", "")
     }, [watch("isAdhoc")])
 

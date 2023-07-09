@@ -57,5 +57,5 @@ export const addTicketFormValidationSchema = yup.object({
     numberOfResource: yup.number().nullable().required("Number of resources required"),
     ticketDates: yup.array().min(1, "At least one ticket date is required").of(yup.date()).required("Date is required"),
     projectCode: yup.string().required("Project Code is required"),
-    scheduledTime: yup.string().matches(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, "Invalid time format"),
+    scheduledTime: yup.string().nullable().required("Time is required").matches(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, "Invalid time format"),
 })
