@@ -25,64 +25,26 @@ export const TicketDetails = () => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openTicketForm, setOpenTicketForm] = useState(false);
 
-//   const { data, loading, error, refetch } = useQuery(GET_A_RESOURCE_QUERY, {
-//     variables: {
-//       id
-//     },
-//     fetchPolicy: "network-only"
-//   });
+  const { data, loading, error, refetch } = useQuery(GET_A_TICKET_QUERY, {
+    variables: {
+      id
+    },
+    fetchPolicy: "network-only"
+  });
 
-// error, refetch and data are replaced with above commented code once binding with api done
-  const error =''
-  const refetch = ''
-  const data = {
-        id: 367322,
-        ticketType: 'FSE',
-        date: '2023-06-17',
-        time: '20:48',
-        country: 'Pakistan',
-        city: 'Lahore',
-        status: 'Cancelled',
-        checkInOrOut: 'Check-In',
-        customerName: 'Facebook',
-        customerTicketNumber: 'FB00123',
-        cogentCaseNumber: 'COGENT0098',
-        cogentWorkOrder: '782',
-        accountName: 'Lorum Ispum',
-        project: 'adhoc', 
-        projectCode: '673',
-        endClientName: 'Lorum Ispum',
-        siteName: 'location1', 
-        region: 'EMEA',
-        provinceState: 'Punjab',
-        siteAddress: 'Adress of the site',
-        postCode: 54000,
-        spocName: 'Lorum Ispum',
-        spocContactNumber: 'Lorum Ispum',
-        spocEmailAddress: 'lorum@ispum.com',
-        siteAccessInstruction: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        customerCaseNumber: 737872,
-        technologyType: 'EUC',
-        jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        caseDetails: 'Lorum ispum instructions Lorum ispum Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        scopeOfWork: 'Lorum ispum instructions Lorum ispum Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        instructions: 'Lorum ispum instructions Lorum ispum Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        addInstruction: 'Lorum ispum instructions Lorum ispum Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructionsLorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        specialInstruction: 'Lorum ispum instructions Lorum ispum Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-        toolsRequested: ['Macbook', "Cisco VPN"],
-        serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-        hardwareSN: 'lorum ispum',
-        serviceType: 'Breakfix',
-        serviceLevel: 'L1',
-        servicePriority: 'P1',
-        slaPriority: '3BD',
-        numberOfHoursReq: 78,
-        numberOfResource: 5,
-        attachments: 'https://www.africau.edu/images/default/sample.pdf',
-    }
 
   const [deleteTicket, { loading: isDeleteLoading }] = useMutation(DELETE_TICKET_MUTATION)
-  const info = data;
+  const info = data?.getTicket;
+
+  let ticketDateData = info?.ticketDates?.map((date) => {
+    return new Date(date.date).toDateString();
+  }).join(", ");
+
+
+  const ticketReceiveDate = new Date(info?.ticketReceivedTime).toDateString();
+
+  const ticketReceivedTime = new Date(info?.ticketReceivedTime).toTimeString();
+
 
   const handleDeleteConfirm = async () => {
     await deleteTicket({
@@ -129,7 +91,7 @@ export const TicketDetails = () => {
           editInfo={info}
           refetchResources={refetch} />}
 
-      <Box sx={{ backgroundColor: "white", p: 1.5, border:2, borderColor: getBorderColour(info?.status)}}>
+      <Box sx={{ backgroundColor: "white", p: 1.5, border:2}}>
 
         <Grid container sx={{ mb: 2 }}>
           <Grid item xs={4} md={4} lg={4} sx={{ display: "flex", flexDirection: "row" }}>
@@ -154,11 +116,11 @@ export const TicketDetails = () => {
         <Grid container>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Ticket Received Time</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.time || "_ _"}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{ticketReceivedTime || "_ _"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Ticket Received Date</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.date || "_ _"}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{ticketReceiveDate || "_ _"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Customer Name</Typography>
@@ -175,14 +137,31 @@ export const TicketDetails = () => {
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Cogent Workoder Number</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.cogentWorkOrder}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.cogentWorkOrder || "_ _"}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
-                <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Current Status</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{renderStatus(info?.status)}</Typography>
+                <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Customer Case#</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.customerCaseNumber}</Typography>
+            </Grid>
+            <Grid item xs={4} md={4} lg={3}>
+                <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Ticket Type</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketType}</Typography>
+            </Grid>
+            <Grid container sx={{ mt: 2 }}>
+              <Grid item xs={4} md={4} lg={3}>
+                  <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Approved</Typography>
+                  <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.isApproved ?  'True' : 'False'}</Typography>
+              </Grid>
+              <Grid item xs={4} md={4} lg={3}>
+                  <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>External</Typography>
+                  <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.isExternal ?  'True' : 'False'}</Typography>
+              </Grid>
+              <Grid item xs={4} md={4} lg={3}>
+                  <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Current Status</Typography>
+                  <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{renderStatus(info?.status)}</Typography>
+              </Grid>
             </Grid>
           </Grid>
-          
         </Grid>
         {/* //===================================================================================== */}
 
@@ -192,19 +171,19 @@ export const TicketDetails = () => {
         <Grid container>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Account Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.accountName}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.accountName}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Project Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.project}</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Project Code</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail?.projectCode}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>SLA</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.slaPriority}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.slaPriority}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>End Client Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.endClientName}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.endClientName}</Typography>
           </Grid>
           
         </Grid>
@@ -217,100 +196,96 @@ export const TicketDetails = () => {
         <Grid container>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Site Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.siteName}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteName}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Region</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.region}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.region}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Country</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.country}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.country}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>City</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.city}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.city}</Typography>
           </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Site Address</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.siteAddress}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteAddress}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Province/State</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.provinceState}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.province}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Post Code</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.postCode}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.postCode}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Site Access Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.siteAccessInstruction}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteAccessInstruction}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={6} md={6} lg={6}>
-                <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Customer Case#</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.customerCaseNumber}</Typography>
-            </Grid>
-            <Grid item xs={6} md={6} lg={6}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Technology Type</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.technologyType}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.technologyType}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Job Description/ Summary</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.jobSummary}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.jobSummary}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Case Details</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.caseDetails}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.caseDetails}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Scope of Work</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.scopeOfWork}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.scopeOfWork}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.instructions}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.instructions}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Additional Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.addInstruction}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.addInstruction}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Special Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.specialInstruction}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.specialInstruction}</Typography>
             </Grid>
          </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Tools Requested</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.toolsRequested.join(", ")}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.toolsRequested.join(", ")}</Typography>
             </Grid>
          </Grid>
 
@@ -318,17 +293,17 @@ export const TicketDetails = () => {
                 <Grid item xs={4} md={4} lg={3}>
                     <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Service Document</Typography>
                     <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
-                        {getNameFromUrl(info?.serviceDocUrl) || "_ _"}
-                        {info?.serviceDocUrl &&
+                        {getNameFromUrl(info?.ticketDetail.serviceDocUrl) || "_ _"}
+                        {info?.ticketDetail.serviceDocUrl &&
                             <>
-                            <a href={info?.serviceDocUrl}
+                            <a href={info?.ticketDetail.serviceDocUrl}
                                 style={{ color: '#543F3F', fontWeight: 400, fontSize: "10px", marginLeft: "20px", textDecorationLine: "none" }}
                                 target='_blank'>Open</a>
                             <Button sx={{
                                 fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
                                 color: "#EA3434", marginLeft: "2px",
                             }}
-                                onClick={() => handleDownloadClick(info?.serviceDocUrl)}>
+                                onClick={() => handleDownloadClick(info?.ticketDetail.serviceDocUrl)}>
                                 Download
                             </Button>
                             </>}
@@ -337,7 +312,7 @@ export const TicketDetails = () => {
 
                 <Grid item xs={4} md={4} lg={3}>
                     <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Hardware S/N</Typography>
-                    <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.hardwareSN}</Typography>
+                    <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.hardwareSN}</Typography>
                 </Grid>
             </Grid>
         </Grid>
@@ -350,19 +325,19 @@ export const TicketDetails = () => {
         <Grid container>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Service Type</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.serviceType}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.serviceType}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Service Level</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.serviceLevel}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.serviceLevel}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Service Priority</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.servicePriority}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.servicePriority}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
-            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>SLA Priority</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.slaPriority}</Typography>
+            <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Ticket Dates</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600", textOverflow: "hidden", whiteSpace: "nowrap", maxWidth: "100%"}}>{ticketDateData}</Typography>
           </Grid>
 
           <Grid container sx={{mt: 2}}>
@@ -375,12 +350,17 @@ export const TicketDetails = () => {
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Number of Resource Requested</Typography>
                 <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.numberOfResource}</Typography>
             </Grid>
+
+            <Grid item xs={4} md={4} lg={3}>
+                <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Scheduled Time</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDates?.[0].scheduledTime}</Typography>
+            </Grid>
           </Grid>      
         </Grid>
 
         {/* ============================================================================================================================== */}
 
-        <Grid item xs={12} md={12} lg={12}>
+        {/* <Grid item xs={12} md={12} lg={12}>
           <HeaderResource heading="Visit Type" />
         </Grid>
         <Grid container>
@@ -396,7 +376,7 @@ export const TicketDetails = () => {
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Scheduled for Later</Typography>
             <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>00:00 AM/PM</Typography>
           </Grid>    
-        </Grid>
+        </Grid> */}
 
         {/* ============================================================================================================================== */}
 
@@ -406,22 +386,29 @@ export const TicketDetails = () => {
         <Grid container>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Attachment</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
-                    {getNameFromUrl(info?.attachments) || "_ _"}
-                    {info?.attachments &&
-                        <>
-                        <a href={info?.attachments}
-                            style={{ color: '#543F3F', fontWeight: 400, fontSize: "10px", marginLeft: "20px", textDecorationLine: "none" }}
-                            target='_blank'>Open</a>
-                        <Button sx={{
-                            fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
-                            color: "#EA3434", marginLeft: "2px",
-                        }}
-                            onClick={() => handleDownloadClick(info?.attachments)}>
-                            Download
-                        </Button>
-                        </>}
-                </Typography>
+
+                {
+                  info?.ticketDetail?.attachments?.map((attachment) => (
+                      <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>
+                      {getNameFromUrl(attachment.url )}
+                          <>
+                            <a href={attachment.url}
+                                style={{ color: '#543F3F', fontWeight: 400, fontSize: "10px", marginLeft: "20px", textDecorationLine: "none" }}
+                                target='_blank'>Open</a>
+                            <Button sx={{
+                                fontFamily: 'Poppins', fontStyle: "normal", fontWeight: 400, fontSize: "10px", lineHeight: "15px", textDecorationLine: "underline",
+                                color: "#EA3434", marginLeft: "2px",
+                            }}
+                                onClick={() => handleDownloadClick(attachment.url)}>
+                                Download
+                            </Button>
+                          </>
+                    </Typography>
+
+                  ))
+
+                }
+              
             </Grid >           
         </Grid>
 

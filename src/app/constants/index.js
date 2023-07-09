@@ -918,16 +918,29 @@ export const getSideBarLinks = (role) => {
   }
 }
 
+// OPEN = "open",
+//   INPROGRESS = "in-progess",
+//   CANCELLED = "cancelled",
+//   SCHEDULED = "scheduled",
+//   CANCHAR = "cancelled but chargeable",
+//   ONROUTE = "on-route",
+//   ONSITE = "onsite",
+//   WORKSTART = "work started",
+//   OFFSITE = "offsite",
+//   COMPLETED = "completed",
+//   RESCHEDULED = "rescheduled"
+
 export const renderStatus = (status) => {
-  let background = "#E8FFF3";
-  let color = "#50CD89";
-  if (status === "Cancelled") {
+  let background = "#faf1d2";
+  let color = "#eb960e";
+
+  if (status === "CANCELLED" || status === "CANCHAR") {
       background = "#FFE8E8";
       color = "#FF0000";
   }
-  else if (status === "In Progress" || status === "Working Internally" || status === "Escalated"){
-      background = "#faf1d2";
-      color = "#f0c507";
+  else if (status === "COMPLETED"){
+    background = "#E8FFF3";
+    color = "#50CD89";
   }
 
   return <Box sx={{
