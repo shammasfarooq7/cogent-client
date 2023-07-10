@@ -17,7 +17,9 @@ export const CustomerListing = () => {
   const [profileAnchor, setProfileAnchor] = useState(false);
   const [dashboardStat, setDashboardStat] = useState(null)
   const [ticketTableRefetch, setTicketTabelRefetch] = useState(null)
-
+  const [openTicketForm, setOpenTicketForm] = useState(false);
+  const [openViewForm, setOpenViewForm] = useState(false);
+  const [ticket, setTicket]= useState({})
   const [todaysIncidentCount, setTodaysIncidentCount] = useState(4)
   const [inProgressCount, setInProgressCount] = useState(10)
   const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
@@ -36,9 +38,7 @@ export const CustomerListing = () => {
   const handleProfileClick = (e) => {
     setProfileAnchor(e.currentTarget)
   }
-  const handleProfileClose = () => {
-    setProfileAnchor(null)
-  }
+
 
   const handleSignOut = () => {
     handleLogout();

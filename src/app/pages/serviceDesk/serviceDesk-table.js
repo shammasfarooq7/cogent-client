@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { renderStatus } from '../../constants';
+import { TicketDetails } from './TicketDetails';
 
 
 export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, label = 'All Tickets', todays = false, external = false, hideAddTicketButton = false }) => {
@@ -24,11 +25,20 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const [openSDForm, setOpenSDForm] = useState(false);
-    const [toBeDeleted, setToBeDeleted] = useState(null);
+    const [openViewForm, setOpenViewForm] = useState(false);
+    const [ticket, setTicket]= useState({})
+    const [allticket, setAllTicket] = useState([])
     const [searchValue, setSearchValue] = useState(null);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [editInfo, setEditInfo] = useState(null);
+
+
+   
+
+    //dummyData this need to be replaced with api data
+  
+
 
     const searchQuery = useDebounce(searchValue, 500);
 
@@ -42,7 +52,10 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
                 external
             }
         },
-        fetchPolicy: "network-only"
+        fetchPolicy: "network-only",
+        onCompleted: (data) => {
+             setAllTicket(data)
+          }
     });
 
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
@@ -68,6 +81,13 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
         setOpenSDForm(true)
     }
 
+    const handleViewClick = (id) => {
+        const currentTicket = allticket?.getAllTickets?.tickets.filter((ticket) => ticket.id === id)
+        setTicket(currentTicket[0])
+         setOpenViewForm(true)
+    }
+
+
     const onDeleteClick = (id) => {
         setOpenDeleteAlert(true);
 
@@ -84,6 +104,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
             />
 
             {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchTickets={refetch} />}
+            {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{label}</Typography>
@@ -147,7 +168,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => { navigate(`/ticket-details?id=${ticket?.id}`) }} >
+                                                onClick={() => handleViewClick(ticket.id)} >
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}

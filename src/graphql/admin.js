@@ -60,10 +60,51 @@ query GetAllProjectsQuery($getAllProjectsInput: GetAllProjectsInput!) {
     count
     projects{
       id
-      name
+      startDate
+      endDate
       status
-      customerId
       projectNumber
+      name
+      clientPartnerName
+      custSdmName
+      custSdmEmail
+      custSdmContNum
+      cogSdmName
+      cogSdmNum
+      cogSdmCont
+      cogSdEmail
+      cogSdContNum
+      cancelPolicy
+      dispatchAgreed
+      incrementTime
+      sow
+      sowDesc
+      owJd
+      serviceDeliv
+      ssInst
+      asInst
+      toolsReq
+      namedWorker
+      assignedWorker
+      technicalSkill
+      behSkills
+      experienceReq
+      langReq
+      trainReq
+      trainDoc
+      reqTools
+      reqSoft
+      specReq
+      cl1ee
+      cl1ec
+      cl2ee
+      cl2ec
+      cgl1ee
+      cgl1ec
+      cfl2ee
+      cgl2ec
+      code
+      customerId
     }
     }
   }
@@ -75,7 +116,35 @@ query GetAllJobsQuery($getAllJobsitesInput: GetAllJobsitesInput!) {
     jobsites{
       id
       name
-     postcode
+      country
+      city
+      state
+      province
+      postcode
+      siteAddress
+      pocName
+      pocContactNumber
+      pocEmailAdrress
+      ppe1h
+      ppe2h
+      ppe3h
+      ppe4h
+      ppe5h
+      ppe6h
+      ppe7h
+      ppe8h
+      tandm30
+      tandm1h
+      afth
+      wknd
+      ph
+      sat
+      sun
+      siteTiming
+      timeZone
+      dispatchAgreed
+      incrementTime
+      projectId
     }
     }
   }
@@ -267,8 +336,47 @@ query GetAllCustomersQuery($getAllCustomerInput: GetAllCustomersInput!) {
     customers{
       id
       name
-      email
+      vendorReference
+      website
+      establishYear
+      employeesCount
+      dispatchGroupEmail
+      city
+      employeeCountLinkedin
+      phone
+      country
       postCode
+      linkedinUrl
+      email
+      stateProvince
+      address
+      annualRevenue
+      revenueSoftware
+      revenueConsultancy
+      revenueSupport
+      revenueLogistics
+      revenueOther
+      contactNumber
+      addressLine1
+      addressLine2
+      emailId
+      mobile
+      whatsappNumber
+      whatsappGroup
+      whatsappLink
+      cogentEmailId
+      workPermitStatus
+      primaryTechService
+      fieldService
+      keyCustomerSupport
+      languageSupport
+      countrySupported
+      certification
+      customerAbbr
+      onboardedAt
+      createdAt
+      updatedAt
+      deletedAt
     }
     }
   }

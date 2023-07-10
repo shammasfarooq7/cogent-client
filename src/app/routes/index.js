@@ -73,11 +73,11 @@ const MainRoutes = () => {
               <ResourceDetails />
                </PrivateRoute>
           } />
-           <Route path={"/ticket-details"} element={
+           {/* <Route path={"/ticket-details"} element={
             <PrivateRoute roles={[ROLE.SD]}>
               <TicketDetails />
             </PrivateRoute>
-          } />
+          } /> */}
           <Route path={"/sd-calender"} element={
             <PrivateRoute roles={[ROLE.SD]}>
               <SDCalender />

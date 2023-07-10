@@ -71,7 +71,66 @@ query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
     count
     tickets {
       id
+      customerName
+      cogentCaseNumber
+      cogentWorkOrderNumber
+      status
       customerTicketNumber
+      ticketReceivedTime
+      projectId
+      numberOfHoursReq
+      numberOfResource
+      isExternal
+      isApproved
+      ticketType
+      ticketDates {
+        date
+        scheduledTime
+      }
+      ticketDetail {
+        endClientName
+        accountName
+        slaPriority
+        siteName
+        region
+        country
+        city
+        siteAccessInstruction
+        hardwareSN
+        serviceDocUrl
+        projectCode
+        toolsRequested
+        specialInstruction
+        addInstruction
+        instructions
+        scopeOfWork
+        caseDetails
+        jobSummary
+        technologyType
+        customerCaseNumber
+        serviceType
+        serviceLevel
+        servicePriority
+        siteAddress
+        province
+        postCode
+        attachments {
+          url
+        }
+
+      }
+    }
+    }
+  }
+`;
+
+
+export const GET_A_TICKET_QUERY = gql`
+query GetTicketQuery($id: String!) {
+  getTicket(id: $id) {
+      
+      id
+      customerName
       cogentCaseNumber
       status
       ticketDetail {
@@ -82,7 +141,6 @@ query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
       createdAt
       updatedAt
       ticketReceivedTime
-    }
     }
   }
 `;
