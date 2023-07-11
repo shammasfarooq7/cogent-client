@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { renderStatus } from '../../constants';
+import { TicketDetails } from '../serviceDesk/TicketDetails';
 
 
 export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
@@ -23,6 +24,9 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const [openSDForm, setOpenSDForm] = useState(false);
+    const [openViewForm, setOpenViewForm] = useState(false);
+    const [ticket, setTicket]= useState({})
+    const [allticket, setAllTicket] = useState([])
     const [toBeDeleted, setToBeDeleted] = useState(null);
     const [searchValue, setSearchValue] = useState(null);
     const [page, setPage] = useState(0);
@@ -774,6 +778,12 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
         Alert.success("Deleted Successfully!")
         setOpenDeleteAlert(false);
     }
+    
+    const handleViewClick = (id) => {
+        const currentTicket = allticket?.getAllTickets?.tickets.filter((ticket) => ticket.id === id)
+        setTicket(currentTicket[0])
+         setOpenViewForm(true)
+    }
 
     const handleEditClick = (info) => {
         setEditInfo(info);
@@ -794,6 +804,7 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
                 title={"Delete?"}
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
+            {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{tableName}</Typography>
@@ -848,7 +859,7 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => { navigate(`/ticket-details?id=${ticket?.id}`) }} >
+                                                onClick={() => { handleViewClick(ticket?.id) }} >
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}

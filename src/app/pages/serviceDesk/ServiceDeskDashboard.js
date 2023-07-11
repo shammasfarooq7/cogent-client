@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -23,9 +23,9 @@ export const ServiceDesk = () => {
   const [inProgressCount, setInProgressCount] = useState(10)
   const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
 
-  const [searchValue, setSearchValue] = useState(null);
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
+  // const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
+  //   fetchPolicy: "network-only"
+  // });
 
   //   const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
   //     variables: {

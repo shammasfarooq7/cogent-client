@@ -19,17 +19,70 @@ export const MainListItems = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext)
   const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
-
+  console.log("userrole >>>>", userRole)
   return (
     <Fragment >
-      {getSideBarLinks(userRole).map(item => (
+      {userRole && userRole != 'admin' ? getSideBarLinks(userRole).map(item => (
         <ListItemButton key={item.link} onClick={() => navigate(item.link)}>
           <ListItemIcon className='white'>
             <DashboardIcon className='white' />
           </ListItemIcon>
           <ListItemText primary={item.name} />
         </ListItemButton>
-      ))}
+      ))
+    :
+     <>
+    <ListItemButton onClick={() => navigate('/admin/user')} >
+      <ListItemIcon className='white'>
+        <DashboardIcon className='white' />
+      </ListItemIcon>
+      <ListItemText primary="Users" />
+    </ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/customer')}>
+        <ListItemIcon className='white'>
+        <DashboardIcon className='white' />
+      </ListItemIcon>
+      <ListItemText primary="Customers" />
+    </ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/project')}>
+        <ListItemIcon className='white'>
+        <DashboardIcon className='white' />
+      </ListItemIcon>
+      <ListItemText primary="Projects" />
+    </ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/job')}>
+        <ListItemIcon className='white'>
+        <DashboardIcon className='white' />
+      </ListItemIcon>
+      <ListItemText primary="Jobs" />
+    </ListItemButton>
+    <ListItemButton onClick={() => navigate('/admin/ticket')}>
+        <ListItemIcon className='white'>
+        <DashboardIcon className='white' />
+      </ListItemIcon>
+      <ListItemText primary="Tickets" />
+    </ListItemButton>
+    </>
+    }
+    </Fragment >
+
+  )
+};
+
+export const AdminListItems = () => {
+
+  const navigate = useNavigate();
+  // const { user } = useContext(UserContext)
+  // const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
+
+  return (
+    <Fragment >    
+        <ListItemButton >
+          <ListItemIcon className='white'>
+            <DashboardIcon className='white' />
+          </ListItemIcon>
+          <ListItemText primary="Users" />
+        </ListItemButton>
     </Fragment >
 
   )

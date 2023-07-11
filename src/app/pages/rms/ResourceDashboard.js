@@ -8,7 +8,7 @@ import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { ResourceTable } from './resource-table';
 import { useEffect } from 'react';
-import { Get_RMS_Dashboard_Stats } from '../../../graphql/resources';
+import { Get_Dashboard_Stats, Get_RMS_Dashboard_Stats } from '../../../graphql/resources';
 import { RequestUsersTable } from '../../components/requestUsers/request-users-table';
 
 

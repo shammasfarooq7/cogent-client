@@ -831,6 +831,249 @@ export const regions = [
 ];
 
 
+export const roles = [
+  {
+    value: 'RMS',
+    label: 'RMS',
+  },
+  {
+    value: 'SD',
+    label: 'SD',
+  },
+  {
+    value: 'FEOPS',
+    label: 'FEOPS',
+  },
+];
+
+export const currency = [
+  {
+    value: 'USD',
+    label: 'USD',
+  },
+  {
+    value: 'EUR',
+    label: 'EUR',
+  },
+  {
+    value: 'GBP',
+    label: 'GBP',
+  },
+];
+
+export const agreedSla = [
+  {
+    value: 'SBD4H',
+    label: 'SBD4H',
+  },
+  {
+    value: 'SBD2H',
+    label: 'SBD2H',
+  },
+  {
+    value: 'SBD',
+    label: 'SBD',
+  },
+  {
+    value: 'NBD',
+    label: 'NBD',
+  },
+  {
+    value: 'twoBD',
+    label: '2BD',
+  },
+  {
+    value: 'threeBD',
+    label: '3BD',
+  },
+  {
+    value: 'fiveBD',
+    label: '5BD',
+  },
+  {
+    value: 'tenBD',
+    label: '10BD',
+  },
+];
+
+export const status = [
+  {
+    value: 'Planning',
+    label: 'Planning',
+  },
+  {
+    value: 'Signed',
+    label: 'Signed',
+  },
+  {
+    value: 'Approved',
+    label: 'Approved',
+  },
+  {
+    value: 'Live',
+    label: 'Live',
+  }
+];
+
+export const coverage = [
+  {
+    value: 'fiveD9H',
+    label: 'fiveD9H',
+  },
+  {
+    value: 't4X7AFTH',
+    label: 't4X7AFTH',
+  },
+  {
+    value: 't4X7WKND',
+    label: 't4X7WKND',
+  },
+  {
+    value: 't4X7HLDY',
+    label: 't4X7HLDY',
+  }
+];
+
+export const technologyType = [
+  {
+    value: 'EUC',
+    label: 'EUC',
+  },
+  {
+    value: 'NETWORK',
+    label: 'NETWORK',
+  },
+  {
+    value: 'LINUX',
+    label: 'LINUX',
+  },
+  {
+    value: 'MAC',
+    label: 'MAC',
+  }
+];
+
+export const serviceTypeProject = [
+  {
+    value: 'BREAKFIX',
+    label: 'BREAKFIX',
+  },
+  {
+    value: 'IMAC',
+    label: 'IMAC',
+  },
+  {
+    value: 'CABLING',
+    label: 'CABLING',
+  },
+  {
+    value: 'HandF',
+    label: 'HandF',
+  },
+  {
+    value: 'TRAINING',
+    label: 'TRAINING',
+  },
+  {
+    value: 'DSS',
+    label: 'DSS',
+  }
+];
+
+export const supportModel = [
+  {
+    value: 'FTE_WBF',
+    label: 'FTE_WBF',
+  },
+  {
+    value: 'FSE',
+    label: 'FSE',
+  },
+  {
+    value: 'FTE_NBF',
+    label: 'FTE_NBF',
+  },
+  {
+    value: 'FSE',
+    label: 'FSE',
+  },
+  {
+    value: 'PTE_WBF',
+    label: 'PTE_WBF',
+  },
+  {
+    value: 'PTE_NBF',
+    label: 'PTE_NBF',
+  }
+];
+
+export const talentLevel = [
+  {
+    value: 'L0',
+    label: 'L0',
+  },
+  {
+    value: 'L1',
+    label: 'L1',
+  },
+  {
+    value: 'L2',
+    label: 'L2',
+  },
+  {
+    value: 'L3',
+    label: 'L3',
+  }
+];
+
+export const IncrementTime = [
+  {
+    value: 'FIFTEEN',
+    label: 'FIFTEEN',
+  },
+  {
+    value: 'THIRTY',
+    label: 'THIRTY',
+  },
+  {
+    value: 'SIXTY',
+    label: 'SIXTY',
+  },
+  {
+    value: 'hund20',
+    label: 'hund20',
+  }
+];
+
+export const sowDesc = [
+  {
+    value: 'BREAKFIX',
+    label: 'BREAKFIX',
+  },
+  {
+    value: 'IMAC',
+    label: 'IMAC',
+  },
+  {
+    value: 'CABLING',
+    label: 'CABLING',
+  },
+  {
+    value: 'HandF',
+    label: 'HandF',
+  },
+  {
+    value: 'TRAINING',
+    label: 'TRAINING',
+  },
+  {
+    value: 'DSS',
+    label: 'DSS',
+  }
+];
+
+
+
 
 export const availabilityOptions = [
   {

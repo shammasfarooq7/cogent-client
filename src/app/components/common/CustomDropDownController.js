@@ -1,10 +1,14 @@
 // packages block
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, InputAdornment, TextField, Input, MenuItem, Select } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
 import './style.css'
+import { GET_CURRENT_USER } from '../../../graphql/auth';
+import { useEffect } from 'react';
+import { useQuery } from '@apollo/client';
+import { UserContext } from '../../context/user-context';
 // styles, constants, utils and interfaces block
 
 
@@ -22,6 +26,8 @@ import './style.css'
 
 
 export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType, currencies, onchange = false, disabled = false }) => {
+  
+  const userRole = localStorage.getItem("userRole")
 
   const { control } = useFormContext();
   return (
@@ -49,12 +55,17 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
           {
             currencies &&
             currencies.map((option) => (
-              <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
+              userRole === "ADMIN" ?
+              <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.value : option.value}>
+              {onchange ? option.value : option.label}
+            </MenuItem>
+            :
+            <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
                 {onchange ? option.name : option.label}
               </MenuItem>
             ))
-          }
-        </TextField>
+        }
+          </TextField> 
       )}
     />
   );

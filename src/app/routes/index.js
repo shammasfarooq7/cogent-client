@@ -36,6 +36,17 @@ import { CustomerViewOpportunity } from "../pages/Customer/CustomerViewOpportuni
 import { CustomerFormDetails } from "../pages/Customer/CustomerDetailsForm";
 import { CustomerProfile } from "../pages/Customer/CustomerProfile";
 import { CustomerInvoice } from "../pages/Customer/CustomerInvoice";
+import { CreateUser } from "../pages/Admin/User/CreateUser";
+import { UserListing } from "../pages/Admin/User/UserListing";
+import { UserView } from "../pages/Admin/User/UserView";
+import { CustomerView } from "../pages/Admin/Customer/CustomerView";
+import { CustomerListing } from "../pages/Admin/Customer/CustomerListing";
+import { ProjectListing } from "../pages/Admin/Project/ProjectListing";
+import { ProjectView } from "../pages/Admin/Project/ProjectView";
+import { JobsListing } from "../pages/Admin/Jobs/JobsListing";
+import { JobsView } from "../pages/Admin/Jobs/JobsView";
+import { TicketsListing } from "../pages/Admin/Tickets/TicketsListing";
+import { TicketView } from "../pages/Admin/Tickets/TicketView";
 
 const MainRoutes = () => {
   return (
@@ -62,11 +73,11 @@ const MainRoutes = () => {
               <ResourceDetails />
                </PrivateRoute>
           } />
-           <Route path={"/ticket-details"} element={
+           {/* <Route path={"/ticket-details"} element={
             <PrivateRoute roles={[ROLE.SD]}>
               <TicketDetails />
             </PrivateRoute>
-          } />
+          } /> */}
           <Route path={"/sd-calender"} element={
             <PrivateRoute roles={[ROLE.SD]}>
               <SDCalender />
@@ -196,6 +207,56 @@ const MainRoutes = () => {
               <PrivateRoute roles={[ROLE.CUSTOMER]}>
                 <CustomerInvoice />
               </PrivateRoute>
+            } />
+              <Route path={"/admin/user"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <UserListing />
+               </PrivateRoute>
+            } />
+             <Route path={"/admin/userview"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <UserView />
+               </PrivateRoute>
+            } />
+             <Route path={"/admin/customer"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <CustomerListing />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/customerview/:id"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <CustomerView />
+               </PrivateRoute>
+            } />
+              <Route path={"/admin/project"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <ProjectListing />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/projectview/:id"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <ProjectView />
+               </PrivateRoute>
+            } />
+             <Route path={"/admin/job"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <JobsListing />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/jobview/:id"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <JobsView />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/ticket"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <TicketsListing />
+               </PrivateRoute>
+            } />
+                <Route path={"/admin/ticketview/:id"} element={
+              <PrivateRoute roles={[ROLE.ADMIN]}>
+                <TicketView />
+               </PrivateRoute>
             } />
           {/* <Route path={ROOT_ROUTE} element={<Navigate replace to={AUTH_LINKS.LOGIN_LINK} />} /> */}
           <Route path={AUTH_LINKS.LOGIN_LINK} element={<Login />} />

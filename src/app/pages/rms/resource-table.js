@@ -8,7 +8,7 @@ import { Box, Button, TablePagination, Typography } from '@mui/material';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_RESOURCE_MUTATION, GET_ALL_RESOURCES_QUERY } from '../../../graphql/resources';
+import { DELETE_RESOURCE_MUTATION, GET_ALL_RESOURCES_QUERY, GET_ALL_USERS_QUERY } from '../../../graphql/resources';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { ResourceForm } from './ResouceForm';
 import { Alert } from '../../components/common/Alert';
