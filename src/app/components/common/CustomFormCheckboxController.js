@@ -11,7 +11,7 @@ export const CustomFormCheckboxController = ({ controllerName, controllerLabel, 
             control={control}
             render={({ field, fieldState: { error: { message } = {} } }) => (
                 <FormControl>
-                    <FormControlLabel required control={<Checkbox sx={{ color: "black" }} {...field} disabled={disabled} />} label={controllerLabel}
+                    <FormControlLabel required control={<Checkbox sx={{ color: "black" }} {...field} checked={field.value || false}  disabled={disabled} />} label={controllerLabel}
                         sx={{
                             '& .MuiFormControlLabel-label': {
                                 color: 'black', // Set the text color to black

@@ -26,37 +26,44 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const [openSDForm, setOpenSDForm] = useState(false);
     const [openViewForm, setOpenViewForm] = useState(false);
-    const [ticket, setTicket]= useState({})
-    const [allticket, setAllTicket] = useState([])
+    const [ticket, setTicket] = useState({})
     const [searchValue, setSearchValue] = useState(null);
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [editInfo, setEditInfo] = useState(null);
 
 
-   
-
     //dummyData this need to be replaced with api data
-  
-
 
     const searchQuery = useDebounce(searchValue, 500);
 
+    const queryVariables = {
+        page,
+        limit,
+        ...(searchQuery && { searchQuery }),
+    };
 
-    const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
+    const queryKey = todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
+
+    const { data, loading, refetch } = useQuery(queryKey, {
         variables: {
-            getAllTicketsInput: {
-                page,
-                limit,
-                ...(searchQuery && { searchQuery }),
-                external
-            }
+            ...(todays
+                ? {
+                    getTodayTicketsInput: {
+                        ...queryVariables,
+                    }
+                }
+                : {
+                    getAllTicketsInput: {
+                        ...queryVariables,
+                        external
+                    }
+                })
         },
         fetchPolicy: "network-only",
-        onCompleted: (data) => {
-             setAllTicket(data)
-          }
-    });
+    })
+
+    const ticketsData = todays ? data?.getTodayTicket : data?.getAllTickets
 
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
 
@@ -82,9 +89,9 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
     }
 
     const handleViewClick = (id) => {
-        const currentTicket = allticket?.getAllTickets?.tickets.filter((ticket) => ticket.id === id)
+        const currentTicket = ticketsData?.tickets.filter((ticket) => ticket.id === id)
         setTicket(currentTicket[0])
-         setOpenViewForm(true)
+        setOpenViewForm(true)
     }
 
 
@@ -104,7 +111,7 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
             />
 
             {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchTickets={refetch} />}
-            {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
+            {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{label}</Typography>
@@ -139,14 +146,14 @@ export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, tic
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !data?.getAllTickets?.count
+                        : !ticketsData?.count
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : data?.getAllTickets?.tickets.map((ticket) => (
+                            : ticketsData?.tickets.map((ticket) => (
                                 <TableRow key={ticket.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>

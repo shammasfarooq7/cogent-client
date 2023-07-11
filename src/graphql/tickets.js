@@ -39,8 +39,18 @@ query GetCustomersQuery($getAllCustomerInput: GetAllCustomersInput!) {
 `;
 
 export const GET_PROJECT_BY_CUSTOMERS_QUERY = gql`
-query GetProjectByCustomerQuery($id: String!) {
-  getProjectByCustomer(id: $id) {
+query GetProjectByCustomerQuery($id: String!, $getProjectsByCustomerInput: GetProjectsByCustomerInput!) {
+  getProjectByCustomer(id: $id,getProjectsByCustomerInput:$getProjectsByCustomerInput) {
+    id
+    name
+    code
+    }
+  }
+`;
+
+export const GET_PROJECT_QUERY = gql`
+query GetProjectQuery($id: String!) {
+  getProject(id: $id) {
     id
     name
     code
@@ -133,10 +143,43 @@ query GetTicketQuery($id: String!) {
       customerName
       cogentCaseNumber
       status
+      numberOfHoursReq
+      numberOfResource
       ticketDetail {
-        id
-        region
+        accountName
+        endClientName
         country
+        city
+        region
+        province
+        postCode
+        siteName
+        siteAddress
+        spocName
+        spocEmailAddress
+        spocContactNumber
+        jobSummary
+        siteAccessInstruction
+        technologyType
+        caseDetails
+        scopeOfWork
+        instructions
+        instructions
+        specialInstruction
+        toolsRequested
+        serviceDocUrl
+        hardwareSN
+        serviceType
+        serviceLevel
+        servicePriority
+        slaPriority
+        attachments{
+          url
+        }
+      }
+      ticketDates{
+        date
+        scheduledTime
       }
       createdAt
       updatedAt
@@ -146,10 +189,69 @@ query GetTicketQuery($id: String!) {
 `;
 
 
-export const GET_A_TICKET_QUERY = gql`
-query GetTicketQuery($id: String!) {
-  getTicket(id: $id) {
-      
+// export const GET_A_TICKET_QUERY = gql`
+// query GetTicketQuery($id: String!) {
+//   getTicket(id: $id) {
+
+//       id
+//       customerName
+//       cogentCaseNumber
+//       cogentWorkOrderNumber
+//       status
+//       customerTicketNumber
+//       ticketReceivedTime
+//       projectId
+//       numberOfHoursReq
+//       numberOfResource
+//       isExternal
+//       isApproved
+//       ticketType
+//       ticketDates {
+//         date
+//         scheduledTime
+//       }
+//       ticketDetail {
+//         endClientName
+//         accountName
+//         slaPriority
+//         siteName
+//         region
+//         country
+//         city
+//         siteAccessInstruction
+//         hardwareSN
+//         serviceDocUrl
+//         projectCode
+//         toolsRequested
+//         specialInstruction
+//         addInstruction
+//         instructions
+//         scopeOfWork
+//         caseDetails
+//         jobSummary
+//         technologyType
+//         customerCaseNumber
+//         serviceType
+//         serviceLevel
+//         servicePriority
+//         siteAddress
+//         province
+//         postCode
+//         attachments {
+//           url
+//         }
+
+//       }
+
+//     }
+//   }
+// `;
+
+export const GET_TODAY_TICKET_QUERY = gql`
+query GetTodayTicketQuery($getTodayTicketsInput:GetTodayTicketsInput!) {
+  getTodayTicket(getTodayTicketsInput: $getTodayTicketsInput) {
+    count
+    tickets {
       id
       customerName
       cogentCaseNumber
@@ -199,31 +301,6 @@ query GetTicketQuery($id: String!) {
         }
 
       }
-      
-    }
-  }
-`;
-
-export const GET_TODAY_TICKET_QUERY = gql`
-query GetTodayTicketQuery {
-  getTodayTicket {
-    id
-    date
-    scheduledTime
-    ticketId
-    ticket {
-      id
-      customerTicketNumber
-      cogentCaseNumber
-      status
-      ticketDetail {
-        id
-        region
-        country
-      }
-      createdAt
-      updatedAt
-      ticketReceivedTime
     }
   }
 }

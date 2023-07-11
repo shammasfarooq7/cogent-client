@@ -90,6 +90,12 @@ export const ServiceDesk = () => {
             <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, external: true, label: 'External Tickets', hideAddTicketButton: true }} />
           </Paper>
         </Grid>
+
+        <Grid item xs={12} sx={{ mt: 2 }}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, label: "All Tickets" }} />
+          </Paper>
+        </Grid>
       </Grid>
     </Box>
   );

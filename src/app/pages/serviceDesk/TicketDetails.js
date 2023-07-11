@@ -34,8 +34,6 @@ const style = {
 };
 
 export const TicketDetails = ({ openModal, setOpenModal, info}) => {
-  console.log("info", info)
-  debugger
   const navigate = useNavigate();
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openTicketForm, setOpenTicketForm] = useState(false);
