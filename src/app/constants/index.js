@@ -102,6 +102,17 @@ export const SD_SIDEBAR_LINKS = [
   },
 ];
 
+export const CUSTOMER_SIDEBAR_LINKS = [
+  {
+    name: "Dashboard",
+    link: "/customer-dashboard"
+  },
+  {
+    name: "Customer Center",
+    link: "/customer-invoice"
+  }
+];
+
 
 export const RESOURCE_SIDEBAR_LINKS = [
   {
@@ -1206,6 +1217,9 @@ export const getSideBarLinks = (role) => {
     
     case ROLE.SD:
       return SD_SIDEBAR_LINKS;
+
+      case ROLE.CUSTOMER:
+        return CUSTOMER_SIDEBAR_LINKS;
 
     default:
       return []

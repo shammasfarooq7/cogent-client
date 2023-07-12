@@ -77,11 +77,6 @@ export const CustomerDashboard = () => {
 
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <CustomerTable  tableName="All Resources" buttonText="Add" {...{ ticketTableRefetch, setTicketTabelRefetch }} />
-          </Paper>
-        </Grid>
         <Grid item xs={12} md={6} lg={6}>
             <TaskBox taskName="All Tickets" buttonText="Create" />
         </Grid>
