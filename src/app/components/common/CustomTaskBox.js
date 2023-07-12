@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { images } from '../../assets/images';
-import { Avatar } from '@mui/material';
+import { Avatar, TablePagination } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -58,6 +58,16 @@ export const TaskBox = ({ taskName, buttonText, todays }) => {
     setTicket(currentTicket[0]);
     setOpenViewForm(true);
   };
+
+  const handleChangePage = (event, newPage) => {
+    console.log({ newPage });
+    setPage(newPage);
+};
+
+const handleChangeRowsPerPage = (event) => {
+    setLimit(parseInt(event.target.value, 10));
+    setPage(0);
+};
 
   return (
     <Box sx={{ background: '#FFFFFF', padding: '14px', height: '449px', overflowY: 'auto' }}>
@@ -169,6 +179,16 @@ export const TaskBox = ({ taskName, buttonText, todays }) => {
             )}
           </TableBody>
       </Table>
+      <Box display={"flex"} justifyContent={"end"} marginTop={2}>
+                <TablePagination
+                    component="div"
+                    count={data?.getAllUsers?.count || 0}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={limit}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Box>
     </Box>
   );
 };
