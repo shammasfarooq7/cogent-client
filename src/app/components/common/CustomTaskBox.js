@@ -1,123 +1,194 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { images } from '../../assets/images';
-import { Avatar } from '@mui/material';
+import { Avatar, TablePagination } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import useDebounce from '../../customHooks/useDebounce';
+import { useQuery } from '@apollo/client';
+import { GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
+import { TicketView } from '../../pages/Admin/Tickets/TicketView';
+import { CustomerForm } from '../../pages/Customer/CustomerForm';
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-  >
-    •
-  </Box>
-);
+export const TaskBox = ({ taskName, buttonText, todays }) => {
+  const [openViewForm, setOpenViewForm] = useState(false);
+  const [ticket, setTicket] = useState({});
+  const [searchValue, setSearchValue] = useState(null);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [openSDForm, setOpenSDForm] = useState(false);
 
-export const TaskBox = ({taskName, buttontText})=> {
+  const searchQuery = useDebounce(searchValue, 500);
+
+  const queryVariables = {
+      page,
+      limit,
+      ...(searchQuery && { searchQuery }),
+  };
+
+  const queryKey = todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
+
+  const { data, loading, refetch } = useQuery(queryKey, {
+      variables: {
+          ...(todays
+              ? {
+                  getTodayTicketsInput: {
+                      ...queryVariables,
+                  }
+              }
+              : {
+                  getAllTicketsInput: {
+                      ...queryVariables,
+                  }
+              })
+      },
+      fetchPolicy: "network-only",
+  })
+
+  const ticketsData = todays ? data?.getTodayTicket : data?.getAllTickets
+
+  const handleViewClick = (id) => {
+    const currentTicket = data?.getAllTickets?.tickets.filter((ticket) => ticket.id === id);
+    setTicket(currentTicket[0]);
+    setOpenViewForm(true);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    console.log({ newPage });
+    setPage(newPage);
+};
+
+const handleChangeRowsPerPage = (event) => {
+    setLimit(parseInt(event.target.value, 10));
+    setPage(0);
+};
+
   return (
-      <>
-         <Box sx={{background:'#FFFFFF', padding:'14px', height:'449px', overflowY:'auto'}}>
-          <Box sx={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
-            <Typography sx={{fontSize:'18px', fontWeight:'600', marginBottom:'14px'}}>{taskName}</Typography>
-           {buttontText &&  <Button sx={{ backgroundColor: "#F64E60", color: "white", padding: "6px 20px", marginBottom:'8px' }}>{buttontText}</Button>}
-          </Box>
-        <Box sx={{p:1,  background: "#EFF4FA", color: "#464E5F", borderRadius: "5px", fontWeight: "600", fontSize: "14px",  display:'flex', justifyContent:'space-between'}}>
-                        <Typography id="modal-modal-description" >
-                               Task Id 
+    <Box sx={{ background: '#FFFFFF', padding: '14px', height: '449px', overflowY: 'auto' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography sx={{ fontSize: '18px', fontWeight: '600', marginBottom: '14px' }}>{taskName}</Typography>
+        {buttonText && 
+          <Button sx={{ backgroundColor: '#F64E60', color: 'white', padding: '6px 20px', marginBottom: '8px' }}
+          onClick={() => { setOpenSDForm(true) }}
+          >
+            {buttonText}
+          </Button>
+        }
+      </Box>
+      {openViewForm && <TicketView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
+      {openSDForm && <CustomerForm openModal={openSDForm} setOpenModal={setOpenSDForm}  />}
+
+      <Table>
+        <TableHead>
+          <TableRow sx={{ background: '#EFF4FA', color: '#464E5F', borderRadius: '5px', fontWeight: '600', fontSize: '14px' }}>
+            <TableCell>Task Id</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Action</TableCell>
+          </TableRow>
+        </TableHead>
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell sx={{ padding: '16px', textAlign: 'center' }} colSpan={5}>
+                  Loading...
+                </TableCell>
+              </TableRow>
+            ) : !ticketsData?.count ? (
+              <TableRow>
+                <TableCell sx={{ padding: '16px', textAlign: 'center' }} colSpan={5}>
+                  No Record Found
+                </TableCell>
+              </TableRow>
+            ) : (
+              ticketsData?.tickets.map((ticket) => (
+                <TableRow
+                  key={ticket?.id}
+                  sx={{  marginTop: '20px', marginLeft: '-6px' }}
+                >
+                  <TableCell>
+                    <Box>
+                      {todays ?
+                      <Box sx={{display:'flex'}}>
+                        <Avatar sx={{ height: '50px', width: '50px' }} /> 
+                         <Box sx={{ marginLeft: '12px' }}>
+                         <Typography sx={{ color: '#1ebbe3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '11px' }}>
+                           {`${ticket?.customerName || '--'}`}
+                         </Typography>
+                         <Typography sx={{ color: ' #B5B5C3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '13px' }}>
+                           {`ID#${ticket?.id || '--'}`}
+                         </Typography>
+                       </Box>
+                       </Box>
+                       :
+                       <Box sx={{ marginLeft: '12px' }}>
+                        <Typography sx={{ color: ' #B5B5C3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '13px' }}>
+                          {`ID#${ticket?.id || '--'}`}
                         </Typography>
-                        <Typography id="modal-modal-description" sx={{marginLeft:'48px'}} >
-                               Status 
+                        <Typography sx={{ color: '#1ebbe3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '11px' }}>
+                          {`${ticket?.ticketDetail?.city || '--'},${ticket?.ticketDetail?.country || '--'}`}
                         </Typography>
-                        <Typography id="modal-modal-description" >
-                               Action 
-                        </Typography>
-                </Box>
-                <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:'20px', marginLeft:'-6px'}}>
-                    <Box sx={{display:'flex', alignItems:'center'}}>
-                   <Avatar sx={{height:'50px', width:'50px'}} />
-                   <Box sx={{marginLeft:'12px'}}>
-                    <Typography sx={{color: '#464E5F', fontWeight:'500',fontFamily: 'Poppins', fontSize:'14px'}}>Brad Simmons</Typography>
-                    <Typography sx={{color: ' #B5B5C3', fontWeight:'500',fontFamily: 'Poppins', fontSize:'13px'}}>ID#122222334</Typography>
-                   </Box>
+                      </Box>
+                      }
+                      
                     </Box>
-                    <Typography sx={{color:'#50CD89',background: '#E8FFF3',borderRadius: '6px', padding:'8px'}}>Completed</Typography>
-                    <Box display={"flex"} alignItems={"center"}>
-    
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
-                                                 src={images.Edit} alt='Menu'  />
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.View} alt='Menu'
-                                        />
-
-                                        </Box>
-
-                    
-                </Box>
-                <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:'20px', marginLeft:'-6px'}}>
-                    <Box sx={{display:'flex', alignItems:'center'}}>
-                   <Avatar sx={{height:'50px', width:'50px'}} />
-                   <Box sx={{marginLeft:'12px'}}>
-                    <Typography sx={{color: '#464E5F', fontWeight:'500',fontFamily: 'Poppins', fontSize:'14px'}}>Brad Simmons</Typography>
-                    <Typography sx={{color: ' #B5B5C3', fontWeight:'500',fontFamily: 'Poppins', fontSize:'13px'}}>ID#122222334</Typography>
-                   </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Typography sx={{ color: '#50CD89', background: '#E8FFF3', borderRadius: '6px', padding: '8px' }}>
+                      {ticket?.status || '--'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Box display={'flex'} alignItems={'center'}>
+                      <Box
+                        component="img"
+                        sx={{
+                          height: '40px',
+                          width: '40px',
+                          cursor: 'pointer',
+                          marginY: '4px',
+                          marginX: '6px',
+                        }}
+                        src={images.Edit}
+                        alt="Menu"
+                      />
+                      <Box
+                        component="img"
+                        sx={{
+                          height: '40px',
+                          width: '40px',
+                          cursor: 'pointer',
+                          marginY: '4px',
+                          marginX: '1px',
+                        }}
+                        src={images.View}
+                        alt="Menu"
+                        onClick={() => {
+                          handleViewClick(ticket.id);
+                        }}
+                      />
                     </Box>
-                    <Typography  sx={{color:'#FFA800',background: '#FFF4DE',borderRadius: '6px', padding:'8px'}}>In progress</Typography>
-                    <Box display={"flex"} alignItems={"center"}>
-    
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
-                                                 src={images.Edit} alt='Menu'  />
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.View} alt='Menu'
-                                        />
-
-                                        </Box>
-
-                    
-                </Box>
-                <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:'20px', marginLeft:'-6px'}}>
-                    <Box sx={{display:'flex', alignItems:'center'}}>
-                   <Avatar sx={{height:'50px', width:'50px'}} />
-                   <Box sx={{marginLeft:'12px'}}>
-                    <Typography sx={{color: '#464E5F', fontWeight:'500',fontFamily: 'Poppins', fontSize:'14px'}}>Brad Simmons</Typography>
-                    <Typography sx={{color: ' #B5B5C3', fontWeight:'500',fontFamily: 'Poppins', fontSize:'13px'}}>ID#122222334</Typography>
-                   </Box>
-                    </Box>
-                    <Typography sx={{color:'#50CD89',background: '#E8FFF3',borderRadius: '6px', padding:'8px'}}>Completed</Typography>
-                    <Box display={"flex"} alignItems={"center"}>
-    
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
-                                                 src={images.Edit} alt='Menu'  />
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.View} alt='Menu'
-                                        />
-
-                                        </Box>
-
-                    
-                </Box>
-                <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', marginTop:'20px', marginLeft:'-6px'}}>
-                    <Box sx={{display:'flex', alignItems:'center'}}>
-                   <Avatar sx={{height:'50px', width:'50px'}} />
-                   <Box sx={{marginLeft:'12px'}}>
-                    <Typography sx={{color: '#464E5F', fontWeight:'500',fontFamily: 'Poppins', fontSize:'14px'}}>Brad Simmons</Typography>
-                    <Typography sx={{color: ' #B5B5C3', fontWeight:'500',fontFamily: 'Poppins', fontSize:'13px'}}>ID#122222334</Typography>
-                   </Box>
-                    </Box>
-                    <Typography  sx={{color:'#FFA800',background: '#FFF4DE',borderRadius: '6px', padding:'8px'}}>In progress</Typography>
-                    <Box display={"flex"} alignItems={"center"}>
-    
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
-                                                 src={images.Edit} alt='Menu'  />
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.View} alt='Menu'
-                                        />
-
-                                        </Box>
-
-                    
-                </Box>
-        </Box>
-      </>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+      </Table>
+      <Box display={"flex"} justifyContent={"end"} marginTop={2}>
+                <TablePagination
+                    component="div"
+                    count={data?.getAllUsers?.count || 0}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={limit}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Box>
+    </Box>
   );
-}
+};

@@ -15,7 +15,6 @@ import { Alert } from '../../../components/common/Alert';
 import useDebounce from '../../../customHooks/useDebounce';
 import { renderStatus } from '../../../constants';
 import { Search } from '../../../components/common/Search';
-import { GET_ALL_TICKETS_QUERY } from '../../../../graphql/tickets';
 import { CreateCustomer } from './CreateCustomer';
 import { GET_ALL_CUSTOMERS_QUERY, GET_ALL_USERS_QUERY } from '../../../../graphql/admin';
 import { CustomerView } from './CustomerView';

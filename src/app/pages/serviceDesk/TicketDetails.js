@@ -218,7 +218,7 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
           </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Cogent Case Number</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.cogentCaseNumber}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.cogentCaseNumber || "--"}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Cogent Workoder Number</Typography>
@@ -226,11 +226,11 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Customer Case#</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail?.customerCaseNumber}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail?.customerCaseNumber || "--"}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Ticket Type</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.ticketType}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.ticketType || "--"}</Typography>
             </Grid>
               <Grid item xs={4} md={4} lg={3}>
                   <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Approved</Typography>
@@ -242,7 +242,7 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
               </Grid>
               <Grid item xs={4} md={4} lg={3}>
                   <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Current Status</Typography>
-                  <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{renderStatus(info?.status)}</Typography>
+                  <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{renderStatus(info?.status) || "--"}</Typography>
               </Grid>
         </Grid>
         {/* //===================================================================================== */}
@@ -253,19 +253,19 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
         <Grid container>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Account Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.accountName}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.accountName || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Project Code</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail?.projectCode}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail?.projectCode || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>SLA</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.slaPriority}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.slaPriority || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>End Client Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.endClientName}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.endClientName || "--"}</Typography>
           </Grid>
           
         </Grid>
@@ -278,83 +278,83 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
         <Grid container>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Site Name</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteName}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteName || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Region</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.region}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.region || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Country</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.country}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.country || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>City</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.city}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.city || "--"}</Typography>
           </Grid>
 
          <Grid container sx={{ mt: 2 }}>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Site Address</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteAddress}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteAddress || "--"}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Province/State</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.provinceState}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.provinceState || "--"}</Typography>
             </Grid>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Post Code</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.postCode}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.postCode || "--"}</Typography>
             </Grid>
          </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Site Access Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteAccessInstruction}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.siteAccessInstruction || "--"}</Typography>
             </Grid>
 
             <Grid item xs={6} md={6} lg={6}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Customer Case#</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.customerCaseNumber}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.customerCaseNumber || "--"}</Typography>
             </Grid>
             <Grid item xs={6} md={6} lg={6}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Technology Type</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.technologyType}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.technologyType || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Job Description/ Summary</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.jobSummary}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.jobSummary || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Case Details</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.caseDetails}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.caseDetails || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Scope of Work</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.scopeOfWork}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.scopeOfWork || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.instructions}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.instructions || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Additional Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.addInstruction}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.addInstruction || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Special Insruction</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.specialInstruction}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.specialInstruction || "--"}</Typography>
             </Grid>
 
             <Grid item xs={12} md={12} lg={12}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Tools Requested</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{ticketDateData}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{ticketDateData || "--"}</Typography>
             </Grid>
 
             <Grid container sx={{ mt: 2 }}>
@@ -380,7 +380,7 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
 
                 <Grid item xs={4} md={4} lg={3}>
                     <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Hardware S/N</Typography>
-                    <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.hardwareSN}</Typography>
+                    <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.hardwareSN || "--"}</Typography>
                 </Grid>
             </Grid>
         </Grid>
@@ -401,35 +401,35 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Tools Requested</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{ticketReceiveDate}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{ticketReceiveDate || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Service Level</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.serviceLevel}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.serviceLevel || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Service Priority</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.servicePriority}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.servicePriority || "--"}</Typography>
           </Grid>
           <Grid item xs={4} md={4} lg={3}>
             <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>SLA Priority</Typography>
-            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.slaPriority}</Typography>
+            <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDetail.slaPriority || "--"}</Typography>
           </Grid>
 
           <Grid container sx={{mt: 2}}>
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Default Number of Hours Requested</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.numberOfHoursReq}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.numberOfHoursReq || "--"}</Typography>
             </Grid>
 
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Number of Resource Requested</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.numberOfResource}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.numberOfResource || "--"}</Typography>
             </Grid>
 
             <Grid item xs={4} md={4} lg={3}>
                 <Typography sx={{ fontSize: "10px", color: "#7E8299" }}>Scheduled Time</Typography>
-                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDates?.[0].scheduledTime}</Typography>
+                <Typography sx={{ fontSize: "10px", fontWeight: "600" }}>{info?.ticketDates?.[0]?.scheduledTime || "--"}</Typography>
             </Grid>
           </Grid>      
         </Grid>

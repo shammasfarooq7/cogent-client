@@ -40,6 +40,7 @@ export const ROOT_ROUTE = "/";
 export const DASHBOARD_ROUTE = "/dashboard";
 export const RESOURCE_LANDING_ROUTE = "/resource-details";
 export const SD_LANDING_ROUTE = "/service-desk";
+export const CUSTOMER_LANDING_ROUTE = "/customer-dashboard";
 export const RESET_PASSWORD_FAILURE = "Reset password failed";
 export const SET_PASSWORD_FAILURE = "Set password failed";
 export const RESET_PASSWORD_SUCCESS = "Password reset successfully"
@@ -1185,6 +1186,9 @@ export const getLandingPageRoute = (role) => {
 
     case ROLE.SD:
       return SD_LANDING_ROUTE
+
+      case ROLE.CUSTOMER:
+      return CUSTOMER_LANDING_ROUTE
 
     default:
       return DASHBOARD_ROUTE

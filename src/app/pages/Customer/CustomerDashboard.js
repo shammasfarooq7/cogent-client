@@ -83,10 +83,10 @@ export const CustomerDashboard = () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
-            <TaskBox taskName="All Tickets" buttontText="Create" />
+            <TaskBox taskName="All Tickets" buttonText="Create" />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
-            <TaskBox taskName="Today's Tickets" />
+            <TaskBox taskName="Today's Tickets" todays= {true} />
         </Grid>
       </Grid>
     </Box>
