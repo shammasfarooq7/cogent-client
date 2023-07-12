@@ -19,7 +19,11 @@ import { renderStatus } from '../../constants';
 import { TicketDetails } from './TicketDetails';
 
 
-export const ServiceDeskTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, label = 'All Tickets', todays = false, external = false, hideAddTicketButton = false }) => {
+export const ServiceDeskTable = ({
+        tableName, search, setTicketTabelRefetch, ticketTableRefetch,
+        label = 'All Tickets', todays = false, external = false,
+        hideAddTicketButton = false 
+    }) => {
 
     const navigate = useNavigate();
 

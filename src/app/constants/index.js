@@ -1117,6 +1117,53 @@ export const idCardTypeOptions = [
   }
 ];
 
+export const ticketStatus = [
+  {
+    value: 'OPEN',
+    label: 'OPEN',
+  },
+  {
+    value: 'INPROGRESS',
+    label: 'INPROGRESS',
+  },
+  {
+    value: 'CANCELLED',
+    label: 'CANCELLED',
+  },
+  {
+    value: 'SCHEDULED',
+    label: 'SCHEDULED',
+  },
+  {
+    value: 'CANCHAR',
+    label: 'CANCHAR',
+  },
+  {
+    value: 'ONROUTE',
+    label: 'ONROUTE',
+  },
+  {
+    value: 'ONSITE',
+    label: 'ONSITE',
+  },
+  {
+    value: 'WORKSTART',
+    label: 'WORKSTART',
+  },
+  {
+    value: 'OFFSITE',
+    label: 'OFFSITE',
+  },
+  {
+    value: 'COMPLETED',
+    label: 'COMPLETED',
+  },
+  {
+    value: 'RESCHEDULED',
+    label: 'RESCHEDULED',
+  },
+];
+
 export const interviewStatusOptions = [{
   label: "Complete",
   value: "Complete",

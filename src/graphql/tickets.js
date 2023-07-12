@@ -26,6 +26,14 @@ mutation Update($updateTicketInput: UpdateTicketInput!, $id:String!) {
   }
 `;
 
+export const CHANGE_TICKET_STATUS = gql`
+mutation changeStatus($changeStatusInput: ChangeStatusInput!){
+  changeStatus(changeStatus: $changeStatusInput){
+    message
+  }
+}
+`
+
 export const GET_All_CUSTOMERS_QUERY = gql`
 query GetCustomersQuery($getAllCustomerInput: GetAllCustomersInput!) {
   getAllCustomer(getAllCustomerInput: $getAllCustomerInput) {
