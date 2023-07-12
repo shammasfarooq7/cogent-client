@@ -15,7 +15,6 @@ import { Alert } from '../../../components/common/Alert';
 import useDebounce from '../../../customHooks/useDebounce';
 import { renderStatus } from '../../../constants';
 import { Search } from '../../../components/common/Search';
-import { GET_ALL_TICKETS_QUERY } from '../../../../graphql/tickets';
 import { CreateJobs } from './CreateJobs';
 import { GET_ALL_JOBS_QUERY } from '../../../../graphql/admin';
 import { JobsView } from './JobsView';

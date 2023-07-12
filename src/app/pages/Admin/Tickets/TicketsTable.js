@@ -127,7 +127,7 @@ export const TicketsTable = ({ tableName, search, setTicketTabelRefetch, ticketT
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : data?.getAllTickets?.tickets.map((ticket) => (
+                            :  data?.getAllTickets?.tickets.map((ticket) => (
                                 <TableRow key={ticket.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
