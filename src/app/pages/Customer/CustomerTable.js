@@ -171,11 +171,11 @@ export const CustomerTable = ({ tableName, buttonText, search, setTicketTabelRef
                                                 onClick={() => { handleViewClick(ticket.id) }} >
                                                 <VisibilityIcon color='action' />
                                             </Box>
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
+                                            {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
                                                  src={images.Edit} alt='Menu' onClick={() => { handleEditPopup(ticket) }} />
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
                                                 src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(ticket?.id) }}
-                                        />
+                                        /> */}
 
                                         </Box>
                                     </TableCell>
