@@ -131,7 +131,6 @@ export const UserTable = ({ tableName, search, setUserTabelRefetch, userTableRef
                                     <TableCell>{user.firstName + ' ' + user.lastName } </TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.roles.map(role => role.role).join()}</TableCell>
-                                    {console.log(user.roles)}
                                     <TableCell >
                                         <Box display={"flex"} alignItems={"center"}>
                                             <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}

@@ -31,7 +31,7 @@ const style = {
 
 };
 
-export const TicketView = ({openModal, setOpenModal, info}) => {
+export const TicketView = ({openModal, setOpenModal, info , type}) => {
 
   const navigate = useNavigate();
 
@@ -77,18 +77,28 @@ export const TicketView = ({openModal, setOpenModal, info}) => {
          <Typography sx={{fontWeight: 'bold'}}> Ticket# {getName(info?.id)} </Typography>
        </Box>
      </Grid>
-     <Grid item xs={4} md={4} lg={5}>
+     <Grid item xs={3} md={3} lg={3}>
 
      </Grid>
-     <Grid item xs={4} md={4} lg={3}>
+     <Grid item xs={4} md={5} lg={5}>
      <Box sx={{ display: "flex" }}>
-   {/* <Button sx={{ color: "white", backgroundColor: "red", marginRight: "10px" }}
-         onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button> */}
-                   <Box sx={{ position: "relative", left: "50%", top: "5px", cursor: "pointer" }} >
-                       <CloseIcon onClick={handleClose} />
-                   </Box>
+   { type === "resource" && 
+   <Box sx={{display:'flex'}}>
+     <Button  sx={{mr:'10px', backgroundColor:'#50CD89', color:'white', textTransform:'capitalize','&:hover': {color:'white', background: '#50CD89'}}} >Generate Invoice</Button>
+     <Button
+      sx={{mr:'10px', backgroundColor:'#00A3FF', color:'white',textTransform:'capitalize','&:hover': {color:'white', background: '#00A3FF' }}} >Update Time</Button>
+      </Box>
+        }
+                {
+                  type === "resource" ?
+                  <Box sx={{ cursor: "pointer" }} >
+                  <CloseIcon onClick={handleClose} />
+              </Box> :
+                 <Box sx={{ position: "relative", left: "50%", top: "5px", cursor: "pointer" }} >
+                 <CloseIcon onClick={handleClose} />
+             </Box>
+                }
                </Box>
-       {/* <Button variant="contained" onClick={handleUpdateClick}>Update</Button> */}
      </Grid>
    </Grid>
    <Divider />

@@ -68,11 +68,6 @@ const MainRoutes = () => {
               <ServiceDesk />
             </PrivateRoute>
           } />
-          <Route path={"/resource-details"} element={
-            <PrivateRoute roles={[ROLE.RMS, ROLE.RESOURCE]}>
-              <ResourceDetails />
-               </PrivateRoute>
-          } />
            {/* <Route path={"/ticket-details"} element={
             <PrivateRoute roles={[ROLE.SD]}>
               <TicketDetails />
@@ -134,14 +129,19 @@ const MainRoutes = () => {
             </PrivateRoute>
           } />
              <Route path={"/resources-dashboard"} element={
-            // <PrivateRoute roles={[ROLE.RESOURCE]}>
+             <PrivateRoute roles={[ROLE.RESOURCE]}>
               <ResourcesDashboard />
-            // </PrivateRoute>
+             </PrivateRoute>
           } />
             <Route path={"/resources-calendar"} element={
             <PrivateRoute roles={[ROLE.RESOURCE]}>
               <ResourceCalender />
             </PrivateRoute>
+          } />
+            <Route path={"/resource-details"} element={
+            <PrivateRoute roles={[ROLE.RMS, ROLE.RESOURCE]}>
+              <ResourceDetails />
+               </PrivateRoute>
           } />
              <Route path={"/resources-fse-ticket"} element={
             <PrivateRoute roles={[ROLE.RESOURCE]}>

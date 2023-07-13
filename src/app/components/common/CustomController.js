@@ -49,8 +49,6 @@ const styles = theme => ({
 export const CustomController = ({ fieldIcon,controllerName, controllerLabel, fieldType, variantField, isDisabled, isMultiLine, maxLength, rowsLength, readOnly }) => {
   const { control } = useFormContext();
    
-  // const {classes} = this.props
-  //  console.log("ssssssssss",classes)
 
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {

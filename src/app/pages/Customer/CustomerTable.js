@@ -52,13 +52,11 @@ export const CustomerTable = ({ tableName, buttonText, search, setTicketTabelRef
         fetchPolicy: "network-only"
     });
       
-    console.log("data", data)
 
 
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
    
     const handleChangePage = (event, newPage) => {
-        console.log({ newPage });
         setPage(newPage);
     };
 

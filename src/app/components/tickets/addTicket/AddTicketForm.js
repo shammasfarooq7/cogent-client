@@ -202,7 +202,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             if (refetchTickets) {
                 await refetchTickets()
             }
-            // console.log("data||UpdateData:::", data || UpdateData);
             handleClose();
 
         } catch (error) {

@@ -30,7 +30,6 @@ export const ProjectDropdown = ({ selected, setSelected, customerId, isDisabled 
                     fetchPolicy: 'network-only',
                 });
 
-                console.log({ data });
 
                 setProjects(
                     data?.getProjectByCustomer
