@@ -10,6 +10,7 @@ import { UserContext } from './context/user-context';
 
 export function App() {
   const [user, setUser] = useState(null);
+  const [count, setCount] = useState(null);
 
   return (
     <SnackbarProvider
@@ -24,7 +25,7 @@ export function App() {
           {/* <AuthContextProvider> */}
           {/* <ThemeProvider theme={customTheme}>
             <CssBaseline /> */}
-          <UserContext.Provider value={{ user, setUser }}>
+          <UserContext.Provider value={{ user, setUser , count , setCount}}>
             <MainRoutes />
           </UserContext.Provider>
 

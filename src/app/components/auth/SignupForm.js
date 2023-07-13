@@ -55,7 +55,6 @@ export const SignupForm = () => {
 
   const onSubmit = async (data) => {
     const { email, password, mobileNumber, firstName, lastName, middleName } = data
-    console.log(data)
     await signup({
       variables: {
         signUpUserInput: {

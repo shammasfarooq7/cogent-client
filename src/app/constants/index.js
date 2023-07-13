@@ -38,7 +38,7 @@ export const NOT_FOUND_EMAIL_MESSAGE = "No user found with this email";
 export const FORGET_PASSWORD_SUCCESS = "An email has been sent to your registered email address";
 export const ROOT_ROUTE = "/";
 export const DASHBOARD_ROUTE = "/dashboard";
-export const RESOURCE_LANDING_ROUTE = "/resource-details";
+export const RESOURCE_LANDING_ROUTE = "/resources-dashboard";
 export const SD_LANDING_ROUTE = "/service-desk";
 export const CUSTOMER_LANDING_ROUTE = "/customer-dashboard";
 export const RESET_PASSWORD_FAILURE = "Reset password failed";
@@ -116,9 +116,13 @@ export const CUSTOMER_SIDEBAR_LINKS = [
 
 export const RESOURCE_SIDEBAR_LINKS = [
   {
-    name: "Detail",
-    link: "/resource-details"
-  }
+    name: "Dashboard",
+    link: "/resources-dashboard"
+  },
+  {
+    name: "Calender",
+    link: "/resources-calendar"
+  },
 ];
 
 export const AUTH_LINKS = {

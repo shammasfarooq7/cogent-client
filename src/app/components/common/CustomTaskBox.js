@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -15,15 +15,16 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
 import { TicketView } from '../../pages/Admin/Tickets/TicketView';
 import { CustomerForm } from '../../pages/Customer/CustomerForm';
+import { UserContext } from '../../context/user-context';
 
-export const TaskBox = ({ taskName, buttonText, todays }) => {
+export const TaskBox = ({ taskName, buttonText, todays, type }) => {
   const [openViewForm, setOpenViewForm] = useState(false);
   const [ticket, setTicket] = useState({});
   const [searchValue, setSearchValue] = useState(null);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(10);
   const [openSDForm, setOpenSDForm] = useState(false);
-
+  const { count, setCount } = useContext(UserContext);
   const searchQuery = useDebounce(searchValue, 500);
 
   const queryVariables = {
@@ -47,9 +48,12 @@ export const TaskBox = ({ taskName, buttonText, todays }) => {
                       ...queryVariables,
                   }
               })
-      },
-      fetchPolicy: "network-only",
+      }
   })
+
+  if(data?.getTodayTicket){
+    setCount(data?.getTodayTicket?.count)
+  }
 
   const ticketsData = todays ? data?.getTodayTicket : data?.getAllTickets
 
@@ -60,7 +64,6 @@ export const TaskBox = ({ taskName, buttonText, todays }) => {
   };
 
   const handleChangePage = (event, newPage) => {
-    console.log({ newPage });
     setPage(newPage);
 };
 
@@ -81,7 +84,7 @@ const handleChangeRowsPerPage = (event) => {
           </Button>
         }
       </Box>
-      {openViewForm && <TicketView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
+      {openViewForm && <TicketView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} type={type}  />}
       {openSDForm && <CustomerForm openModal={openSDForm} setOpenModal={setOpenSDForm}  />}
 
       <Table>

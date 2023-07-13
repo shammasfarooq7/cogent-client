@@ -12,7 +12,6 @@ import DeleteAlert from '../../../components/common/DeleteAlert';
 import { Alert } from '../../../components/common/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 import { DELETE_TICKET_MUTATION } from '../../../../graphql/tickets';
-import { GET_CUSTOMER_QUERY } from '../../../../graphql/admin';
 
 const style = {
   position: 'absolute',
@@ -31,7 +30,6 @@ const style = {
 };
 
 export const CustomerView = ({openModal, setOpenModal, info}) => {
-  console.log(info)
   const navigate = useNavigate();
   const urlSearchParams = new URLSearchParams(window.location.search)
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);

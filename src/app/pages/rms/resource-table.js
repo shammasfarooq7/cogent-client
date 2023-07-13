@@ -50,7 +50,6 @@ export const ResourceTable = ({ tableName, search, setResourceTabelRefetch, reso
 
 
     const handleChangePage = (event, newPage) => {
-        console.log({ newPage });
         setPage(newPage);
     };
 

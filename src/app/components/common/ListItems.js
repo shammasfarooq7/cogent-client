@@ -19,7 +19,6 @@ export const MainListItems = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext)
   const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
-  console.log("userrole >>>>", userRole)
   return (
     <Fragment >
       {userRole && userRole != 'admin' ? getSideBarLinks(userRole).map(item => (

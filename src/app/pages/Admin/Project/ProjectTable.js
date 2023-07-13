@@ -57,7 +57,6 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
     // loading, data, refetch will remove once api binding cpomplete and above commented code runs
    
     const handleChangePage = (event, newPage) => {
-        console.log({ newPage });
         setPage(newPage);
     };
 

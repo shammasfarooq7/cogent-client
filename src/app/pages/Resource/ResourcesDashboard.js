@@ -11,6 +11,8 @@ import CurvedChart from './CurvedChart';
 import SplineChart from './CurvedChart';
 import Calendar from '../../components/common/Calendar';
 import Incidents from '../../components/common/Calendar';
+import { useContext } from 'react';
+import { UserContext } from '../../context/user-context';
 
 
 export const ResourcesDashboard = () => {
@@ -25,15 +27,7 @@ export const ResourcesDashboard = () => {
   const [todaysIncidentCount, setTodaysIncidentCount] = useState(4)
   const [inProgressCount, setInProgressCount] = useState(10)
   const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
-
-
-
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setDashboardStat(data.getDashboardStats);
-  //   }
-  // }, [data]);
+  const { count } = useContext(UserContext);
 
   const handleOpen = () => setOpenModal(true);
 
@@ -55,7 +49,7 @@ export const ResourcesDashboard = () => {
       <Grid container spacing={"30px"}>
 
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={todaysIncidentCount} text={"Today's Incidents"} color="#56A0C2" />
+          <DashboardCard hiring={count} text={"Today's Incidents"} color="#56A0C2" />
         </Grid>
         
         <Grid item xs={4} md={4} lg={4}>
@@ -67,7 +61,7 @@ export const ResourcesDashboard = () => {
         </Grid>
 
         <Grid item xs={12} md={6}>
-            <TaskBox taskName="Today's Task" />
+            <TaskBox taskName="Today's Task" todays={true} type="resource" />
         </Grid>
          
         <Grid item xs={12} md={6}>
@@ -75,7 +69,7 @@ export const ResourcesDashboard = () => {
         </Grid>
        
         <Grid item xs={12} md={6}>
-            <TaskBox taskName="Tasks History" />
+            <TaskBox taskName="Tasks History" type="resource" />
         </Grid>
 
         <Grid item xs={12} md={6}>

@@ -764,7 +764,6 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
     const refetch = '';
    
     const handleChangePage = (event, newPage) => {
-        console.log({ newPage });
         setPage(newPage);
     };
 

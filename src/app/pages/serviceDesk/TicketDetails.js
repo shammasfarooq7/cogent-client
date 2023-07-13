@@ -179,10 +179,10 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
                   <Typography sx={{fontWeight: 'bold'}}> Ticket# {getName(info?.id)} </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={4} md={4} lg={5}>
+              <Grid item xs={4} md={3} lg={3}>
 
               </Grid>
-              <Grid item xs={4} md={4} lg={3}>
+              <Grid item xs={4} md={5} lg={5}>
               <Box sx={{ display: "flex" }}>
               <Button sx={{ color: "white", backgroundColor: "red", marginRight: "10px" }}
                   onClick={() => { setOpenDeleteAlert(true) }}>Delete</Button>

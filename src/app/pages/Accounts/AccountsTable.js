@@ -775,7 +775,6 @@ export const AccountTable = ({ tableName, buttonText, search, setTicketTabelRefe
     const refetch = '';
    
     const handleChangePage = (event, newPage) => {
-        console.log({ newPage });
         setPage(newPage);
     };
 

@@ -5,6 +5,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { UserContext } from '../../context/user-context';
+import { useContext } from 'react';
 
 const bull = (
   <Box
@@ -16,6 +18,7 @@ const bull = (
 );
 
 export const DashboardCard = ({ color, hiring, text }) => {
+
   return (
     <Card sx={{ minWidth: 275, borderRadius: "12px", background: `${color}` }}>
       <CardContent sx={{ padding: "25px" }}>

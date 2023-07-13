@@ -59,7 +59,6 @@ export const LoginForm = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    console.log(data)
     await signin({
       variables: {
         loginUserInput: data,

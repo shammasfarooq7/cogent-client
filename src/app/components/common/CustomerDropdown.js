@@ -51,7 +51,6 @@ export const CustomerDropdown = ({ controllerName, placeholder, isMulti = false,
                 },
                 fetchPolicy: 'network-only',
             });
-           console.log("customer", data )
             return data?.getAllCustomer?.customers?.map(item => ({
                 value: item?.id,
                 label: item?.name
