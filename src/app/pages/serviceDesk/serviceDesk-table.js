@@ -42,7 +42,7 @@ const statusStyle = {
 export const ServiceDeskTable = ({
         tableName, search, setTicketTabelRefetch, ticketTableRefetch,
         label = 'All Tickets', todays = false, external = false,
-        hideAddTicketButton = false, customer= false, approved = false
+        hideAddTicketButton = false, customer= false, approved = true
     }) => {
 
     const navigate = useNavigate();
@@ -86,8 +86,8 @@ export const ServiceDeskTable = ({
                 : {
                     getAllTicketsInput: {
                         ...queryVariables,
-                        external,
-                        approved
+                        approved,
+                        external
                     }
                 })
         },
