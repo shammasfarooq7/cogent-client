@@ -216,6 +216,16 @@ export const Get_RESOURCE_Dashboard_Stats = gql`
   }
 `;
 
+export const GET_DASHBOARD_CUSTOMERS_STATS = gql`
+  query GetCustomerDashboardStats {
+    getDashboardStatsCustomerTicket {
+      projectCount
+      futureCount
+      inProgressCount
+    }
+  }
+`;
+
 export const DELETE_RESOURCE_MUTATION = gql`
 mutation DeleteResourceMutation($id: String!) {
   deleteResource(id: $id) {

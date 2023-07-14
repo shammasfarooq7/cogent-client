@@ -277,6 +277,15 @@ query GetTicketQuery($id: String!) {
 //   }
 // `;
 
+export const GET_RESOURCE_TICKET_QUERY = gql`
+query GetResourceTicketQuery($getResourceTicketInput:GetResourceTicketInput!) {
+  getResourceTickets(getResourceTicketInput: $getResourceTicketInput) {
+    count
+  }
+}
+`;
+
+
 export const GET_TODAY_TICKET_QUERY = gql`
 query GetTodayTicketQuery($getTodayTicketsInput:GetTodayTicketsInput!) {
   getTodayTicket(getTodayTicketsInput: $getTodayTicketsInput) {

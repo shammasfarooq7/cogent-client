@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { AirplaneTicketRounded } from '@mui/icons-material';
+import { GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
+import { useQuery } from '@apollo/client';
 
 const UpcomingIncidents = () => {
   // Simulated data for upcoming incidents
@@ -95,7 +97,8 @@ const UpcomingIncidents = () => {
   );
 };
 
-const Incidents = () => {
+const Incidents = ({future}) => {
+
   return (
     <Box display="flex" justifyContent="space-between">
       <UpcomingIncidents />

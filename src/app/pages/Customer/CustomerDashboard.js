@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -8,6 +8,7 @@ import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { TaskBox } from '../../components/common/CustomTaskBox';
 import { CustomerTable } from './CustomerTable';
+import { GET_DASHBOARD_CUSTOMERS_STATS } from '../../../graphql/resources';
 
 
 export const CustomerDashboard = () => {
@@ -19,18 +20,19 @@ export const CustomerDashboard = () => {
   const [dashboardStat, setDashboardStat] = useState(null)
   const [ticketTableRefetch, setTicketTabelRefetch] = useState(null)
 
-  const [todaysIncidentCount, setTodaysIncidentCount] = useState(4)
-  const [inProgressCount, setInProgressCount] = useState(10)
-  const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
 
 
+  const { data, loading, error } = useQuery(GET_DASHBOARD_CUSTOMERS_STATS, {
 
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setDashboardStat(data.getDashboardStats);
-  //   }
-  // }, [data]);
+    fetchPolicy: "network-only"
+  });
+  
+     useEffect(() => {
+    if(data){
+      const {getDashboardStatsCustomerTicket} = data && data
+      setDashboardStat(data.getDashboardStatsCustomerTicket);
+     }
+  }, [data]);
 
   const handleOpen = () => setOpenModal(true);
 
@@ -52,15 +54,15 @@ export const CustomerDashboard = () => {
       <Grid container spacing={"30px"}>
 
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={todaysIncidentCount} text={"Today's Incidents"} color="#56A0C2" />
+          <DashboardCard hiring={dashboardStat?.projectCount} text={"Today's Incidents"} color="#56A0C2" />
         </Grid>
         
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={inProgressCount} text={"Inprogress"} color="#242D60" />
+          <DashboardCard hiring={dashboardStat?.inProgressCount} text={"Inprogress"} color="#242D60" />
         </Grid>
         
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={upcommingIncidentsCount} text={"Upcomming Incidents"} color="#212121" />
+          <DashboardCard hiring={dashboardStat?.futureCount} text={"Upcomming Incidents"} color="#212121" />
         </Grid>
 
         <Grid item xs={12}>

@@ -54,6 +54,8 @@ query GetAllUsersQuery($getAllUsersInput: GetAllUsersInput!) {
   }
 `;
 
+
+
 export const GET_ALL_PROJECTS_QUERY = gql`
 query GetAllProjectsQuery($getAllProjectsInput: GetAllProjectsInput!) {
   getAllProjects(getAllProjectsInput: $getAllProjectsInput) {
