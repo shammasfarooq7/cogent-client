@@ -4,20 +4,40 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button, TablePagination, Typography } from '@mui/material';
+import { Box, Button, TablePagination, Typography, Modal, InputLabel, Select, MenuItem, FormControl, Grid} from '@mui/material';
+import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
+import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY, CHANGE_TICKET_STATUS } from '../../../graphql/tickets';
+
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 import { Alert } from '../../components/common/Alert';
 import { useNavigate } from 'react-router-dom';
 import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { renderStatus } from '../../constants';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import { renderStatus, ticketStatus } from '../../constants';
 import { TicketDetails } from './TicketDetails';
 
+
+const statusStyle = {
+    position: 'absolute',
+    overflow: 'auto',
+    top: '25%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: "8px",
+    boxShadow: 54,
+    height: "17%",
+    width: "30%",
+    backgroundColor: "white",
+    p: 1.5,
+    border:1
+  
+  };
 
 export const ServiceDeskTable = ({
         tableName, search, setTicketTabelRefetch, ticketTableRefetch,
@@ -28,6 +48,7 @@ export const ServiceDeskTable = ({
     const navigate = useNavigate();
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
+    const [openApproveAlert, setOpenApproveAlert] = useState(false);
     const [openSDForm, setOpenSDForm] = useState(false);
     const [openViewForm, setOpenViewForm] = useState(false);
     const [ticket, setTicket] = useState({})
@@ -35,10 +56,14 @@ export const ServiceDeskTable = ({
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [editInfo, setEditInfo] = useState(null);
+    const [statusModal, setStatusModal] = useState(false);
+    const [status, setStatus] = useState('');
+    const [currentTicket, setCurrentTicket] = useState({});
 
 
     //dummyData this need to be replaced with api data
 
+    const [updateTicketStatus, { loading: isUpdateTicketLoading }] = useMutation(CHANGE_TICKET_STATUS);
     const searchQuery = useDebounce(searchValue, 500);
 
     const queryVariables = {
@@ -81,7 +106,6 @@ export const ServiceDeskTable = ({
     };
 
     const handleDeleteConfirm = async () => {
-
         Alert.success("Deleted Successfully!")
         setOpenDeleteAlert(false);
     }
@@ -97,14 +121,76 @@ export const ServiceDeskTable = ({
         setOpenViewForm(true)
     }
 
-
     const onDeleteClick = (id) => {
         setOpenDeleteAlert(true);
 
     }
 
+    const handleApproveClick = (ticket) => {
+        if(!ticket.isApproved){
+            setOpenDeleteAlert(true);
+        }
+      }
+
+    const handleStatusClick = (ticket) => {
+        setCurrentTicket(ticket);
+        setStatusModal(true);
+      }
+    
+      const updateStatus = (e) => {
+        setStatus(e.target.value)
+      }
+    
+      const changeStatus = async () => {
+        await updateTicketStatus({
+          variables : {
+            changeStatusInput :{
+              ticketId: currentTicket?.id,
+              ticketStatus: status
+            }
+          }
+        });
+        Alert.success("Update Successfully!");
+        currentTicket.status = status;
+        setStatus('');
+        setStatusModal(false);
+      }
+
     return (
         <>
+
+            <Modal
+                open={statusModal}
+                onClose={() => setStatusModal(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                >
+                <Box sx={statusStyle} textAlign='center'>
+                <Grid  container spacing={2}>
+                    <Grid item xs={12}>
+                    <FormControl fullWidth>
+                    <InputLabel id="statusSelect">Select Status</InputLabel>
+                        <Select
+                        labelId="statusSelect"
+                        id="status-select"
+                        value={status}
+                        label="Status"
+                        onChange={updateStatus}
+                        >
+                        {
+                            ticketStatus.map((status) => (
+                            <MenuItem value={status.value}>{status.label}</MenuItem>
+                            ))
+                        }
+                        </Select>
+                    </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                    <Button variant="contained" color="success" onClick={changeStatus}>Change Status</Button>
+                    </Grid>    
+                </Grid>
+                </Box>
+            </Modal>
             <DeleteAlert
                 open={openDeleteAlert}
                 setOpen={setOpenDeleteAlert}
@@ -184,6 +270,15 @@ export const ServiceDeskTable = ({
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
                                                 src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} />
 
+                                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                                onClick={() => { handleStatusClick(ticket) }} >
+                                                <ChangeCircleIcon color='action' />
+                                            </Box>
+
+                                            <Box  sx={{display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                                onClick={() => { handleApproveClick(ticket) }} >
+                                                {ticket.isApproved ? <ThumbUpAltIcon color='success' /> : <ThumbDownAltIcon color='error'/>}
+                                            </Box>
                                         </Box>
                                     </TableCell>
                                 </TableRow>

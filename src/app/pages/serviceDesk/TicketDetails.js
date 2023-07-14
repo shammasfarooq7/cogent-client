@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import { Typography, Button, Modal, InputLabel, Select, MenuItem, FormControl } from "@mui/material"
+import { Typography, Button, Modal } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../../components/common/HeaderResource';
 import { useMutation, useQuery } from '@apollo/client';
@@ -12,7 +12,7 @@ import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { Alert } from '../../components/common/Alert';
 import { downloadFile } from '../../services/rest-apis';
-import { renderStatus, ticketStatus } from '../../constants';
+import { renderStatus } from '../../constants';
 
 
 
@@ -31,27 +31,12 @@ const style = {
   border:2
 
 };
-const statusStyle = {
-  position: 'absolute',
-  overflow: 'auto',
-  top: '25%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  borderRadius: "8px",
-  boxShadow: 54,
-  height: "17%",
-  width: "30%",
-  backgroundColor: "white",
-  p: 1.5,
-  border:1
 
-};
 export const TicketDetails = ({ openModal, setOpenModal, info}) => {
   const navigate = useNavigate();
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openTicketForm, setOpenTicketForm] = useState(false);
-  const [statusModal, setStatusModal] = useState(false);
-  const [status, setStatus] = useState('');
+ 
 
   // const { data, loading, error, refetch } = useQuery(GET_A_TICKET_QUERY, {
   //   variables: {
@@ -90,28 +75,6 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
     downloadFile(getUrlNameforDwnload(url))
   }
 
-  const handleStatusClick = () => {
-    setStatusModal(true);
-  }
-
-  const updateStatus = (e) => {
-    setStatus(e.target.value)
-  }
-
-  const changeStatus = async () => {
-    await updateTicketStatus({
-      variables : {
-        changeStatusInput :{
-          ticketId: info?.id,
-          ticketStatus: status
-        }
-      }
-    });
-    Alert.success("Update Successfully!");
-    info.status = status;
-    setStatusModal(false);
-  }
-
 
   // if (error)
   //   return (
@@ -122,39 +85,6 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
 
   return (
     <Box sx={{ overflowY: "auto" }}>
-          <Modal
-            open={statusModal}
-            onClose={() => setStatusModal(false)}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-            >
-            <Box sx={statusStyle} textAlign='center'>
-              <Grid  container spacing={2}>
-                <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel id="statusSelect">Select Status</InputLabel>
-                    <Select
-                      labelId="statusSelect"
-                      id="status-select"
-                      value={status}
-                      label="Status"
-                      onChange={updateStatus}
-                      defaultValue={info.status}
-                    >
-                      {
-                        ticketStatus.map((status) => (
-                          <MenuItem value={status.value}>{status.label}</MenuItem>
-                        ))
-                      }
-                    </Select>
-                </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <Button variant="contained" color="success" onClick={changeStatus}>Change Status</Button>
-                </Grid>    
-              </Grid>
-            </Box>
-          </Modal>
 
          <DeleteAlert
           open={openDeleteAlert}
@@ -189,7 +119,6 @@ export const TicketDetails = ({ openModal, setOpenModal, info}) => {
                             <Box sx={{ position: "relative", left: "50%", top: "5px", cursor: "pointer" }} >
                                 <CloseIcon onClick={handleClose} />
                             </Box>
-                            <Button variant="contained" onClick={handleStatusClick}>Change Status</Button>
                         </Box>
               
               </Grid>
