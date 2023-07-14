@@ -26,6 +26,14 @@ mutation Update($updateTicketInput: UpdateTicketInput!, $id:String!) {
   }
 `;
 
+export const APPROVE_EXTERNAL_TICKET_MUTATION = gql`
+mutation ApproveExternalTicket($id:String!) {
+  approveExternalTicket(id:$id) {
+      message
+    }
+  }
+`;
+
 export const CHANGE_TICKET_STATUS = gql`
 mutation changeStatus($changeStatusInput: ChangeStatusInput!){
   changeStatus(changeStatus: $changeStatusInput){
