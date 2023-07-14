@@ -91,6 +91,16 @@ query GetJobsiteByProjectQuery($id: String!) {
   }
 `;
 
+export const GET_SD_DASHBOARD_STATS = gql`
+query GetDashboardStatsTicket {
+  getDashboardStatsTicket {
+    todayCount
+    futureCount
+    inProgressCount
+    }
+  }
+`;
+
 export const GET_ALL_TICKETS_QUERY = gql`
 query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
   getAllTickets(getAllTicketsInput: $getAllTicketsInput) {
@@ -154,7 +164,6 @@ query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
 export const GET_A_TICKET_QUERY = gql`
 query GetTicketQuery($id: String!) {
   getTicket(id: $id) {
-      
       id
       customerName
       cogentCaseNumber

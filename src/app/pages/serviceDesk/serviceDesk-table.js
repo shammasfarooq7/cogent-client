@@ -282,7 +282,7 @@ export const ServiceDeskTable = ({
 
                                             <Box sx={{ marginLeft:'5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
                                                 onClick={() => handleEditClick(ticket)} >
-                                                <EditIcon color='error' />
+                                                <EditIcon />
                                             </Box>
 
                                             <Box sx={{ marginLeft:'5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
@@ -293,7 +293,7 @@ export const ServiceDeskTable = ({
                                             {customer && 
                                                 <Box  sx={{marginLeft:'5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
                                                     onClick={() => { handleApproveClick(ticket) }} >
-                                                    {ticket.isApproved ? <ThumbUpAltIcon color='action'/> : <ThumbUpAltIcon color='success' /> }
+                                                    {ticket.isApproved ? <ThumbUpAltIcon color='disabled'/> : <ThumbUpAltIcon color='success' /> }
                                                 </Box>
                                             }
 

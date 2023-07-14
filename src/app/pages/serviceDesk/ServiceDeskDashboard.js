@@ -7,7 +7,7 @@ import { useQuery } from "@apollo/client";
 import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { ServiceDeskTable } from './serviceDesk-table';
-import { Get_RESOURCE_Dashboard_Stats } from '../../../graphql/resources';
+import { GET_SD_DASHBOARD_STATS } from '../../../graphql/tickets';
 
 
 export const ServiceDesk = () => {
@@ -16,29 +16,12 @@ export const ServiceDesk = () => {
 
   const [openModal, setOpenModal] = useState(false);
   const [profileAnchor, setProfileAnchor] = useState(false);
-  const [dashboardStat, setDashboardStat] = useState(null)
   const [ticketTableRefetch, setTicketTabelRefetch] = useState(null)
 
-  const [todaysIncidentCount, setTodaysIncidentCount] = useState(4)
-  const [inProgressCount, setInProgressCount] = useState(10)
-  const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
 
-  // const { data, loading, error } = useQuery(Get_Dashboard_Stats, {
-  //   fetchPolicy: "network-only"
-  // });
-
-  //   const { data, loading, refetch } = useQuery(GET_ALL_TICKETS_QUERY, {
-  //     variables: {
-  //         getAllTicketsInput: {
-  //             page,
-  //             limit,
-  //             ...(searchQuery && { searchQuery }),
-  //             external:true,
-  //         }
-  //     },
-  //     fetchPolicy: "network-only"
-  // });
-
+  const { data, loading, error } = useQuery(GET_SD_DASHBOARD_STATS, {
+    fetchPolicy: "network-only"
+  });
 
   const handleOpen = () => setOpenModal(true);
 
@@ -60,15 +43,15 @@ export const ServiceDesk = () => {
       <Grid container spacing={"30px"}>
 
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={todaysIncidentCount} text={"Today's Incidents"} color="#56A0C2" />
+          <DashboardCard hiring={data?.getDashboardStatsTicket?.todayCount} text={"Today's Incidents"} color="#56A0C2" />
         </Grid>
 
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={inProgressCount} text={"Inprogress"} color="#242D60" />
+          <DashboardCard hiring={data?.getDashboardStatsTicket?.inProgressCount} text={"Inprogress"} color="#242D60" />
         </Grid>
 
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={upcommingIncidentsCount} text={"Upcomming Incidents"} color="#212121" />
+          <DashboardCard hiring={data?.getDashboardStatsTicket?.futureCount} text={"Upcomming Incidents"} color="#212121" />
         </Grid>
 
         <Grid item xs={12}>
