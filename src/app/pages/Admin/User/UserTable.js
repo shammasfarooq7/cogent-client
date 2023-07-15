@@ -81,7 +81,7 @@ export const UserTable = ({ tableName, search, setUserTabelRefetch, userTableRef
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
 
-            {openSDForm && <CreateUser openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
+            {openSDForm && <CreateUser openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchUser={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>User's Listing</Typography>

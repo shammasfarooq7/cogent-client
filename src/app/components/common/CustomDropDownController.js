@@ -28,6 +28,7 @@ import { UserContext } from '../../context/user-context';
 export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType, currencies, onchange = false, disabled = false }) => {
   
   const userRole = localStorage.getItem("userRole")
+ console.log("currencies", currencies)
 
   const { control } = useFormContext();
   return (
@@ -57,7 +58,7 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
             currencies.map((option) => (
               userRole === "ADMIN" ?
               <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.value : option.value}>
-              {onchange ? option.value : option.label}
+              {onchange ? option.label : option.label}
             </MenuItem>
             :
             <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>

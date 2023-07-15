@@ -26,6 +26,7 @@ import FileUrlDisplay from '../../../components/common/FileUrlDisplay/FileUrlDis
 import CloseIcon from '@mui/icons-material/Close';
 import { CREATE_PROJECT_MUTATION } from '../../../../graphql/admin';
 import { CustomMultiSelect, CustomMultiSelectController } from '../../../components/common/CustomMultiSelect';
+import { CustomFormCheckboxController } from '../../../components/common/CustomFormCheckboxController';
 
 const style = {
     position: 'absolute',
@@ -41,7 +42,7 @@ const style = {
 
 };
 
-export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTickets }) => {
+export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchProject }) => {
     const handleClose = () => setOpenModal(false);
 
     const { user } = useContext(UserContext);
@@ -125,12 +126,12 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
         fetchPolicy: "network-only"
     });
     const getAllCustomer = getAllCustomerData && getAllCustomerData.getAllCustomer.customers
-    const getCustomerIds = getAllCustomer && getAllCustomer.map((customers) => customers.id) 
-    const customerIds = getCustomerIds && getCustomerIds.map((id) => {
+    const getCustomerIds = getAllCustomer && getAllCustomer.map((customers) => customers) 
+    const customerIds = getCustomerIds && getCustomerIds.map((customer) => {
 
         return {
-              value : id,
-              label : id
+              value : customer.id,
+              label : customer.name
         }
     })
     
@@ -234,6 +235,9 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                     }
                 })
                 Alert.success("Project created successfully!")
+                if (refetchProject) {
+                    await refetchProject()
+                }
             handleClose();
 
         } catch (error) {
@@ -513,12 +517,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
                                             />
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <CustomFormController
-                                                controllerName='namedWorker'
-                                                controllerLabel='Named Worker'
-                                                fieldType='text'
-                                                
-                                            />
+                                        <CustomFormCheckboxController controllerName='namedWorker' controllerLabel="Named Worker"  />
                                         </Grid>
                                         <Grid item xs={6}>
                                             <CustomFormController
