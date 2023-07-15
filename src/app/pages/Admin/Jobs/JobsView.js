@@ -39,19 +39,6 @@ export const JobsView = ({openModal, setOpenModal, info}) => {
   const refetch = ''
     const { id } = useParams();
 
-  const [deleteTicket, { loading: isDeleteLoading }] = useMutation(DELETE_TICKET_MUTATION)
-
-  // const handleDeleteConfirm = async () => {
-  //   await deleteTicket({
-  //     variables: {
-  //       id
-  //     }
-  //   })
-  //   Alert.success("Deleted Successfully!")
-  //   setOpenDeleteAlert(false);
-  //   navigate("/all-resource")
-  // }
-
   const handleClose = () => setOpenModal(false);
 
   if (error)

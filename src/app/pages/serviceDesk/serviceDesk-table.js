@@ -4,7 +4,7 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button, TablePagination, Typography, Modal, InputLabel, Select, MenuItem, FormControl, Grid} from '@mui/material';
+import { Box, Button, TablePagination, Typography, Modal, InputLabel, Select, MenuItem, FormControl, Grid } from '@mui/material';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
@@ -19,6 +19,7 @@ import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { renderStatus, ticketStatus } from '../../constants';
 import { TicketDetails } from './TicketDetails';
 
@@ -35,15 +36,15 @@ const statusStyle = {
     width: "30%",
     backgroundColor: "white",
     p: 1.5,
-    border:1
-  
-  };
+    border: 1
+
+};
 
 export const ServiceDeskTable = ({
-        tableName, search, setTicketTabelRefetch, ticketTableRefetch,
-        label = 'All Tickets', todays = false, external = false,
-        hideAddTicketButton = false, customer= false, approved = true
-    }) => {
+    tableName, search, setTicketTabelRefetch, ticketTableRefetch,
+    label = 'All Tickets', todays = false, external = false,
+    hideAddTicketButton = false, customer = false, approved = true
+}) => {
 
     const navigate = useNavigate();
 
@@ -56,6 +57,7 @@ export const ServiceDeskTable = ({
     const [page, setPage] = useState(0);
     const [limit, setLimit] = useState(10);
     const [editInfo, setEditInfo] = useState(null);
+    const [toBeDeleted, setToBeDeleted] = useState(null);
     const [statusModal, setStatusModal] = useState(false);
     const [status, setStatus] = useState('');
     const [currentTicket, setCurrentTicket] = useState({});
@@ -65,6 +67,7 @@ export const ServiceDeskTable = ({
 
     const [updateTicketStatus, { loading: isUpdateTicketLoading }] = useMutation(CHANGE_TICKET_STATUS);
     const [approveExternalTicket, { loading: isapproveExternalTicketLoading }] = useMutation(APPROVE_EXTERNAL_TICKET_MUTATION);
+    const [deleteTicket] = useMutation(DELETE_TICKET_MUTATION)
     const searchQuery = useDebounce(searchValue, 500);
 
     const queryVariables = {
@@ -105,19 +108,30 @@ export const ServiceDeskTable = ({
     };
 
     const handleDeleteConfirm = async () => {
-        Alert.success("Deleted Successfully!")
-        setOpenDeleteAlert(false);
+        try {
+            await deleteTicket({
+                variables: {
+                    id: toBeDeleted
+                }
+            })
+            Alert.success("Deleted Successfully!")
+            await refetch()
+        } catch (error) {
+        }
+        finally {
+            setOpenDeleteAlert(false);
+        }
     }
 
     const handleApproveConfirm = async () => {
         await approveExternalTicket({
-            variables : {
+            variables: {
                 id: currentTicket?.id,
             }
-            });
-            currentTicket.isApproved = true;
-            Alert.success("Approve Successfully!");
-            setOpenApproveAlert(false);
+        });
+        currentTicket.isApproved = true;
+        Alert.success("Approve Successfully!");
+        setOpenApproveAlert(false);
     }
 
     const handleEditClick = (info) => {
@@ -131,39 +145,40 @@ export const ServiceDeskTable = ({
         setOpenViewForm(true)
     }
     const onDeleteClick = (id) => {
+        setToBeDeleted(id);
         setOpenDeleteAlert(true);
 
     }
     const handleApproveClick = (ticket) => {
-        if(!ticket.isApproved){
+        if (!ticket.isApproved) {
             setCurrentTicket(ticket);
             setOpenApproveAlert(true);
         }
-      }
+    }
 
     const handleStatusClick = (ticket) => {
         setCurrentTicket(ticket);
         setStatusModal(true);
-      }
-    
-      const updateStatus = (e) => {
+    }
+
+    const updateStatus = (e) => {
         setStatus(e.target.value)
-      }
-    
-      const changeStatus = async () => {
+    }
+
+    const changeStatus = async () => {
         await updateTicketStatus({
-          variables : {
-            changeStatusInput :{
-              ticketId: currentTicket?.id,
-              ticketStatus: status
+            variables: {
+                changeStatusInput: {
+                    ticketId: currentTicket?.id,
+                    ticketStatus: status
+                }
             }
-          }
         });
         Alert.success("Update Successfully!");
         currentTicket.status = status;
         setStatus('');
         setStatusModal(false);
-      }
+    }
 
     return (
         <>
@@ -173,44 +188,45 @@ export const ServiceDeskTable = ({
                 onClose={() => setStatusModal(false)}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
-                >
+            >
                 <Box sx={statusStyle} textAlign='center'>
-                <Grid  container spacing={2}>
-                    <Grid item xs={12}>
-                    <FormControl fullWidth>
-                    <InputLabel id="statusSelect">Select Status</InputLabel>
-                        <Select
-                        labelId="statusSelect"
-                        id="status-select"
-                        value={status}
-                        label="Status"
-                        onChange={updateStatus}
-                        >
-                        {
-                            ticketStatus.map((status) => (
-                            <MenuItem value={status.value}>{status.label}</MenuItem>
-                            ))
-                        }
-                        </Select>
-                    </FormControl>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="statusSelect">Select Status</InputLabel>
+                                <Select
+                                    labelId="statusSelect"
+                                    id="status-select"
+                                    value={status}
+                                    label="Status"
+                                    onChange={updateStatus}
+                                >
+                                    {
+                                        ticketStatus.map((status) => (
+                                            <MenuItem value={status.value}>{status.label}</MenuItem>
+                                        ))
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained" color="success" onClick={changeStatus}>Change Status</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                    <Button variant="contained" color="success" onClick={changeStatus}>Change Status</Button>
-                    </Grid>    
-                </Grid>
                 </Box>
             </Modal>
-            <DeleteAlert
-                open={openDeleteAlert || openApproveAlert}
-                setOpen={openDeleteAlert ? setOpenDeleteAlert : setOpenApproveAlert}
-                handleConfirm={openDeleteAlert ? handleDeleteConfirm : handleApproveConfirm }
-                title={ openDeleteAlert ? "Delete?" : "Approve?"}
-                text={
-                    openDeleteAlert ? "Are you sure you want to delete this? This action cannot be revert back." :
-                    "Are you sure you want to approve this? This action cannot be revert back."
-                }
-            />
-            
+            {(openDeleteAlert || openApproveAlert) &&
+                <DeleteAlert
+                    open={openDeleteAlert || openApproveAlert}
+                    setOpen={openDeleteAlert ? setOpenDeleteAlert : setOpenApproveAlert}
+                    handleConfirm={openDeleteAlert ? handleDeleteConfirm : handleApproveConfirm}
+                    title={openDeleteAlert ? "Delete?" : "Approve?"}
+                    text={
+                        openDeleteAlert ? "Are you sure you want to delete this? This action cannot be revert back." :
+                            "Are you sure you want to approve this? This action cannot be revert back."
+                    }
+                />}
+
             {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchTickets={refetch} />}
             {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} />}
 
@@ -280,24 +296,29 @@ export const ServiceDeskTable = ({
                                                 <VisibilityIcon color='primary' />
                                             </Box>
 
-                                            <Box sx={{ marginLeft:'5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                            <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
                                                 onClick={() => handleEditClick(ticket)} >
                                                 <EditIcon />
                                             </Box>
 
-                                            <Box sx={{ marginLeft:'5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                            <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                                onClick={() => onDeleteClick(ticket?.id)} >
+                                                <DeleteIcon sx={{ color: "#A1A5B7" }} />
+                                            </Box>
+
+                                            <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
                                                 onClick={() => { handleStatusClick(ticket) }} >
                                                 <ChangeCircleIcon color='secondary' />
                                             </Box>
 
-                                            {customer && 
-                                                <Box  sx={{marginLeft:'5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                            {customer &&
+                                                <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
                                                     onClick={() => { handleApproveClick(ticket) }} >
-                                                    {ticket.isApproved ? <ThumbUpAltIcon color='disabled'/> : <ThumbUpAltIcon color='success' /> }
+                                                    {ticket.isApproved ? <ThumbUpAltIcon color='disabled' /> : <ThumbUpAltIcon color='success' />}
                                                 </Box>
                                             }
 
-                                            
+
                                         </Box>
                                     </TableCell>
                                 </TableRow>

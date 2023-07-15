@@ -10,8 +10,8 @@ mutation CreateTicket($createTicketInput: CreateTicketInput!) {
 `;
 
 export const DELETE_TICKET_MUTATION = gql`
-mutation Delete($id: String!) {
-  delete(id: $id) {
+mutation DeleteTicketMutation($id: String!) {
+  deleteTicket(id: $id) {
       message
     }
   }
