@@ -541,7 +541,7 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchCusto
                                         <Grid item xs={6}>
                                             <CustomFormController
                                                 controllerName='customerAbbr'
-                                                controllerLabel='Customer Abbr'
+                                                controllerLabel='Customer Abbreviation'
                                                 fieldType='text'
                                                 
                                             />
