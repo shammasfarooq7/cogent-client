@@ -22,10 +22,11 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
   const [openViewForm, setOpenViewForm] = useState(false);
   const [ticket, setTicket] = useState({});
   const [searchValue, setSearchValue] = useState(null);
-  const [page, setPage] = useState(0);
-  const [limit, setLimit] = useState(10);
   const [openSDForm, setOpenSDForm] = useState(false);
   const { count, setCount } = useContext(UserContext);
+  const [page, setPage] = useState(0);
+  const [future, setFututre] = useState(true);
+  const [limit, setLimit] = useState(10);
   const searchQuery = useDebounce(searchValue, 500);
 
   const queryVariables = {
@@ -34,8 +35,15 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
     ...(searchQuery && { searchQuery }),
   };
 
-  const queryKey = todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
+  const queryFututeVariables = {
+    page,
+    limit,
+    future,
+    ...(searchQuery && { searchQuery }),
+};
 
+  const queryKey = todays ? GET_TODAY_TICKET_QUERY  : GET_ALL_TICKETS_QUERY
+  
   const { data, loading, refetch } = useQuery(queryKey, {
     variables: {
       ...(todays

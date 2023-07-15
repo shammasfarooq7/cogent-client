@@ -13,6 +13,7 @@ import Calendar from '../../components/common/Calendar';
 import Incidents from '../../components/common/Calendar';
 import { useContext } from 'react';
 import { UserContext } from '../../context/user-context';
+import { GET_RESOURCE_TICKET_QUERY } from '../../../graphql/tickets';
 
 
 export const ResourcesDashboard = () => {
@@ -20,44 +21,53 @@ export const ResourcesDashboard = () => {
   const navigate = useNavigate();
 
   const [openModal, setOpenModal] = useState(false);
-  const [profileAnchor, setProfileAnchor] = useState(false);
-  const [dashboardStat, setDashboardStat] = useState(null)
   const [ticketTableRefetch, setTicketTabelRefetch] = useState(null)
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(10);
 
-  const [todaysIncidentCount, setTodaysIncidentCount] = useState(4)
-  const [inProgressCount, setInProgressCount] = useState(10)
-  const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
-  const { count } = useContext(UserContext);
+
+  const queryTodaysVariables = {
+      today : true
+  };
+
+  const queryFututeVariables = {
+    page,
+    limit,
+    future:true
+};
+
+  
+  const { data, loading } = useQuery(GET_RESOURCE_TICKET_QUERY, {
+    variables: {
+          getResourceTicketInput: {
+              ...queryTodaysVariables,
+            },
+          }
+  });
+  const { data:futureTicket, loading:futureLoading } = useQuery(GET_RESOURCE_TICKET_QUERY, {
+    variables: {
+         
+        
+          getResourceTicketInput: {
+              ...queryFututeVariables,
+            },
+          }
+  });
 
   const handleOpen = () => setOpenModal(true);
 
-  const handleProfileClick = (e) => {
-    setProfileAnchor(e.currentTarget)
-  }
-  const handleProfileClose = () => {
-    setProfileAnchor(null)
-  }
-
-  const handleSignOut = () => {
-    handleLogout();
-    navigate("/login")
-  }
 
   return (
     <Box padding={"30px"}>
 
       <Grid container spacing={"30px"}>
 
-        <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={count} text={"Today's Incidents"} color="#56A0C2" />
+        <Grid item xs={12} md={6} lg={6}>
+          <DashboardCard hiring={data && data.getResourceTickets.count} text={"Today's Task"} color="#56A0C2" today={true} />
         </Grid>
         
-        <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={inProgressCount} text={"Inprogress"} color="#242D60" />
-        </Grid>
-        
-        <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={upcommingIncidentsCount} text={"Upcomming Incidents"} color="#212121" />
+        <Grid item xs={12} md={6} lg={6}>
+          <DashboardCard hiring={futureTicket && futureTicket.getResourceTickets.count } text={"Upcomming Incidents"} future={true} color="#212121" />
         </Grid>
 
         <Grid item xs={12} md={6}>
@@ -65,11 +75,11 @@ export const ResourcesDashboard = () => {
         </Grid>
          
         <Grid item xs={12} md={6}>
-         <Incidents />
+         <Incidents future={true} />
         </Grid>
        
         <Grid item xs={12} md={6}>
-            <TaskBox taskName="Tasks History" type="resource" />
+            <TaskBox taskName="Tasks History" type="resource"  />
         </Grid>
 
         <Grid item xs={12} md={6}>
