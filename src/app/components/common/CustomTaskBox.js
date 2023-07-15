@@ -29,64 +29,68 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
   const searchQuery = useDebounce(searchValue, 500);
 
   const queryVariables = {
-      page,
-      limit,
-      ...(searchQuery && { searchQuery }),
+    page,
+    limit,
+    ...(searchQuery && { searchQuery }),
   };
 
   const queryKey = todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
 
   const { data, loading, refetch } = useQuery(queryKey, {
-      variables: {
-          ...(todays
-              ? {
-                  getTodayTicketsInput: {
-                      ...queryVariables,
-                  }
-              }
-              : {
-                  getAllTicketsInput: {
-                      ...queryVariables,
-                  }
-              })
-      }
+    variables: {
+      ...(todays
+        ? {
+          getTodayTicketsInput: {
+            ...queryVariables,
+          }
+        }
+        : {
+          getAllTicketsInput: {
+            ...queryVariables,
+          }
+        })
+    }
   })
 
-  if(data?.getTodayTicket){
+  if (data?.getTodayTicket) {
     setCount(data?.getTodayTicket?.count)
   }
 
   const ticketsData = todays ? data?.getTodayTicket : data?.getAllTickets
 
-  const handleViewClick = (id) => {
-    const currentTicket = data?.getAllTickets?.tickets.filter((ticket) => ticket.id === id);
-    setTicket(currentTicket[0]);
+  const handleViewClick = (ticket) => {
+    setTicket(ticket);
     setOpenViewForm(true);
   };
 
+  const handleEditClick = (ticket) => {
+    setOpenSDForm(true);
+    setTicket(ticket)
+  }
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-};
+  };
 
-const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event) => {
     setLimit(parseInt(event.target.value, 10));
     setPage(0);
-};
+  };
 
   return (
     <Box sx={{ background: '#FFFFFF', padding: '14px', height: '449px', overflowY: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography sx={{ fontSize: '18px', fontWeight: '600', marginBottom: '14px' }}>{taskName}</Typography>
-        {buttonText && 
+        {buttonText &&
           <Button sx={{ backgroundColor: '#F64E60', color: 'white', padding: '6px 20px', marginBottom: '8px' }}
-          onClick={() => { setOpenSDForm(true) }}
+            onClick={() => { setOpenSDForm(true) }}
           >
             {buttonText}
           </Button>
         }
       </Box>
-      {openViewForm && <TicketView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} type={type}  />}
-      {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm}  refetchTickets={refetch}/>}
+      {openViewForm && <TicketView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} type={type} />}
+      {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} refetchTickets={refetch} editInfo={ticket} />}
 
       <Table>
         <TableHead>
@@ -96,41 +100,41 @@ const handleChangeRowsPerPage = (event) => {
             <TableCell>Action</TableCell>
           </TableRow>
         </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell sx={{ padding: '16px', textAlign: 'center' }} colSpan={5}>
-                  Loading...
-                </TableCell>
-              </TableRow>
-            ) : !ticketsData?.count ? (
-              <TableRow>
-                <TableCell sx={{ padding: '16px', textAlign: 'center' }} colSpan={5}>
-                  No Record Found
-                </TableCell>
-              </TableRow>
-            ) : (
-              ticketsData?.tickets.map((ticket) => (
-                <TableRow
-                  key={ticket?.id}
-                  sx={{  marginTop: '20px', marginLeft: '-6px' }}
-                >
-                  <TableCell>
-                    <Box>
-                      {todays ?
-                      <Box sx={{display:'flex'}}>
-                        <Avatar sx={{ height: '50px', width: '50px' }} /> 
-                         <Box sx={{ marginLeft: '12px' }}>
-                         <Typography sx={{ color: '#1ebbe3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '11px' }}>
-                           {`${ticket?.customerName || '--'}`}
-                         </Typography>
-                         <Typography sx={{ color: ' #B5B5C3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '13px' }}>
-                           {`ID#${ticket?.id || '--'}`}
-                         </Typography>
-                       </Box>
-                       </Box>
-                       :
-                       <Box sx={{ marginLeft: '12px' }}>
+        <TableBody>
+          {loading ? (
+            <TableRow>
+              <TableCell sx={{ padding: '16px', textAlign: 'center' }} colSpan={5}>
+                Loading...
+              </TableCell>
+            </TableRow>
+          ) : !ticketsData?.count ? (
+            <TableRow>
+              <TableCell sx={{ padding: '16px', textAlign: 'center' }} colSpan={5}>
+                No Record Found
+              </TableCell>
+            </TableRow>
+          ) : (
+            ticketsData?.tickets.map((ticket) => (
+              <TableRow
+                key={ticket?.id}
+                sx={{ marginTop: '20px', marginLeft: '-6px' }}
+              >
+                <TableCell>
+                  <Box>
+                    {todays ?
+                      <Box sx={{ display: 'flex' }}>
+                        <Avatar sx={{ height: '50px', width: '50px' }} />
+                        <Box sx={{ marginLeft: '12px' }}>
+                          <Typography sx={{ color: '#1ebbe3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '11px' }}>
+                            {`${ticket?.customerName || '--'}`}
+                          </Typography>
+                          <Typography sx={{ color: ' #B5B5C3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '13px' }}>
+                            {`ID#${ticket?.id || '--'}`}
+                          </Typography>
+                        </Box>
+                      </Box>
+                      :
+                      <Box sx={{ marginLeft: '12px' }}>
                         <Typography sx={{ color: ' #B5B5C3', fontWeight: '500', fontFamily: 'Poppins', fontSize: '13px' }}>
                           {`ID#${ticket?.id || '--'}`}
                         </Typography>
@@ -138,17 +142,18 @@ const handleChangeRowsPerPage = (event) => {
                           {`${ticket?.ticketDetail?.city || '--'},${ticket?.ticketDetail?.country || '--'}`}
                         </Typography>
                       </Box>
-                      }
-                      
-                    </Box>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={{ color: '#50CD89', background: '#E8FFF3', borderRadius: '6px', padding: '8px' }}>
-                      {ticket?.status || '--'}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Box display={'flex'} alignItems={'center'}>
+                    }
+
+                  </Box>
+                </TableCell>
+                <TableCell>
+                  <Typography sx={{ color: '#50CD89', background: '#E8FFF3', borderRadius: '6px', padding: '8px' }}>
+                    {ticket?.status || '--'}
+                  </Typography>
+                </TableCell>
+                <TableCell>
+                  <Box display={'flex'} alignItems={'center'}>
+                    {!todays &&
                       <Box
                         component="img"
                         sx={{
@@ -160,39 +165,40 @@ const handleChangeRowsPerPage = (event) => {
                         }}
                         src={images.Edit}
                         alt="Menu"
-                      />
-                      <Box
-                        component="img"
-                        sx={{
-                          height: '40px',
-                          width: '40px',
-                          cursor: 'pointer',
-                          marginY: '4px',
-                          marginX: '1px',
-                        }}
-                        src={images.View}
-                        alt="Menu"
-                        onClick={() => {
-                          handleViewClick(ticket.id);
-                        }}
-                      />
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
+                        onClick={() => { handleEditClick(ticket) }}
+                      />}
+                    <Box
+                      component="img"
+                      sx={{
+                        height: '40px',
+                        width: '40px',
+                        cursor: 'pointer',
+                        marginY: '4px',
+                        marginX: '1px',
+                      }}
+                      src={images.View}
+                      alt="Menu"
+                      onClick={() => {
+                        handleViewClick(ticket);
+                      }}
+                    />
+                  </Box>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
       </Table>
       <Box display={"flex"} justifyContent={"end"} marginTop={2}>
-                <TablePagination
-                    component="div"
-                    count={data?.getAllUsers?.count || 0}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={limit}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Box>
+        <TablePagination
+          component="div"
+          count={data?.getAllUsers?.count || 0}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={limit}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Box>
     </Box>
   );
 };
