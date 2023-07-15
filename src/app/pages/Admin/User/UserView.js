@@ -115,12 +115,6 @@ export const UserView = () => {
         text={"Are you sure you want to delete this resource? This action cannot be revert back."}
       />
 
-      {/* {openTicketForm &&
-        <SDForm
-          openModal={openTicketForm}
-          setOpenModal={setOpenTicketForm}
-          editInfo={info}
-          refetchResources={refetch} />} */}
 
       <Box sx={{ backgroundColor: "white", p: 1.5, border:2, borderColor: getBorderColour(info?.status)}}>
 

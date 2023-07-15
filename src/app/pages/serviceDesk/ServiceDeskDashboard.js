@@ -56,7 +56,7 @@ export const ServiceDesk = () => {
 
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, todays: true, label: "Today's Tickets" }} />
+            <ServiceDeskTable  {...{ ticketTableRefetch, setTicketTabelRefetch, todays: true, label: "Today's Tickets", hideAddTicketButton: true }} />
           </Paper>
         </Grid>
 

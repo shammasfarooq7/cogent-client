@@ -29,7 +29,7 @@ export const addTicketFormValidationSchema = yup.object({
         })
         .required("Site Name is required"),
     region: yup.string().required("Region is required"),
-    provinceState: yup.string().required("Province is required"),
+    province: yup.string().required("Province is required"),
     siteAddress: yup.string().required("Address is required"),
     postCode: yup.string().required("Post Code is required"),
     spocName: yup.string().required("SPOC Name is required"),
@@ -55,7 +55,20 @@ export const addTicketFormValidationSchema = yup.object({
     slaPriority: yup.string().required("SLA Priority is required"),
     numberOfHoursReq: yup.number().nullable().required("Number of hours required").min(1, "Number of hours must be greater than 0"),
     numberOfResource: yup.number().nullable().required("Number of resources required"),
-    ticketDates: yup.array().min(1, "At least one ticket date is required").of(yup.date()).required("Date is required"),
+    ticketDates: yup.mixed()
+        .test('is-required', 'At least one ticket date is required', value => {
+            if (Array.isArray(value)) {
+                return value.length > 0;
+            }
+            return !!value;
+        })
+        .test('is-valid-date', 'Invalid date', value => {
+            if (Array.isArray(value)) {
+                return value.every(date => yup.date().isValidSync(date));
+            }
+            return yup.date().isValidSync(value);
+        })
+        .required('Date is required'),
     projectCode: yup.string().required("Project Code is required"),
     scheduledTime: yup.string().nullable().required("Time is required").matches(/^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/, "Invalid time format"),
 })

@@ -148,7 +148,7 @@ export const CreateProject = ({ openModal, setOpenModal, editInfo, refetchTicket
 
    
     const onSubmit = async (data) => {
-        debugger
+        
         try {
             setIsLoading(true);
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import DatePicker from "react-multi-date-picker";
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -22,12 +22,13 @@ import { uploadDocument } from '../../../services/rest-apis';
 import { getFileWithNewName, getFutureDate, getName } from '../../../helper';
 import FileUrlDisplay from '../../common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
-import { CustomerDropdown } from '../../common/CustomerDropdown';
+import CustomerDropdown from '../../common/CustomerDropdown';
 import { CustomFormCheckboxController } from '../../common/CustomFormCheckboxController';
 import { ProjectDropdown } from './ProjectDropdown';
 import { JobSiteDropdown } from './JobSiteDropdown';
 import '../../common/style.css'
 import { addTicketFormValidationSchema } from './AddTicketFormValidationSchema';
+import { UserContext } from '../../../context/user-context';
 
 
 const style = {
@@ -46,13 +47,48 @@ const style = {
 
 export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) => {
     const handleClose = () => setOpenModal(false);
+    const { user } = useContext(UserContext)
+    const { customer } = user || {}
+
+    const getScheduledTime = (time) => {
+        if (!time) return "";
+        const [hour, minute] = time?.split(":")
+        return `${hour}:${minute}:00`
+    }
 
     const [isLoading, setIsLoading] = useState(false);
-    const { ...info } = editInfo || {};
+    const { ticketDetail, ticketDates, ...info } = editInfo || {};
+
+    const { attachments, toolsRequested, serviceType: type, ...detail } = ticketDetail || {};
+
 
     const editDefaultState = {
-        ...info
+        ...info,
+        ...detail,
+        ...(editInfo && {
+            customer: {
+                value: editInfo?.customerId,
+                label: editInfo?.customerName,
+            },
+            project: {
+                id: editInfo?.projectId
+            },
+            siteName: {
+                id: editInfo?.jobSiteId
+            },
+            serviceType: type?.[0],
+            ticketDates: ticketDates?.map(item => item?.date) || [],
+            scheduledTime: getScheduledTime(ticketDates?.[0]?.scheduledTime || ""),
+            toolsRequested: toolsRequested?.map(tool => ({ value: tool, label: tool })) || [],
+            // ...attachments?.map((attachment, index) => ({ [`attachment${index + 1}Url`]: attachment?.url }))
+            ...(attachments?.reduce((result, attachment, index) => {
+                const key = `attachment${index + 1}Url`;
+                result[key] = attachment?.url;
+                return result;
+            }, {}))
+        })
     }
+
 
     const methods = useForm({
         resolver: yupResolver(addTicketFormValidationSchema),
@@ -63,14 +99,14 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             date: "",
             country: "",
             city: "",
-            customer: "",
+            customer: customer ? { value: customer?.id, label: customer?.name } : "",
             customerCaseNumber: "",
             accountName: "",
             projectId: "",
             endClientName: "",
             siteName: "",
             region: "",
-            provinceState: "",
+            province: "",
             siteAddress: "",
             postCode: "",
             spocName: "",
@@ -116,11 +152,11 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
             setIsLoading(true);
 
             const { jobSiteId, ticketType, country, city, customer, customerCaseNumber,
-                accountName, projectId, endClientName, siteName, region, provinceState, siteAddress, postCode, spocName,
+                accountName, projectId, endClientName, siteName, region, province, siteAddress, postCode, spocName,
                 spocContactNumber, spocEmailAddress, siteAccessInstruction, technologyType, jobSummary, caseDetails,
                 scopeOfWork, instructions, addInstruction, specialInstruction, toolsRequested, serviceDocUrl: serviceDocuments,
                 hardwareSN, serviceType, serviceLevel, servicePriority, slaPriority, numberOfHoursReq, numberOfResource,
-                attachments: attachment, myServiceDocument, myAttachment1, myAttachment2, myAttachment3, ticketDates, scheduledTime, projectCode } = data
+                attachments: attachment, myServiceDocument, myAttachment1, myAttachment2, myAttachment3, ticketDates, scheduledTime, projectCode, attachment1Url, attachment2Url, attachment3Url } = data
             const customerId = customer?.value
 
             let serviceDocUrl = serviceDocuments || "";
@@ -130,9 +166,9 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 serviceDocUrl = response?.url || "";
             };
 
-            const attachedFiles = [...new Set([myAttachment1, myAttachment2, myAttachment3])]
+            const attachedFiles = [myAttachment1, myAttachment2, myAttachment3].filter(item => item)
 
-            let attachments = [];
+            let attachments = attachedFiles?.length ? [] : [attachment1Url, attachment2Url, attachment3Url].filter(item => item);
             for (const file of attachedFiles) {
                 if (file) {
                     const newFile = getFileWithNewName(file, customer?.label, "attachment");
@@ -141,13 +177,9 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 };
             }
 
-            const payload = {
-                jobSiteId,
-                ticketType,
-                customerId,
+            const updatePayload = {
                 customerCaseNumber,
                 accountName,
-                projectId,
                 endClientName,
                 spocName,
                 spocContactNumber,
@@ -172,20 +204,28 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                 attachments,
                 ticketDates,
                 scheduledTime,
-                siteName: typeof siteName === "string" ? siteName : siteName?.name,
+            }
+
+            const payload = {
+                customerId,
+                projectId,
+                jobSiteId,
+                ticketType,
                 region, siteAddress, postCode, country, city,
-                province: provinceState,
-                projectCode
+                province,
+                projectCode,
+                siteName: typeof siteName === "string" ? siteName : siteName?.name,
+                ...updatePayload
             }
 
 
             if (editInfo) {
                 await updateTicket({
                     variables: {
-                        updateResourceInput: {
-                            ...payload
+                        updateTicketInput: {
+                            id: info?.id,
+                            ...updatePayload
                         },
-                        id: info?.id
                     }
                 })
             }
@@ -213,20 +253,18 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
         }
     };
 
-    useEffect(() => {
-        resetProjectStates()
-        resetJobsiteStates()
-    }, [watch("customer")])
 
     useEffect(() => {
-        if (!watch("isAdhoc"))
+        if (!watch("isAdhoc") && !editInfo)
             resetJobsiteStates()
     }, [watch("project")])
 
     useEffect(() => {
-        resetProjectStates()
-        setValue("jobSiteId", "")
-        setValue("siteName", "")
+        if (!editInfo) {
+            resetProjectStates()
+            setValue("jobSiteId", "")
+            setValue("siteName", "")
+        }
     }, [watch("isAdhoc")])
 
     const resetProjectStates = () => {
@@ -238,7 +276,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
     const resetJobsiteStates = () => {
         setValue("country", "")
         setValue("city", "")
-        setValue("provinceState", "")
+        setValue("province", "")
         setValue("siteAddress", "")
         setValue("spocName", "")
         setValue("spocContactNumber", "")
@@ -247,9 +285,6 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
         setValue("siteName", "")
         setValue("jobSiteId", "")
     }
-
-    console.log("values:::", watch());
-    console.log({ errors });
 
     return (
         <Box sx={{ overflowY: "auto" }}>
@@ -281,35 +316,12 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerLabel='Ticket Type'
                                             fieldType='text'
                                             currencies={ticketsType}
+                                            disabled={editInfo}
                                         />
                                     </Grid>
                                 </Grid>
                                 <HeaderResource heading="GENERAL INFORMATION" />
                                 <Grid container spacing={2} >
-                                    {editInfo &&
-                                        <Grid>
-
-                                            <Grid item xs={4}>
-                                                <CustomFormController
-                                                    controllerName='time'
-                                                    controllerLabel='Ticket Received Time'
-                                                    fieldType='time'
-                                                    InputLabelProps={{ shrink: true }}
-                                                    value={editInfo?.time ?? ""}
-                                                    disabled
-                                                />
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <CustomFormController
-                                                    controllerName='date'
-                                                    controllerLabel='Ticket Received Date'
-                                                    fieldType='date'
-                                                    value={editInfo?.date ?? ""}
-                                                    disabled
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                    }
                                     <Grid item xs={4}>
                                         {/* <CustomDropDrownController
                                             controllerName='customerId'
@@ -321,6 +333,8 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomerDropdown
                                             placeholder="Customer"
                                             controllerName="customer"
+                                            isDisabled={editInfo || customer}
+                                            isUserCustomer={customer}
                                         />
                                     </Grid>
 
@@ -337,7 +351,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                 <HeaderResource heading="PROJECT INFORMATION" />
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
-                                        <CustomFormCheckboxController controllerName='isAdhoc' controllerLabel="isAdhoc" />
+                                        <CustomFormCheckboxController controllerName='isAdhoc' controllerLabel="isAdhoc" disabled={editInfo} />
                                     </Grid>
 
                                     <Grid item xs={4} display={"flex"} alignItems={"center"}>
@@ -361,7 +375,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                                     controllerName="project"
                                                     placeholder='Select Project'
                                                     customerId={watch("customer")?.value}
-                                                    isDisabled={!watch("customer")}
+                                                    isDisabled={!watch("customer") || editInfo}
                                                     selected={watch("project")}
                                                     setSelected={(val) => {
                                                         setValue("project", val)
@@ -378,6 +392,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                                 controllerName='projectCode'
                                                 controllerLabel='Project Code'
                                                 fieldType='text'
+                                                disabled={editInfo}
                                             />
                                         }
                                     </Grid>
@@ -431,13 +446,13 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             <Box>
                                                 <JobSiteDropdown
                                                     projectId={watch("project")?.id}
-                                                    isDisabled={!watch("project")}
+                                                    isDisabled={!watch("project") || editInfo}
                                                     selected={watch("siteName")}
                                                     setSelected={(val) => {
                                                         const { country, city, province, postcode, siteAddress, pocContactNumber, pocEmailAdrress, pocName } = val || {};
                                                         setValue("country", country)
                                                         setValue("city", city)
-                                                        setValue("provinceState", province)
+                                                        setValue("province", province)
                                                         setValue("siteAddress", siteAddress)
                                                         setValue("spocName", pocName)
                                                         setValue("spocContactNumber", pocContactNumber)
@@ -466,6 +481,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerLabel='Region'
                                             fieldType='text'
                                             currencies={regions}
+                                            disabled={editInfo}
                                         />
                                     </Grid>
 
@@ -475,7 +491,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerLabel='Country'
                                             fieldType='text'
                                             currencies={countries}
-                                            disabled={!watch("isAdhoc")}
+                                            disabled={!watch("isAdhoc") || editInfo}
                                         />
                                     </Grid>
 
@@ -484,16 +500,16 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             controllerName='city'
                                             controllerLabel='City'
                                             fieldType='text'
-                                            disabled={!watch("isAdhoc")}
+                                            disabled={!watch("isAdhoc") || editInfo}
                                         />
                                     </Grid>
 
                                     <Grid item xs={4}>
                                         <CustomFormController
-                                            controllerName='provinceState'
+                                            controllerName='province'
                                             controllerLabel='Province/State'
                                             fieldType='text'
-                                            disabled={!watch("isAdhoc")}
+                                            disabled={!watch("isAdhoc") || editInfo}
                                         />
                                     </Grid>
 
@@ -501,7 +517,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='postCode'
                                             controllerLabel='Post Code'
-                                            disabled={!watch("isAdhoc")}
+                                            disabled={!watch("isAdhoc") || editInfo}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -510,7 +526,7 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         <CustomFormController
                                             controllerName='siteAddress'
                                             controllerLabel='Site Address'
-                                            disabled={!watch("isAdhoc")}
+                                            disabled={!watch("isAdhoc") || editInfo}
                                             fieldType='text'
                                         />
                                     </Grid>
@@ -731,13 +747,15 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                             <DatePicker
                                                 value={watch("ticketDates")}
                                                 placeholder='Ticket Dates'
-                                                multiple
+                                                multiple={(editInfo && watch("ticketType") === "FSE") ? false : true}
                                                 numberOfMonths={2}
                                                 minDate={getFutureDate()}
                                                 editable={false}
                                                 maxDate={getFutureDate(60)}
                                                 style={{ width: "100%", marginLeft: "4px", height: "40px", borderRadius: '8px' }}
-                                                onChange={(val, val2) => { setValue("ticketDates", val2?.validatedValue?.filter(item => typeof item === "string")) }}
+                                                onChange={(val, val2) => {
+                                                    setValue("ticketDates", (editInfo && watch("ticketType") === "FSE") ? val2?.validatedValue?.filter(item => typeof item === "string")?.at(-1) : val2?.validatedValue?.filter(item => typeof item === "string"))
+                                                }}
                                             />
                                         </Box>
                                         {errors.ticketDates &&
@@ -765,10 +783,10 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                 <HeaderResource heading="FILE UPLOAD" />
 
                                 <Grid container spacing={2}>
-                                    <Grid item xs={4} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
-                                        {(getValues("attachments") && !getValues("myAttachment"))
+                                    <Grid item xs={4} {...(getValues("attachment1Url") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("attachment1Url") && !getValues("myAttachment"))
                                             ? <FileUrlDisplay
-                                                url={getValues("attachments")}
+                                                url={getValues("attachment1Url")}
                                                 controllerName='myAttachment1'
                                                 controllerLabel='Upload File (Attachment)'
                                             />
@@ -783,10 +801,10 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         }
                                     </Grid>
 
-                                    <Grid item xs={4} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
-                                        {(getValues("attachments") && !getValues("myAttachment"))
+                                    <Grid item xs={4} {...(getValues("attachment2Url") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("attachment2Url") && !getValues("myAttachment"))
                                             ? <FileUrlDisplay
-                                                url={getValues("attachments")}
+                                                url={getValues("attachment2Url")}
                                                 controllerName='myAttachment2'
                                                 controllerLabel='Upload File (Attachment)'
                                             />
@@ -801,10 +819,10 @@ export const SDForm = ({ openModal, setOpenModal, editInfo, refetchTickets }) =>
                                         }
                                     </Grid>
 
-                                    <Grid item xs={4} {...(getValues("attachments") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
-                                        {(getValues("attachments") && !getValues("myAttachment"))
+                                    <Grid item xs={4} {...(getValues("attachment3Url") && !getValues("myAttachment") && { display: "flex", alignItems: "center" })}>
+                                        {(getValues("attachment3Url") && !getValues("myAttachment"))
                                             ? <FileUrlDisplay
-                                                url={getValues("attachments")}
+                                                url={getValues("attachment3Url")}
                                                 controllerName='myAttachment'
                                                 controllerLabel='Upload File (Attachment)'
                                             />

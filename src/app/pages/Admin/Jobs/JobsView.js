@@ -70,12 +70,6 @@ export const JobsView = ({openModal, setOpenModal, info}) => {
           aria-describedby="modal-modal-description"
        >
 
-      {/* {openTicketForm &&
-        <SDForm
-          openModal={openTicketForm}
-          setOpenModal={setOpenTicketForm}
-          editInfo={info}
-          refetchResources={refetch} />} */}
 
       <Box sx={style}>
 

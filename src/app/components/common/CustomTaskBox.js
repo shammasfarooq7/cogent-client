@@ -16,6 +16,7 @@ import { GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/
 import { TicketView } from '../../pages/Admin/Tickets/TicketView';
 import { CustomerForm } from '../../pages/Customer/CustomerForm';
 import { UserContext } from '../../context/user-context';
+import { SDForm } from '../tickets/addTicket/AddTicketForm';
 
 export const TaskBox = ({ taskName, buttonText, todays, type }) => {
   const [openViewForm, setOpenViewForm] = useState(false);
@@ -85,7 +86,7 @@ const handleChangeRowsPerPage = (event) => {
         }
       </Box>
       {openViewForm && <TicketView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} type={type}  />}
-      {openSDForm && <CustomerForm openModal={openSDForm} setOpenModal={setOpenSDForm}  />}
+      {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm}  refetchTickets={refetch}/>}
 
       <Table>
         <TableHead>

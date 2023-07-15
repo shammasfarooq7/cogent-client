@@ -73,11 +73,11 @@ const MainRoutes = () => {
               <TicketDetails />
             </PrivateRoute>
           } /> */}
-          <Route path={"/sd-calender"} element={
+          {/* <Route path={"/sd-calender"} element={
             <PrivateRoute roles={[ROLE.SD]}>
               <SDCalender />
             </PrivateRoute>
-          } />
+          } /> */}
           <Route path={"/all-resource"} element={
             <PrivateRoute roles={[ROLE.RMS]}>
               <AllResource />
@@ -203,11 +203,11 @@ const MainRoutes = () => {
                 <CustomerProfile />
               </PrivateRoute>
             } />
-                    <Route path={"/customer-invoice"} element={
+                    {/* <Route path={"/customer-invoice"} element={
               <PrivateRoute roles={[ROLE.CUSTOMER]}>
                 <CustomerInvoice />
               </PrivateRoute>
-            } />
+            } /> */}
               <Route path={"/admin/user"} element={
               <PrivateRoute roles={[ROLE.ADMIN]}>
                 <UserListing />

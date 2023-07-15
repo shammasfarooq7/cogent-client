@@ -10,24 +10,8 @@ import { GET_All_CUSTOMERS_QUERY } from '../../../graphql/tickets';
 // styles, constants, utils and interfaces block
 
 
-/**
- * It takes multiple params to show a customized input field which can have multiple types.
- *
- * @param {boolean} isDisabled - used for disabling custom field (multiple filed types e.g. password, text, email)
- * @param {string} controllerName - used for adding ID and name
- * @param {string} controllerLabel - used for adding label on textfield
- * @param {string} fieldType - used for showing selected options in select field
- * @param {isMultiLine} isMultiLine - used for showing text area
- * @returns JSX Element
- */
 
-// TextField.PropTypes = {
-//   classes: PropTypes.object.isRequired
-// };
-
-
-
-export const CustomerDropdown = ({ controllerName, placeholder, isMulti = false, isClearable = true, }) => {
+const CustomerDropdown = ({ controllerName, placeholder, isMulti = false, isClearable = true, isDisabled = false, isUserCustomer = false }) => {
     const { control } = useFormContext();
     const client = useApolloClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -40,24 +24,29 @@ export const CustomerDropdown = ({ controllerName, placeholder, isMulti = false,
     };
 
     const promiseOptions = async (searchQuery) => {
-        try {
-            const { data } = await client.query({
-                query: GET_All_CUSTOMERS_QUERY,
-                variables: {
-                    getAllCustomerInput: {
-                        role: 'SD',
-                        searchQuery
+        if (!isUserCustomer) {
+            try {
+                const { data } = await client.query({
+                    query: GET_All_CUSTOMERS_QUERY,
+                    variables: {
+                        getAllCustomerInput: {
+                            role: 'SD',
+                            searchQuery
+                        },
                     },
-                },
-                fetchPolicy: 'network-only',
-            });
-            return data?.getAllCustomer?.customers?.map(item => ({
-                value: item?.id,
-                label: item?.name
-            }));
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            return [];
+                    fetchPolicy: 'network-only',
+                });
+                return data?.getAllCustomer?.customers?.map(item => ({
+                    value: item?.id,
+                    label: item?.name
+                }));
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return [];
+            }
+        }
+        else {
+            return []
         }
     };
 
@@ -79,6 +68,7 @@ export const CustomerDropdown = ({ controllerName, placeholder, isMulti = false,
                         classNamePrefix="select"
                         placeholder={placeholder}
                         isClearable={isClearable}
+                        isDisabled={isDisabled}
                         onMenuOpen={() => { setIsMenuOpen(true) }}
                         onMenuClose={() => { setIsMenuOpen(false) }}
                     />
@@ -89,3 +79,4 @@ export const CustomerDropdown = ({ controllerName, placeholder, isMulti = false,
     );
 };
 
+export default CustomerDropdown

@@ -25,11 +25,11 @@ export const ProjectDropdown = ({ selected, setSelected, customerId, isDisabled 
                 const { data } = await client.query({
                     query: GET_PROJECT_BY_CUSTOMERS_QUERY,
                     variables: {
-                        id: customerId
+                        id: customerId,
+                        getProjectsByCustomerInput: {}
                     },
                     fetchPolicy: 'network-only',
                 });
-
 
                 setProjects(
                     data?.getProjectByCustomer

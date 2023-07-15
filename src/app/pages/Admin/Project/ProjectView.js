@@ -87,12 +87,7 @@ export const ProjectView = ({openModal, setOpenModal, info}) => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
        >
-      {/* {openTicketForm &&
-        <SDForm
-          openModal={openTicketForm}
-          setOpenModal={setOpenTicketForm}
-          editInfo={info}
-          refetchResources={refetch} />} */}
+
      <Box  sx={style}>
         <Box  sx={{ mb: 2, display:'flex', justifyContent:'space-between' }}>
             <Box sx={{ paddingLeft: "5px" }}>

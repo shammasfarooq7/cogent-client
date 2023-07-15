@@ -18,8 +18,8 @@ mutation Delete($id: String!) {
 `;
 
 export const UPDATE_TICKET_MUTATION = gql`
-mutation Update($updateTicketInput: UpdateTicketInput!, $id:String!) {
-  update(updateTicketInput: $updateTicketInput, id:$id) {
+mutation updateTicketMutation($updateTicketInput: UpdateTicketInput!) {
+  updateTicket(updateTicketInput: $updateTicketInput) {
       message
     }
 
@@ -108,12 +108,14 @@ query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
     tickets {
       id
       customerName
+      customerId
       cogentCaseNumber
       cogentWorkOrderNumber
       status
       customerTicketNumber
       ticketReceivedTime
       projectId
+      jobSiteId
       numberOfHoursReq
       numberOfResource
       isExternal
@@ -134,6 +136,9 @@ query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
         siteAccessInstruction
         hardwareSN
         serviceDocUrl
+        spocName
+        spocEmailAddress
+        spocContactNumber
         projectCode
         toolsRequested
         specialInstruction
@@ -279,12 +284,14 @@ query GetTodayTicketQuery($getTodayTicketsInput:GetTodayTicketsInput!) {
     tickets {
       id
       customerName
+      customerId
       cogentCaseNumber
       cogentWorkOrderNumber
       status
       customerTicketNumber
       ticketReceivedTime
       projectId
+      jobSiteId
       numberOfHoursReq
       numberOfResource
       isExternal
@@ -305,6 +312,9 @@ query GetTodayTicketQuery($getTodayTicketsInput:GetTodayTicketsInput!) {
         siteAccessInstruction
         hardwareSN
         serviceDocUrl
+        spocName
+        spocEmailAddress
+        spocContactNumber
         projectCode
         toolsRequested
         specialInstruction

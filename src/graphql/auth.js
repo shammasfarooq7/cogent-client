@@ -35,6 +35,10 @@ query getCurrentUserQuery {
     roles {
       role
     }
+    customer{
+      id
+      name
+    }
   }
 }
 `;

@@ -96,10 +96,10 @@ export const SD_SIDEBAR_LINKS = [
     name: "Tickets",
     link: "/service-desk-tickets"
   },
-  {
-    name: "Calender",
-    link: "/sd-calender"
-  },
+  // {
+  //   name: "Calender",
+  //   link: "/sd-calender"
+  // },
 ];
 
 export const CUSTOMER_SIDEBAR_LINKS = [
@@ -107,10 +107,10 @@ export const CUSTOMER_SIDEBAR_LINKS = [
     name: "Dashboard",
     link: "/customer-dashboard"
   },
-  {
-    name: "Customer Center",
-    link: "/customer-invoice"
-  }
+  // {
+  //   name: "Customer Center",
+  //   link: "/customer-invoice"
+  // }
 ];
 
 
