@@ -54,11 +54,11 @@ export const CustomerDashboard = () => {
       <Grid container spacing={"30px"}>
 
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={dashboardStat?.projectCount} text={"Today's Incidents"} color="#56A0C2" />
+          <DashboardCard hiring={dashboardStat?.projectCount} text={"Total Projects"} color="#56A0C2" />
         </Grid>
         
         <Grid item xs={4} md={4} lg={4}>
-          <DashboardCard hiring={dashboardStat?.inProgressCount} text={"Inprogress"} color="#242D60" />
+          <DashboardCard hiring={dashboardStat?.inProgressCount} text={"Inprogress Incidents"} color="#242D60" />
         </Grid>
         
         <Grid item xs={4} md={4} lg={4}>
