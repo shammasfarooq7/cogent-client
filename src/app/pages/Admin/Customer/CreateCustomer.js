@@ -40,7 +40,7 @@ const style = {
 
 };
 
-export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTickets }) => {
+export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchCustomer }) => {
     const handleClose = () => setOpenModal(false);
 
     const { user } = useContext(UserContext);
@@ -202,6 +202,9 @@ export const CreateCustomer = ({ openModal, setOpenModal, editInfo, refetchTicke
             }
           });
           Alert.success("Customer created successfully!")
+          if (refetchCustomer) {
+            await refetchCustomer()
+        }
 
           handleClose();
         } catch (error) {

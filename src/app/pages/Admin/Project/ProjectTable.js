@@ -96,7 +96,7 @@ export const ProjectTable = ({ tableName, search, setTicketTabelRefetch, ticketT
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
 
-            {openSDForm && <CreateProject openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
+            {openSDForm && <CreateProject openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchProject={refetch} />}
             {openViewForm && <ProjectView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>

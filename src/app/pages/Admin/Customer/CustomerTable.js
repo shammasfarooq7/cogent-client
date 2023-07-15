@@ -97,7 +97,7 @@ export const CustomerTable = ({ tableName, search, setTicketTabelRefetch, ticket
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
 
-            {openSDForm && <CreateCustomer openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
+            {openSDForm && <CreateCustomer openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchCustomer={refetch} />}
             {openViewForm && <CustomerView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>

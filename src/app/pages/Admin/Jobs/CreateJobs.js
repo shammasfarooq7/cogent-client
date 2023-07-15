@@ -28,6 +28,7 @@ import { CREATE_JOBSITE_MUTATION, GET_ALL_PROJECTS_QUERY } from '../../../../gra
 import { CustomRenderingStore } from '@fullcalendar/core';
 import { CustomTimeRange } from '../../../components/common/CustomTimeRange';
 import { CustomMultiSelect } from '../../../components/common/CustomMultiSelect';
+import { CustomFormCheckboxController } from '../../../components/common/CustomFormCheckboxController';
 
 const style = {
     position: 'absolute',
@@ -43,7 +44,7 @@ const style = {
 
 };
 
-export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }) => {
+export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchJob }) => {
     const handleClose = () => setOpenModal(false);
 
     const { user } = useContext(UserContext);
@@ -113,12 +114,12 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
         fetchPolicy: "network-only"
     });
     const getAllProjects = getAllProjectsData && getAllProjectsData.getAllProjects.projects
-    const getProjectIds = getAllProjects && getAllProjects.map((project) => project.id) 
-    const projectIds = getProjectIds && getProjectIds.map((id) => {
+    const getProjectIds = getAllProjects && getAllProjects.map((project) => project) 
+    const projectIds = getProjectIds && getProjectIds.map((project) => {
 
         return {
-              value : id,
-              label : id
+              value : project.id,
+              label : project.name
         }
     })
 
@@ -192,6 +193,9 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                     }
                 })
                 Alert.success("Job created successfully!")
+                if (refetchJob) {
+                    await refetchJob()
+                }
             handleClose();
 
         } catch (error) {
@@ -413,21 +417,12 @@ export const CreateJobs = ({ openModal, setOpenModal, editInfo, refetchTickets }
                                                 
                                             />
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            <CustomFormController
-                                                controllerName='sat'
-                                                controllerLabel='Sat'
-                                                fieldType='text'
-                                                
-                                            />
+                                        <Grid item xs={3}>
+                                        <CustomFormCheckboxController controllerName='sat' controllerLabel="Sat"  />
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            <CustomFormController
-                                                controllerName='sun'
-                                                controllerLabel='Sun'
-                                                fieldType='text'
-                                                
-                                            />
+                                        <Grid item xs={3}>
+                                        <CustomFormCheckboxController controllerName='sun' controllerLabel="Sun"  />
+
                                         </Grid>
                                         <Grid item xs={6}>
                                             <CustomFormController

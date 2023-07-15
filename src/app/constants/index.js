@@ -41,6 +41,7 @@ export const DASHBOARD_ROUTE = "/dashboard";
 export const RESOURCE_LANDING_ROUTE = "/resources-dashboard";
 export const SD_LANDING_ROUTE = "/service-desk";
 export const CUSTOMER_LANDING_ROUTE = "/customer-dashboard";
+export const ADMIN_LANDING_ROUTE = "/admin/user";
 export const RESET_PASSWORD_FAILURE = "Reset password failed";
 export const SET_PASSWORD_FAILURE = "Set password failed";
 export const RESET_PASSWORD_SUCCESS = "Password reset successfully"
@@ -111,6 +112,29 @@ export const CUSTOMER_SIDEBAR_LINKS = [
   //   name: "Customer Center",
   //   link: "/customer-invoice"
   // }
+];
+
+export const ADMIN_SIDEBAR_LINKS = [
+  {
+    name: "Users",
+    link: "/admin/user"
+  },
+  {
+    name: "Customers",
+    link: "/admin/customer"
+  },
+  {
+    name: "Projects",
+    link: "/admin/project"
+  },
+  {
+    name: "Jobs",
+    link: "/admin/job"
+  },
+  {
+    name: "Tickets",
+    link: "/admin/ticket"
+  }
 ];
 
 
@@ -1205,6 +1229,9 @@ export const getLandingPageRoute = (role) => {
       case ROLE.CUSTOMER:
       return CUSTOMER_LANDING_ROUTE
 
+      case ROLE.ADMIN:
+        return ADMIN_LANDING_ROUTE
+
     default:
       return DASHBOARD_ROUTE
   }
@@ -1224,6 +1251,9 @@ export const getSideBarLinks = (role) => {
 
       case ROLE.CUSTOMER:
         return CUSTOMER_SIDEBAR_LINKS;
+
+        case ROLE.ADMIN:
+          return ADMIN_SIDEBAR_LINKS;
 
     default:
       return []

@@ -92,7 +92,7 @@ export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTabl
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
 
-            {openSDForm && <CreateJobs openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchResources={refetch} />}
+            {openSDForm && <CreateJobs openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchJob={refetch} />}
             {openViewForm && <JobsView openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>

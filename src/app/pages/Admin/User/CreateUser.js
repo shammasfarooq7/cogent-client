@@ -31,7 +31,7 @@ const style = {
 
 };
 
-export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }) => {
+export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchUser }) => {
     const handleClose = () => setOpenModal(false);
 
     const { user } = useContext(UserContext);
@@ -112,8 +112,8 @@ export const CreateUser = ({ openModal, setOpenModal, editInfo, refetchTickets }
             }
 
 
-            if (refetchTickets) {
-                await refetchTickets()
+            if (refetchUser) {
+                await refetchUser()
             }
             handleClose();
 
