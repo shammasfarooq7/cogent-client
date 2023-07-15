@@ -83,7 +83,7 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
         <Typography sx={{ fontSize: '18px', fontWeight: '600', marginBottom: '14px' }}>{taskName}</Typography>
         {buttonText &&
           <Button sx={{ backgroundColor: '#F64E60', color: 'white', padding: '6px 20px', marginBottom: '8px' }}
-            onClick={() => { setOpenSDForm(true) }}
+            onClick={() => { setOpenSDForm(true); setTicket(null) }}
           >
             {buttonText}
           </Button>
