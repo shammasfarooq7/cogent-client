@@ -121,6 +121,7 @@ query GetALLTICKETSQuery($getAllTicketsInput: GetAllTicketsInput!) {
       isExternal
       isApproved
       ticketType
+      canEditAndDelete
       ticketDates {
         date
         scheduledTime
@@ -296,6 +297,7 @@ query GetTodayTicketQuery($getTodayTicketsInput:GetTodayTicketsInput!) {
       customerId
       cogentCaseNumber
       cogentWorkOrderNumber
+      canEditAndDelete
       status
       customerTicketNumber
       ticketReceivedTime
