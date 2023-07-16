@@ -3,6 +3,7 @@ import { Modal, Box, Typography, Avatar, Checkbox, Button } from "@mui/material"
 import { useState } from "react";
 import { ASSIGN_RESOURCE_TO_TICKET_MUTATION, GET_RESOURCES_TO_BE_ASSIGN_QUERY } from "../../../graphql/feops";
 import { getName } from "../../helper";
+import { Alert } from "../../components/common/Alert";
 
 const style = {
     position: 'absolute',
@@ -34,7 +35,7 @@ const AssignResourceModal = ({ open, handleClose, ticketInfo }) => {
         }
     })
 
-    const [assignResourceToTicket, { data: AssignResourceResponce, error: AssignResourceError, loading: AssignResourceLoading }] = useMutation(ASSIGN_RESOURCE_TO_TICKET_MUTATION)
+    const [assignResourceToTicket, { data: AssignResourceResponse, error: AssignResourceError, loading: AssignResourceLoading }] = useMutation(ASSIGN_RESOURCE_TO_TICKET_MUTATION)
 
     const { getAllResources } = data || {};
     const { count = 0, resources } = getAllResources || {};
@@ -54,7 +55,7 @@ const AssignResourceModal = ({ open, handleClose, ticketInfo }) => {
     }
 
     const handleAssignResource = async () => {
-        assignResourceToTicket({
+        await assignResourceToTicket({
             variables: {
                 assignResourcesToTicketInput: {
                     ticketId: ticketInfo?.id,
@@ -62,6 +63,12 @@ const AssignResourceModal = ({ open, handleClose, ticketInfo }) => {
                 }
             }
         })
+    };
+
+    if (AssignResourceResponse) {
+        const { assignResourcesToTicket } = AssignResourceResponse || {};
+        Alert.success(assignResourcesToTicket?.message || "Assigned Successfully");
+        handleClose()
     }
 
     return (
