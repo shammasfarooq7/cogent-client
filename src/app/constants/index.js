@@ -143,10 +143,10 @@ export const RESOURCE_SIDEBAR_LINKS = [
     name: "Dashboard",
     link: "/resources-dashboard"
   },
-  {
-    name: "Calender",
-    link: "/resources-calendar"
-  },
+  // {
+  //   name: "Calender",
+  //   link: "/resources-calendar"
+  // },
 ];
 
 export const AUTH_LINKS = {
