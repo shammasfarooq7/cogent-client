@@ -102,7 +102,6 @@ export const UserTable = ({ tableName, search, setUserTabelRefetch, userTableRef
                         <TableCell>Name</TableCell>
                         <TableCell>Email</TableCell>
                         <TableCell>Role</TableCell>
-                        {/* <TableCell >Actions</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody sx={{ marginTop: "10px" }}>
@@ -131,18 +130,6 @@ export const UserTable = ({ tableName, search, setUserTabelRefetch, userTableRef
                                     <TableCell>{user.firstName + ' ' + user.lastName } </TableCell>
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.roles.map(role => role.role).join()}</TableCell>
-                                    {/* <TableCell >
-                                        <Box display={"flex"} alignItems={"center"}>
-                                            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => { navigate(`/admin/userview`) }} 
-                                                >
-                                                <VisibilityIcon color='action' />
-                                            </Box>
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(user?.id) }}
-                                        />
-                                        </Box>
-                                    </TableCell> */}
                                 </TableRow>
                             ))}
                 </TableBody>

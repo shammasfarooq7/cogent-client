@@ -63,7 +63,7 @@ export const ResourcesDashboard = () => {
       <Grid container spacing={"30px"}>
 
         <Grid item xs={12} md={6} lg={6}>
-          <DashboardCard hiring={data && data?.getTodayTicket.count} text={"Today's Task"} color="#56A0C2" today={true} />
+          <DashboardCard hiring={data && data?.getResourceTickets.count} text={"Today's Task"} color="#56A0C2" today={true} />
         </Grid>
         
         <Grid item xs={12} md={6} lg={6}>

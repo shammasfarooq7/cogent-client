@@ -1,7 +1,9 @@
 import * as yup from "yup";
-import { INVALID_EMAIL, phoneReg } from "../constants";
+import { INVALID_EMAIL, PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE, phoneReg } from "../constants";
 import { requiredMessage } from "../utils";
 import { isValidPhoneNumber } from "react-phone-number-input";
+
+
 
 function paymentMethodValidation(name, value, parentThis) {
   const fields = ['accountType', 'accountTitle', 'beneficiaryFirstName', 'beneficiaryMiddleName', 'beneficiaryLastName', 'beneficiaryAddress', 'sortCode', 'accountNumber', 'iban', 'swiftCode', 'branchName', 'bankAddress', 'bankName'];
@@ -48,6 +50,22 @@ export const userValidationSchema = yup.object({
   lastName: yup.string().required(requiredMessage("Last name")),
   role: yup.string().required(requiredMessage("Role")),
   email: yup.string().email(INVALID_EMAIL).required(requiredMessage("Email")),
+})
+
+export const passwordAndRepeatPasswordSchema = {
+  newPass: yup.string().required(requiredMessage("Password")).matches(PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE),
+  confirmPassword: yup.string().oneOf([yup.ref("newPass"), null], "Passwords must match.").required("Confirm your Password."),
+}
+
+export const newPasswordSchema = {
+  newPass: yup.string().required(requiredMessage("Password")).matches(PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE),
+  confirmPassword: yup.string().oneOf([yup.ref("newPass"), null], "Passwords must match.").required("Confirm your Password."),
+}
+
+export const UpdatePasswordSchema =yup.object({
+  oldPass: yup.string().required(requiredMessage("Old Password")),
+  newPass: yup.string().required(requiredMessage("New Password")).matches(PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE),
+  confirmPassword: yup.string().oneOf([yup.ref("newPass"), null], "Passwords must match.").required("Confirm your Password."),
 })
 
 export const customerValidationSchema = yup.object({

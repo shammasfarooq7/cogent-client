@@ -24,7 +24,8 @@ const mdTheme = createTheme();
 
 export const MainLayout = ({ children }) => {
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext)
+    const { user,setUser } = useContext(UserContext)
+    const {userRole} = user || {}
 
     const [open, setOpen] = useState(true);
     const toggleDrawer = () => {
@@ -123,8 +124,17 @@ export const MainLayout = ({ children }) => {
                                     onClose={handleProfileClose}
                                 >
                                     <MenuItem onClick={handleProfileClose}>
+                                        <Box sx={{display:'flex', flexDirection:'column'}}>
                                         <Button textAlign="center" variant="text" color='error' size='small'
                                             onClick={handleSignOut}>Sign Out</Button>
+                                             <Button textAlign="center" variant="text" color='error' size='small'
+                                            onClick={() => navigate('/userview')}>Settings</Button>
+                                            {
+                                                userRole === "resource" &&
+                                                <Button textAlign="center" variant="text" color='error' size='small'
+                                            onClick={() => navigate('/resource-details')}>Profile</Button>
+                                            }
+                                            </Box>
                                     </MenuItem>
                                 </Menu>
                             </Box>
