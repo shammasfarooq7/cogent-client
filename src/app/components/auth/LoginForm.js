@@ -22,7 +22,7 @@ import { CustomController } from "../common/CustomController"
 import { Alert } from "../common/Alert";
 import '../common/style.css';
 // others
-import { AUTH_TOKEN, DASHBOARD_ROUTE, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FORBIDDEN_EXCEPTION, getLandingPageRoute, LOGIN, LOGIN_FIELDS, RESOURCE_LANDING_ROUTE, WRONG_EMAIL_OR_PASSWORD } from "../../constants";
+import { AUTH_TOKEN, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FORBIDDEN_EXCEPTION, getLandingPageRoute, LOGIN, LOGIN_FIELDS, WRONG_EMAIL_OR_PASSWORD } from "../../constants";
 // import { AuthContext } from "../../context/AuthContext";
 // import { LoginUserInput, useLoginMutation } from "../../../generated";
 import { loginValidationSchema } from "../../validationSchema";

@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { format } from "date-fns"
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button, TablePagination, Typography } from '@mui/material';
+import { Box, Button, TablePagination, Tooltip, Typography } from '@mui/material';
 import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_TICKET_MUTATION, GET_ALL_TICKETSS_QUERY } from '../../../graphql/tickets';
+import { DELETE_TICKET_MUTATION, GET_ALL_TICKETSS_QUERY, GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { Alert } from '../../components/common/Alert';
 import { useNavigate } from 'react-router-dom';
@@ -18,14 +19,14 @@ import { renderStatus } from '../../constants';
 import { TicketDetails } from '../serviceDesk/TicketDetails';
 
 
-export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays=false}) => {
+export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays = false, approved = true }) => {
 
     const navigate = useNavigate();
 
     const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
     const [openSDForm, setOpenSDForm] = useState(false);
     const [openViewForm, setOpenViewForm] = useState(false);
-    const [ticket, setTicket]= useState({})
+    const [ticket, setTicket] = useState({})
     const [allticket, setAllTicket] = useState([])
     const [toBeDeleted, setToBeDeleted] = useState(null);
     const [searchValue, setSearchValue] = useState(null);
@@ -33,736 +34,37 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
     const [limit, setLimit] = useState(10);
     const [editInfo, setEditInfo] = useState(null);
 
-    
-    const [allTickets, setAllTickets] = useState([
-        {
-            id: 367322,
-            ticketType: 'FSE',
-            date: '2023-06-17',
-            time: '20:48',
-            country: 'Pakistan',
-            city: 'Lahore',
-            status: 'Completed',
-            checkInOrOut: 'Check-In',
-            customerName: 'Facebook',
-            customerTicketNumber: 'FB00123',
-            cogentCaseNumber: 'COGENT0098',
-            cogentWorkOrder: '782',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '673',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location1', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737872,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Macbook'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 78,
-            numberOfResource: 5,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67323,
-            ticketType: 'PTE',
-            date: '2023-06-12',
-            time: '20:58',
-            country: 'India',
-            city: 'Dehli',
-            status: 'Cancelled',
-            checkInOrOut: 'Check-Out',
-            customerName: 'Google',
-            customerTicketNumber: 'GOOGLE00123',
-            cogentCaseNumber: 'COGENT0099',
-            cogentWorkOrder: '783',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '674',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location2', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum001@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737873,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 3,
-            numberOfResource: 1,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'In Progress',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'Escalated',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 367322,
-            ticketType: 'FSE',
-            date: '2023-06-17',
-            time: '20:48',
-            country: 'Pakistan',
-            city: 'Lahore',
-            status: 'Completed',
-            checkInOrOut: 'Check-In',
-            customerName: 'Facebook',
-            customerTicketNumber: 'FB00123',
-            cogentCaseNumber: 'COGENT0098',
-            cogentWorkOrder: '782',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '673',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location1', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737872,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Macbook'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 78,
-            numberOfResource: 5,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67323,
-            ticketType: 'PTE',
-            date: '2023-06-12',
-            time: '20:58',
-            country: 'India',
-            city: 'Dehli',
-            status: 'Cancelled',
-            checkInOrOut: 'Check-Out',
-            customerName: 'Google',
-            customerTicketNumber: 'GOOGLE00123',
-            cogentCaseNumber: 'COGENT0099',
-            cogentWorkOrder: '783',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '674',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location2', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum001@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737873,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 3,
-            numberOfResource: 1,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'In Progress',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'Escalated',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },  {
-            id: 367322,
-            ticketType: 'FSE',
-            date: '2023-06-17',
-            time: '20:48',
-            country: 'Pakistan',
-            city: 'Lahore',
-            status: 'Completed',
-            checkInOrOut: 'Check-In',
-            customerName: 'Facebook',
-            customerTicketNumber: 'FB00123',
-            cogentCaseNumber: 'COGENT0098',
-            cogentWorkOrder: '782',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '673',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location1', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737872,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Macbook'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 78,
-            numberOfResource: 5,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67323,
-            ticketType: 'PTE',
-            date: '2023-06-12',
-            time: '20:58',
-            country: 'India',
-            city: 'Dehli',
-            status: 'Cancelled',
-            checkInOrOut: 'Check-Out',
-            customerName: 'Google',
-            customerTicketNumber: 'GOOGLE00123',
-            cogentCaseNumber: 'COGENT0099',
-            cogentWorkOrder: '783',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '674',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location2', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum001@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737873,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 3,
-            numberOfResource: 1,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'In Progress',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'Escalated',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },  {
-            id: 367322,
-            ticketType: 'FSE',
-            date: '2023-06-17',
-            time: '20:48',
-            country: 'Pakistan',
-            city: 'Lahore',
-            status: 'Completed',
-            checkInOrOut: 'Check-In',
-            customerName: 'Facebook',
-            customerTicketNumber: 'FB00123',
-            cogentCaseNumber: 'COGENT0098',
-            cogentWorkOrder: '782',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '673',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location1', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737872,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Macbook'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 78,
-            numberOfResource: 5,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67323,
-            ticketType: 'PTE',
-            date: '2023-06-12',
-            time: '20:58',
-            country: 'India',
-            city: 'Dehli',
-            status: 'Cancelled',
-            checkInOrOut: 'Check-Out',
-            customerName: 'Google',
-            customerTicketNumber: 'GOOGLE00123',
-            cogentCaseNumber: 'COGENT0099',
-            cogentWorkOrder: '783',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '674',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location2', 
-            region: 'EMEA',
-            provinceState: 'Punjab',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum001@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737873,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 3,
-            numberOfResource: 1,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'In Progress',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-        {
-            id: 67324,
-            ticketType: 'FTE',
-            date: '2023-06-10',
-            time: '21:30',
-            country: 'United Kingdom',
-            city: 'London',
-            status: 'Escalated',
-            checkInOrOut: 'Check-In',
-            customerName: 'Microsoft Corporation',
-            customerTicketNumber: 'Microsoft00123',
-            cogentCaseNumber: 'COGENT0100',
-            cogentWorkOrder: '785',
-            accountName: 'Lorum Ispum',
-            project: 'adhoc', 
-            projectCode: '678',
-            endClientName: 'Lorum Ispum',
-            siteName: 'location3', 
-            region: 'EMEA',
-            provinceState: 'England',
-            siteAddress: 'Adress of the site',
-            postCode: 54000,
-            spocName: 'Lorum Ispum',
-            spocContactNumber: 'Lorum Ispum',
-            spocEmailAddress: 'lorum@ispum.com',
-            siteAccessInstruction: 'Lorum ispum instructions',
-            customerCaseNumber: 737889,
-            technologyType: 'EUC',
-            jobSummary: 'Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions Lorum ispum instructions',
-            caseDetails: 'Lorum ispum instructions Lorum ispum',
-            scopeOfWork: 'Lorum ispum instructions Lorum ispum',
-            instructions: 'Lorum ispum instructions Lorum ispum',
-            addInstruction: 'Lorum ispum instructions Lorum ispum',
-            specialInstruction: 'Lorum ispum instructions Lorum ispum',
-            toolsRequested: ['Windows Laptop', 'Macbook', 'Cisco VPN'],
-            serviceDocUrl: 'https://www.africau.edu/images/default/sample.pdf',
-            hardwareSN: 'lorum ispum',
-            serviceType: 'Breakfix',
-            serviceLevel: 'L1',
-            servicePriority: 'P1',
-            slaPriority: '3BD',
-            numberOfHoursReq: 8,
-            numberOfResource: 2,
-            attachments: 'https://www.africau.edu/images/default/sample.pdf',
-        },
-    ]);
-
 
     const searchQuery = useDebounce(searchValue, 500);
 
+    const queryVariables = {
+        page,
+        limit,
+        ...(searchQuery && { searchQuery }),
+    };
 
-    const loading = '';
-    const data = '';
-    const refetch = '';
-   
+    const queryKey = todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
+
+    const { data, loading, refetch } = useQuery(queryKey, {
+        variables: {
+            ...(todays
+                ? {
+                    getTodayTicketsInput: {
+                        ...queryVariables,
+                    }
+                }
+                : {
+                    getAllTicketsInput: {
+                        ...queryVariables,
+                        approved
+                    }
+                })
+        },
+        fetchPolicy: "network-only",
+    })
+    const allTickets = todays ? data?.getTodayTicket : data?.getAllTickets
+
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -773,15 +75,15 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
     };
 
     const handleDeleteConfirm = async () => {
-       
+
         Alert.success("Deleted Successfully!")
         setOpenDeleteAlert(false);
     }
-    
+
     const handleViewClick = (id) => {
-        const currentTicket = allticket?.getAllTickets?.tickets.filter((ticket) => ticket.id === id)
+        const currentTicket = allTickets?.tickets?.filter((ticket) => ticket.id === id)
         setTicket(currentTicket[0])
-         setOpenViewForm(true)
+        setOpenViewForm(true)
     }
 
     const handleEditClick = (info) => {
@@ -803,7 +105,7 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
                 title={"Delete?"}
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
-            {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket}  />}
+            {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{tableName}</Typography>
@@ -829,26 +131,36 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
                                 Loading...
                             </TableCell>
                         </TableRow>
-                        : !allTickets.length
+                        : !allTickets?.tickets?.length
                             ?
                             <TableRow >
                                 <TableCell sx={{ padding: "16px", textAlign: "center" }} colSpan={5} >
                                     No Record Found
                                 </TableCell>
                             </TableRow>
-                            : allTickets.map((ticket) => (
+                            : allTickets?.tickets?.map((ticket) => (
                                 <TableRow key={ticket.id} sx={{ mt: 2 }}>
                                     <TableCell>
                                         <Box display={"flex"} justifyContent={"center"} flexDirection={"column"}>
                                             <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 600, fontSize: "14px", lineHeight: "21px" }}>ID# {ticket.id}</Box>
                                             <Box sx={{ fontFamily: 'Poppins, sans-serif', fontStyle: "normal", fontWeight: 500, fontSize: "13px", lineHeight: "20px", color: "#B5B5C3" }}>
-                                                {ticket.city}, {ticket.country}
+                                                {ticket.ticketDetail?.city}, {ticket?.ticketDetail.country}
                                             </Box>
                                         </Box>
                                     </TableCell>
-                                    <TableCell>{ticket.date}</TableCell>
-                                    <TableCell>{ticket.time}</TableCell>
-                                    <TableCell>{ticket.country}</TableCell>
+                                    <TableCell sx={{ display: "flex", alignItems: "center", height: 61 }}>{ticket?.ticketDates?.slice(0, 3)?.map(item => format(new Date(item?.date), "dd MMM yyyy"))?.join(", ")}
+                                        {!!ticket?.ticketDates?.slice(3)?.length &&
+                                            <Tooltip title={
+                                                <Box>
+                                                    {ticket?.ticketDates?.slice(3)?.map(item => <Box> {format(new Date(item?.date), "dd MMM yyyy")}</Box>)}
+                                                </Box>}>
+                                                <Box sx={{ fontWeight: 600 }}>{`  `}+ {ticket?.ticketDates?.slice(3)?.length} others </Box>
+                                            </Tooltip>
+                                        }
+                                    </TableCell>
+                                    {/* <TableCell>{format(ticket?.ticketDates?.[0]?.scheduledTime,"h")}</TableCell> */}
+                                    <TableCell>{ticket?.ticketDates?.[0]?.scheduledTime}</TableCell>
+                                    <TableCell>{ticket?.ticketDetail.country}</TableCell>
                                     <TableCell>{ticket.checkInOrOut}</TableCell>
                                     <TableCell>
                                         {
@@ -862,10 +174,10 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
                                                 <VisibilityIcon color='action' />
                                             </Box>
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
-                                                 src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} />
+                                                src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} />
                                             <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
-                                                src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(ticket?.id) }}
-                                        />
+                                                src={images.Trash} alt='Menu' onClick={() => { onDeleteClick(ticket?.id) }}
+                                            />
 
                                         </Box>
                                     </TableCell>

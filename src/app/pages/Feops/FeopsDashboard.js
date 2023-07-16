@@ -13,37 +13,12 @@ export const FeopsDashboard = () => {
 
   const navigate = useNavigate();
 
-  const [openModal, setOpenModal] = useState(false);
-  const [profileAnchor, setProfileAnchor] = useState(false);
-  const [dashboardStat, setDashboardStat] = useState(null)
   const [ticketTableRefetch, setTicketTabelRefetch] = useState(null)
 
   const [todaysIncidentCount, setTodaysIncidentCount] = useState(4)
   const [inProgressCount, setInProgressCount] = useState(10)
   const [upcommingIncidentsCount, setUpcommingIncidentsCount] = useState(15)
 
-
-
-
-  // useEffect(() => {
-  //   if (data) {
-  //     setDashboardStat(data.getDashboardStats);
-  //   }
-  // }, [data]);
-
-  const handleOpen = () => setOpenModal(true);
-
-  const handleProfileClick = (e) => {
-    setProfileAnchor(e.currentTarget)
-  }
-  const handleProfileClose = () => {
-    setProfileAnchor(null)
-  }
-
-  const handleSignOut = () => {
-    handleLogout();
-    navigate("/login")
-  }
 
   return (
     <Box padding={"30px"}>
@@ -53,18 +28,18 @@ export const FeopsDashboard = () => {
         <Grid item xs={4} md={4} lg={4}>
           <DashboardCard hiring={todaysIncidentCount} text={"Today's Incidents"} color="#56A0C2" />
         </Grid>
-        
+
         <Grid item xs={4} md={4} lg={4}>
           <DashboardCard hiring={inProgressCount} text={"Inprogress"} color="#242D60" />
         </Grid>
-        
+
         <Grid item xs={4} md={4} lg={4}>
           <DashboardCard hiring={upcommingIncidentsCount} text={"Upcomming Incidents"} color="#212121" />
         </Grid>
 
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column'}}>
-          <FeopsTable tableName="Today's Dispatch"  {...{ ticketTableRefetch, setTicketTabelRefetch, todays:true}} />
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <FeopsTable tableName="Today's Dispatch"  {...{ ticketTableRefetch, setTicketTabelRefetch, todays: true }} />
           </Paper>
         </Grid>
 
