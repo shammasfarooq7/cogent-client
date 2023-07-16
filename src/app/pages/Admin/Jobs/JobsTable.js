@@ -149,9 +149,9 @@ export const JobsTable = ({ tableName, search, setTicketTabelRefetch, ticketTabl
                                             </Box>
                                             {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "6px" }}
                                                  src={images.Edit} alt='Menu' onClick={() => { handleEditClick(ticket) }} /> */}
-                                            <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
+                                            {/* <Box component='img' sx={{ height: "40px", width: "40px", cursor: "pointer", marginY: "4px", marginX: "1px" }}
                                                 src={images.Trash} alt='Menu'onClick={() => { onDeleteClick(job?.id) }}
-                                        />
+                                        /> */}
 
                                         </Box>
                                     </TableCell>
