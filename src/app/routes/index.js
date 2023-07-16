@@ -213,11 +213,12 @@ const MainRoutes = () => {
                 <UserListing />
                </PrivateRoute>
             } />
-             <Route path={"/admin/userview"} element={
-              <PrivateRoute roles={[ROLE.ADMIN]}>
+             <Route path={"/userview"} element={
+              <PrivateRoute roles={[ROLE.ADMIN, ROLE.CUSTOMER, ROLE.FEOPS,ROLE.SD,ROLE.RMS]}>
                 <UserView />
                </PrivateRoute>
             } />
+
              <Route path={"/admin/customer"} element={
               <PrivateRoute roles={[ROLE.ADMIN]}>
                 <CustomerListing />

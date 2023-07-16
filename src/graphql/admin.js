@@ -9,6 +9,15 @@ mutation CreateUser($createUserInput: CreateUserInput!) {
   }
 `;
 
+export const CREATE_UPDATE_PASSWORD_MUTATION = gql`
+mutation ChangePassword($changePasswordInput: ChangePasswordInput!) {
+  changePassword(changePasswordInput: $changePasswordInput) {
+    message
+    }
+
+  }
+`;
+
 export const CREATE_CUSTOMER_MUTATION = gql`
 mutation CreateCustomer($createCustomerInput: CreateCustomerInput!) {
     createCustomer(createCustomerInput: $createCustomerInput) {

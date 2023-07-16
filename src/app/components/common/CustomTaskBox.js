@@ -17,6 +17,7 @@ import { TicketView } from '../../pages/Admin/Tickets/TicketView';
 import { CustomerForm } from '../../pages/Customer/CustomerForm';
 import { UserContext } from '../../context/user-context';
 import { SDForm } from '../tickets/addTicket/AddTicketForm';
+import { renderStatus } from '../../constants';
 
 export const TaskBox = ({ taskName, buttonText, todays, type }) => {
   const [openViewForm, setOpenViewForm] = useState(false);
@@ -155,8 +156,8 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
                   </Box>
                 </TableCell>
                 <TableCell>
-                  <Typography sx={{ color: '#50CD89', background: '#E8FFF3', borderRadius: '6px', padding: '8px' }}>
-                    {ticket?.status || '--'}
+                  <Typography>
+                    {ticket?.status ?  renderStatus(ticket.status) : '--'}
                   </Typography>
                 </TableCell>
                 <TableCell>

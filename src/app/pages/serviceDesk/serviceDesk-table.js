@@ -297,16 +297,6 @@ export const ServiceDeskTable = ({
                                             </Box>
 
                                             <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => handleEditClick(ticket)} >
-                                                <EditIcon />
-                                            </Box>
-
-                                            <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
-                                                onClick={() => onDeleteClick(ticket?.id)} >
-                                                <DeleteIcon sx={{ color: "#A1A5B7" }} />
-                                            </Box>
-
-                                            <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
                                                 onClick={() => { handleStatusClick(ticket) }} >
                                                 <ChangeCircleIcon color='secondary' />
                                             </Box>
@@ -317,6 +307,18 @@ export const ServiceDeskTable = ({
                                                     {ticket.isApproved ? <ThumbUpAltIcon color='disabled' /> : <ThumbUpAltIcon color='success' />}
                                                 </Box>
                                             }
+
+                                            {ticket?.canEditAndDelete && <>
+                                                <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                                    onClick={() => handleEditClick(ticket)} >
+                                                    <EditIcon />
+                                                </Box>
+
+                                                <Box sx={{ marginLeft: '5px', display: "flex", alignItems: "center", justifyContent: "center", background: "#F5F8FA", padding: "8px", borderRadius: "8px", cursor: "pointer" }}
+                                                    onClick={() => onDeleteClick(ticket?.id)} >
+                                                    <DeleteIcon sx={{ color: "#A1A5B7" }} />
+                                                </Box>
+                                            </>}
 
 
                                         </Box>

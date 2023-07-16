@@ -44,15 +44,15 @@ export const ResourcesDashboard = () => {
             },
           }
   });
+
   const { data:futureTicket, loading:futureLoading } = useQuery(GET_RESOURCE_TICKET_QUERY, {
     variables: {
-         
-        
           getResourceTicketInput: {
               ...queryFututeVariables,
             },
           }
   });
+
 
   const handleOpen = () => setOpenModal(true);
 
@@ -63,7 +63,7 @@ export const ResourcesDashboard = () => {
       <Grid container spacing={"30px"}>
 
         <Grid item xs={12} md={6} lg={6}>
-          <DashboardCard hiring={data && data.getResourceTickets.count} text={"Today's Task"} color="#56A0C2" today={true} />
+          <DashboardCard hiring={data && data?.getResourceTickets.count} text={"Today's Task"} color="#56A0C2" today={true} />
         </Grid>
         
         <Grid item xs={12} md={6} lg={6}>
@@ -73,18 +73,18 @@ export const ResourcesDashboard = () => {
         <Grid item xs={12} md={6}>
             <TaskBox taskName="Today's Task" todays={true} type="resource" />
         </Grid>
-         
+{/*          
         <Grid item xs={12} md={6}>
          <Incidents future={true} />
-        </Grid>
+        </Grid> */}
        
         <Grid item xs={12} md={6}>
             <TaskBox taskName="Tasks History" type="resource"  />
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
            <SplineChart />
-        </Grid>
+        </Grid> */}
        
       </Grid>
     </Box>
