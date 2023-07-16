@@ -17,6 +17,7 @@ import useDebounce from '../../customHooks/useDebounce';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { renderStatus } from '../../constants';
 import { TicketDetails } from '../serviceDesk/TicketDetails';
+import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 
 
 export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTableRefetch, todays = false, approved = true }) => {
@@ -45,6 +46,7 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
 
     const queryKey = todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
 
+    const [deleteTicket] = useMutation(DELETE_TICKET_MUTATION)
     const { data, loading, refetch } = useQuery(queryKey, {
         variables: {
             ...(todays
@@ -75,9 +77,19 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
     };
 
     const handleDeleteConfirm = async () => {
-
-        Alert.success("Deleted Successfully!")
-        setOpenDeleteAlert(false);
+        try {
+            await deleteTicket({
+                variables: {
+                    id: toBeDeleted
+                }
+            })
+            Alert.success("Deleted Successfully!")
+            await refetch()
+        } catch (error) {
+        }
+        finally {
+            setOpenDeleteAlert(false);
+        }
     }
 
     const handleViewClick = (id) => {
@@ -92,8 +104,8 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
     }
 
     const onDeleteClick = (id) => {
+        setToBeDeleted(id);
         setOpenDeleteAlert(true);
-
     }
 
     return (
@@ -106,6 +118,7 @@ export const FeopsTable = ({ tableName, search, setTicketTabelRefetch, ticketTab
                 text={"Are you sure you want to delete this? This action cannot be revert back."}
             />
             {openViewForm && <TicketDetails openModal={openViewForm} setOpenModal={setOpenViewForm} info={ticket} />}
+            {openSDForm && <SDForm openModal={openSDForm} setOpenModal={setOpenSDForm} editInfo={editInfo} refetchTickets={refetch} />}
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
                 <Typography sx={{ color: "black", fontWeight: "600", fontSize: "18px" }}>{tableName}</Typography>
