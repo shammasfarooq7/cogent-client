@@ -7,11 +7,11 @@ WORKDIR /app
 
 COPY package.json /app/
 
-RUN npm
+RUN yarn
 
 COPY ./ /app/
 
-RUN npm build
+RUN yarn build
 
 FROM nginx:1.13-alpine
 
