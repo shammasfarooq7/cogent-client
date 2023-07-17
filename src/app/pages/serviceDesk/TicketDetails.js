@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import { Typography, Button, Modal } from "@mui/material"
 import { useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../../components/common/HeaderResource';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import CloseIcon from '@mui/icons-material/Close';
 import { DELETE_TICKET_MUTATION, CHANGE_TICKET_STATUS } from '../../../graphql/tickets';
 import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';

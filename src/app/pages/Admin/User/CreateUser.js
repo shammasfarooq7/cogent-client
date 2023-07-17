@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -6,13 +6,13 @@ import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
 import { CustomFormController } from '../../../components/common/CustomFormController';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { CustomDropDrownController } from '../../../components/common/CustomDropDownController';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { ticketFormValidationSchema, userValidationSchema } from '../../../validationSchema';
-import { CREATE_USER_MUTATION, GET_ALL_USERS_QUERY} from '../../../../graphql/admin';
+import { userValidationSchema } from '../../../validationSchema';
+import { CREATE_USER_MUTATION } from '../../../../graphql/admin';
 import {roles} from  '../../../constants'
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Alert } from '../../../components/common/Alert';
 import { UserContext } from '../../../context/user-context';
 import CloseIcon from '@mui/icons-material/Close';

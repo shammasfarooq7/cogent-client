@@ -1,20 +1,13 @@
 import { useState } from 'react';
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Avatar, Typography, Button, Modal, FormGroup, FormControlLabel, Checkbox } from "@mui/material"
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Avatar, Typography, Button, Modal, Checkbox } from "@mui/material"
+import { useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../../components/common/HeaderResource';
-import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_TICKET_MUTATION, GET_A_TICKET_QUERY } from '../../../graphql/tickets';
 import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';
-import DeleteAlert from '../../components/common/DeleteAlert';
-import { Alert } from '../../components/common/Alert';
 import { downloadFile } from '../../services/rest-apis';
 import { renderStatus, getBorderColour } from '../../constants';
-import { SDForm } from '../../components/tickets/addTicket/AddTicketForm';
 
 const style = {
     position: 'absolute',

@@ -1,15 +1,11 @@
 import { useState } from 'react';
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Avatar, Typography, Button, Modal } from "@mui/material"
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
-import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../../helper';
+import { Typography, Modal } from "@mui/material"
+import { useNavigate, useParams } from 'react-router-dom';
+import { getName } from '../../../helper';
 import CloseIcon from '@mui/icons-material/Close';
-import { DELETE_TICKET_MUTATION } from '../../../../graphql/tickets';
 
 const style = {
   position: 'absolute',

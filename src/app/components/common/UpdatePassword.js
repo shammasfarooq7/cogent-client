@@ -5,17 +5,15 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import { Button } from '@mui/material';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useMutation, useQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import CloseIcon from '@mui/icons-material/Close';
 import { UserContext } from '../../context/user-context';
-import { CREATE_UPDATE_PASSWORD_MUTATION, CREATE_USER_MUTATION } from '../../../graphql/admin';
+import { CREATE_UPDATE_PASSWORD_MUTATION } from '../../../graphql/admin';
 import { Alert } from './Alert';
-import { CustomDropDrownController } from './CustomDropDownController';
-import { roles } from '../../constants';
 import { CustomFormController } from './CustomFormController';
-import { UpdatePasswordSchema, userValidationSchema } from '../../validationSchema';
+import { UpdatePasswordSchema } from '../../validationSchema';
 
 const style = {
     position: 'absolute',

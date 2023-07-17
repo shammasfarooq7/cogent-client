@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Avatar, Typography, Button, Modal } from "@mui/material"
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
+import { Typography, Modal } from "@mui/material"
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
 import CloseIcon from '@mui/icons-material/Close';
-import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../../helper';
+import { getName, getUrlNameforDwnload } from '../../../helper';
 import DeleteAlert from '../../../components/common/DeleteAlert';
 import { Alert } from '../../../components/common/Alert';
 import { downloadFile } from '../../../services/rest-apis';

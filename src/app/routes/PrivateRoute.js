@@ -1,4 +1,4 @@
-import { useLocation, Navigate, json } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { getToken, handleLogout } from "../utils";
 import { useQuery } from "@apollo/client";
 import { GET_CURRENT_USER } from "../../graphql/auth";

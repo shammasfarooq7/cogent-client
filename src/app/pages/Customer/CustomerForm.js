@@ -10,8 +10,6 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { CustomFormController } from '../../components/common/CustomFormController';
 import { FormProvider, useForm } from 'react-hook-form';
 import { CustomDropDrownController } from '../../components/common/CustomDropDownController';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ticketFormValidationSchema } from '../../validationSchema';
 import { CREATE_TICKET_MUTATION, UPDATE_TICKET_MUTATION } from '../../../graphql/tickets';
 import { useMutation } from '@apollo/client';
 import { Alert } from '../../components/common/Alert';
@@ -19,10 +17,8 @@ import { SimpleDropDownController } from '../../components/common/SimpleDropDown
 import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, sites, regions, countries, projects } from '../../constants';
 import { CustomDocumentUploadController } from '../../components/common/CustomDocumentUploadController';
 import { uploadDocument } from '../../services/rest-apis';
-import { CustomPhoneController } from '../../components/common/CustomPhoneController';
 import { UserContext } from '../../context/user-context';
 import { getFileWithNewName, getName } from '../../helper';
-import { CutomFormRadioController } from '../../components/common/CutomFormRadioController';
 import FileUrlDisplay from '../../components/common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 

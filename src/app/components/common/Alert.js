@@ -2,7 +2,7 @@
 import React from "react";
 import { IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import { useSnackbar, VariantType, WithSnackbarProps } from "notistack";
+import { useSnackbar } from "notistack";
 
 let useSnackbarRef;
 

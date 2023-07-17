@@ -1,18 +1,12 @@
-import { useState } from 'react';
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import { Avatar, Typography, Button, Modal } from "@mui/material"
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Typography, Button, Modal } from "@mui/material"
+import { useNavigate } from 'react-router-dom';
 import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../../helper';
 import CloseIcon from '@mui/icons-material/Close';
 import { downloadFile } from '../../../services/rest-apis';
-import { rendercity, getBorderColour, renderStatus } from '../../../constants';
-import { useParams } from 'react-router-dom';
-import { DELETE_TICKET_MUTATION } from '../../../../graphql/tickets';
-import { GET_TICKET_QUERY } from '../../../../graphql/admin';
+import { renderStatus } from '../../../constants';
 import { HeaderResource } from '../../../components/common/HeaderResource';
 
 const style = {

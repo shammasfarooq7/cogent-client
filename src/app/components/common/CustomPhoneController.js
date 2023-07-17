@@ -1,6 +1,5 @@
 // packages block
-import { useState } from "react";
-import { FormControl, FormHelperText, InputLabel } from "@mui/material";
+import { FormControl, FormHelperText } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 // styles, constants, utils and interfaces block
 import PhoneInput from "react-phone-input-2";

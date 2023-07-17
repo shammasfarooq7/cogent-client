@@ -1,5 +1,5 @@
 import { FormControl, TextField, useMediaQuery } from '@mui/material';
-import React, { FC } from 'react'
+import React, {  } from 'react'
 
 
 export const Search = ({ infoText, placeHolder, loading, onChange }) => {

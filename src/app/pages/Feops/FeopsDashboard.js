@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { DashboardCard } from '../../components/common/Card';
-import { useQuery } from "@apollo/client";
-import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { FeopsTable } from './FeopsTable';
 

@@ -1,7 +1,4 @@
-import { useState } from 'react';
-import { createTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
 import { Button, Typography } from '@mui/material';
 import { images } from '../../assets/images';
 

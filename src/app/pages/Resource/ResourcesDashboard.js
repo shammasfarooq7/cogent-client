@@ -1,18 +1,10 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import { DashboardCard } from '../../components/common/Card';
 import { useQuery } from "@apollo/client";
-import { handleLogout } from '../../utils';
 import { useNavigate } from 'react-router-dom';
 import { TaskBox } from '../../components/common/CustomTaskBox';
-import CurvedChart from './CurvedChart';
-import SplineChart from './CurvedChart';
-import Calendar from '../../components/common/Calendar';
-import Incidents from '../../components/common/Calendar';
-import { useContext } from 'react';
-import { UserContext } from '../../context/user-context';
 import { GET_RESOURCE_TICKET_QUERY } from '../../../graphql/tickets';
 
 

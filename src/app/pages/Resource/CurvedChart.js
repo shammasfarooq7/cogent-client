@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chart, CategoryScale, LinearScale, LineController, LineElement, PointElement, Filler, Title } from 'chart.js';
+import { Chart, CategoryScale, LineController, LineElement, PointElement, Filler, Title } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Box } from '@mui/material';
 

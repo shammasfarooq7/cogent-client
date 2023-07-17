@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,7 +6,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, TablePagination, Typography, Modal, InputLabel, Select, MenuItem, FormControl, Grid } from '@mui/material';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
-import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
 import { useMutation, useQuery } from '@apollo/client';
 import { DELETE_TICKET_MUTATION, GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY, CHANGE_TICKET_STATUS, APPROVE_EXTERNAL_TICKET_MUTATION } from '../../../graphql/tickets';

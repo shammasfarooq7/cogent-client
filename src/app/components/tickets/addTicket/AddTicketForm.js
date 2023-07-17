@@ -19,7 +19,7 @@ import { SimpleDropDownController } from '../../common/SimpleDropDownController'
 import { slaPriority, servicePriority, serviceLevel, serviceType, technology, tools_list, regions, countries, ticketsType } from '../../../constants';
 import { CustomDocumentUploadController } from '../../common/CustomDocumentUploadController';
 import { uploadDocument } from '../../../services/rest-apis';
-import { getFileWithNewName, getFutureDate, getName } from '../../../helper';
+import { getFileWithNewName, getFutureDate } from '../../../helper';
 import FileUrlDisplay from '../../common/FileUrlDisplay/FileUrlDisplay';
 import CloseIcon from '@mui/icons-material/Close';
 import CustomerDropdown from '../../common/CustomerDropdown';

@@ -1,14 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Box, Button, TablePagination, Typography } from '@mui/material';
-import { images } from '../../assets/images';
 import { Search } from '../../components/common/Search';
-import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_TICKET_MUTATION, GET_ALL_TICKETSS_QUERY } from '../../../graphql/tickets';
+import { useQuery } from '@apollo/client';
 import DeleteAlert from '../../components/common/DeleteAlert';
 import { Alert } from '../../components/common/Alert';
 import { useNavigate } from 'react-router-dom';

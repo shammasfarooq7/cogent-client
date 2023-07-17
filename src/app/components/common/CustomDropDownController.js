@@ -1,14 +1,9 @@
 // packages block
-import React, { useContext, useState } from 'react';
-import { Box, InputAdornment, TextField, Input, MenuItem, Select } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import React, { } from 'react';
+import { TextField, MenuItem } from '@mui/material';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
 import './style.css'
-import { GET_CURRENT_USER } from '../../../graphql/auth';
-import { useEffect } from 'react';
-import { useQuery } from '@apollo/client';
-import { UserContext } from '../../context/user-context';
 // styles, constants, utils and interfaces block
 
 

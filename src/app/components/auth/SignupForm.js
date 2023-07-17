@@ -1,12 +1,8 @@
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Button, CircularProgress, Box, Grid } from '@mui/material';
+import { Button, Box, Grid } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import PersonIcon from '@mui/icons-material/Person';
 import Paper from '@mui/material/Paper';
@@ -16,9 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 // component block
 import { images } from "../../assets/images";
 import { CustomController } from "../common/CustomController"
-import { CustomPhoneController } from "../common/CustomPhoneController"
 import { signUpValidationSchema } from "../../validationSchema";
-import { SportsRugbySharp } from "@mui/icons-material";
 import { useMutation } from '@apollo/client';
 import { SIGN_UP } from "../../../graphql/auth";
 import { Link, useNavigate } from "react-router-dom";

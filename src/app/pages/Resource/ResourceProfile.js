@@ -5,12 +5,9 @@ import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { Avatar, Typography, Button } from "@mui/material"
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { HeaderResource } from '../../components/common/HeaderResource';
-import { useMutation, useQuery } from '@apollo/client';
-import { DELETE_RESOURCE_MUTATION, GET_A_RESOURCE_QUERY } from '../../../graphql/resources';
 import { getName, getNameFromUrl, getUrlNameforDwnload } from '../../helper';
-import DeleteAlert from '../../components/common/DeleteAlert';
 import { Alert } from '../../components/common/Alert';
 import { downloadFile } from '../../services/rest-apis';
 
