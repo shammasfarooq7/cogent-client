@@ -15,6 +15,7 @@ import { downloadFile } from '../../services/rest-apis';
 import { ROLE, renderStatus } from '../../constants';
 import AssignResourceModal from '../Feops/AssignResourceModal';
 import { UserContext } from '../../context/user-context';
+import AddTimeSheetModal from '../../components/tickets/addTicketCheckInCheckOut';
 
 
 
@@ -39,7 +40,7 @@ export const TicketDetails = ({ openModal, setOpenModal, info }) => {
   const navigate = useNavigate();
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
   const [openAssignResourceModal, setOpenAssignResourceModal] = useState(false)
-  const [openTicketForm, setOpenTicketForm] = useState(false);
+  const [openTimeSheetModal, setOpenTimeSheetModal] = useState(false)
   const isFeopsUser = user?.roles?.find(item => item?.role?.toLowerCase() === ROLE.FEOPS)
 
 
@@ -98,6 +99,13 @@ export const TicketDetails = ({ openModal, setOpenModal, info }) => {
         ticketInfo={info}
       />}
 
+      {openTimeSheetModal &&
+        <AddTimeSheetModal
+          open={openTimeSheetModal}
+          handleClose={() => setOpenTimeSheetModal(false)}
+          ticketInfo={info}
+        />}
+
       <Modal
         open={openModal}
         onClose={handleClose}
@@ -118,9 +126,11 @@ export const TicketDetails = ({ openModal, setOpenModal, info }) => {
             </Grid>
             <Grid item xs={4} md={5} lg={5}>
               <Box sx={{ display: "flex" }}>
-                {isFeopsUser && <Button sx={{ mr: '10px', backgroundColor: '#50CD89', color: 'white', textTransform: 'capitalize' }}
+                {isFeopsUser && info?.isApproved && <Button sx={{ mr: '10px', backgroundColor: '#50CD89', color: 'white', textTransform: 'capitalize' }}
                   onClick={() => { setOpenAssignResourceModal(true) }}>Assign Resource</Button>}
 
+                <Button sx={{ mr: '10px', textTransform: 'capitalize', backgroundColor: '#00A3FF', color: 'white','&:hover': {color:'white', background: '#0068B3' } }}
+                  onClick={() => { setOpenTimeSheetModal(true) }}>Update Timesheet</Button>
                 <Box sx={{ position: "relative", left: "50%", top: "5px", cursor: "pointer" }} >
                   <CloseIcon onClick={handleClose} />
                 </Box>

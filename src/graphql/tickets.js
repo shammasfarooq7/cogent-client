@@ -351,3 +351,34 @@ query GetTodayTicketQuery($getTodayTicketsInput:GetTodayTicketsInput!) {
   }
 }
 `;
+
+export const GET_TIME_SHEETS_QUERY = gql`
+query GetTimeSheetsQuery($ticketId:String!) {
+  ticketTimeSheetData(ticketId: $ticketId) {
+    id
+    checkIn
+    checkOut
+    sdCheckIn
+    sdCheckOut
+    feopsCheckIn
+    feopsCheckOut
+    ticketDate {
+      id
+      date
+    }
+    resource {
+      id
+      firstName
+      lastName
+      middleName
+    }
+  }
+}
+`;
+
+export const TIME_SHEET_CHECK_IN_OUT = gql`
+mutation TimeSheetCheckInOutMutation($checkinCheckoutInput: CheckinCheckoutInput!){
+  timeSheetCheckInOut(checkinCheckoutInput: $checkinCheckoutInput){
+    message
+  }
+}`;
