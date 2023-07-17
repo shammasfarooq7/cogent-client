@@ -1,0 +1,29 @@
+.white {
+    color: white;
+}
+
+.basic-multi-select {
+    margin-top: 8px;
+    margin-bottom: 4px;
+}
+
+.open-react-select {
+    z-index: 10;
+}
+
+.react-select-error>div:first-of-type {
+    border: 1px solid #d32f2f;
+    border-radius: 5px;
+}
+.css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label {
+    color: white;
+}
+.css-md26zr-MuiInputBase-root-MuiOutlinedInput-root {
+    border-radius: 10px !important;
+    border-color:#EFF4FA !important
+}
+
+.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root{
+    border-radius: 10px !important;
+    border-color:#EFF4FA !important
+}
