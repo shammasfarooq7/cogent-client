@@ -1,3 +1,4 @@
+
 export const getName = (firstName, middlename, lastname) => {
     let name = ''
 
@@ -36,4 +37,22 @@ export const getFileWithNewName = (file, userName, type) => {
 
 export const getFutureDate = (daysAfter = 1) => {
     return new Date(new Date().setDate(new Date().getDate() + daysAfter))
+}
+
+export const convertTimeToUTCTime = (timeString) => {
+    if (!timeString) return ""
+    const [hours, minutes, seconds] = timeString.split(':');
+    const now = new Date(); // Get the current date and time in local timezone
+    now.setHours(hours, minutes, seconds); // Set the specified time in UTC
+
+    const utcTime = now.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false }) + "Z";
+
+    const formatTime = (time) => {
+        const [hour, min, sec] = time?.split(":")
+        if (hour === "24") {
+            return `00:${min}:${sec}`
+        }
+        return time
+    }
+    return formatTime(utcTime)
 }
