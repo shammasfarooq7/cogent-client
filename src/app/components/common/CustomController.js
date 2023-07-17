@@ -1,7 +1,7 @@
 // packages block
 import React from 'react';
-import { Box, InputAdornment, TextField ,Input } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import { InputAdornment, TextField } from '@mui/material';
+import { styled } from '@mui/material/styles';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
 import './style.css'
@@ -49,8 +49,6 @@ const styles = theme => ({
 export const CustomController = ({ fieldIcon,controllerName, controllerLabel, fieldType, variantField, isDisabled, isMultiLine, maxLength, rowsLength, readOnly }) => {
   const { control } = useFormContext();
    
-  // const {classes} = this.props
-  //  console.log("ssssssssss",classes)
 
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {

@@ -4,10 +4,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import "./style.css"
 import { useNavigate } from 'react-router-dom';
@@ -19,17 +15,37 @@ export const MainListItems = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext)
   const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
-
   return (
     <Fragment >
-      {getSideBarLinks(userRole).map(item => (
+      {userRole &&  getSideBarLinks(userRole).map(item => (
         <ListItemButton key={item.link} onClick={() => navigate(item.link)}>
           <ListItemIcon className='white'>
             <DashboardIcon className='white' />
           </ListItemIcon>
           <ListItemText primary={item.name} />
         </ListItemButton>
-      ))}
+      ))
+   
+    }
+    </Fragment >
+
+  )
+};
+
+export const AdminListItems = () => {
+
+  const navigate = useNavigate();
+  // const { user } = useContext(UserContext)
+  // const userRole = (user?.roles?.[0]?.role || "")?.toLowerCase();
+
+  return (
+    <Fragment >    
+        <ListItemButton >
+          <ListItemIcon className='white'>
+            <DashboardIcon className='white' />
+          </ListItemIcon>
+          <ListItemText primary="Users" />
+        </ListItemButton>
     </Fragment >
 
   )

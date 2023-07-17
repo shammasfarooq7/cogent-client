@@ -1,11 +1,7 @@
 //packages block
 import React from "react";
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -22,7 +18,7 @@ import { CustomController } from "../common/CustomController"
 import { Alert } from "../common/Alert";
 import '../common/style.css';
 // others
-import { AUTH_TOKEN, DASHBOARD_ROUTE, EMAIL_CHANGED_OR_NOT_VERIFIED_MESSAGE, FORBIDDEN_EXCEPTION, getLandingPageRoute, LOGIN, LOGIN_FIELDS, RESOURCE_LANDING_ROUTE, WRONG_EMAIL_OR_PASSWORD } from "../../constants";
+import { AUTH_TOKEN, getLandingPageRoute } from "../../constants";
 // import { AuthContext } from "../../context/AuthContext";
 // import { LoginUserInput, useLoginMutation } from "../../../generated";
 import { loginValidationSchema } from "../../validationSchema";
@@ -59,7 +55,6 @@ export const LoginForm = () => {
   const { handleSubmit } = methods;
 
   const onSubmit = async (data) => {
-    console.log(data)
     await signin({
       variables: {
         loginUserInput: data,

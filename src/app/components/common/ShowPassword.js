@@ -1,7 +1,6 @@
 // packages block
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment } from "@mui/material";
-import { FC } from "react";
 // constants and interfaces block
 import { PASSWORD } from "../../constants/index";
 

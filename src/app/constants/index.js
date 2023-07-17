@@ -34,8 +34,12 @@ export const ADMIN_NOT_ACCESSIBLE = 'This user is not able to access admin panel
 export const NOT_FOUND_EMAIL_MESSAGE = "No user found with this email";
 export const FORGET_PASSWORD_SUCCESS = "An email has been sent to your registered email address";
 export const ROOT_ROUTE = "/";
-export const DASHBOARD_ROUTE = "/dashboard";
-export const RESOURCE_LANDING_ROUTE = "/resource-details";
+const DASHBOARD_ROUTE = "/dashboard";
+const RESOURCE_LANDING_ROUTE = "/resources-dashboard";
+const SD_LANDING_ROUTE = "/service-desk";
+const CUSTOMER_LANDING_ROUTE = "/customer-dashboard";
+const ADMIN_LANDING_ROUTE = "/admin/user";
+const FEOPS_LANDING_ROUTE = "/feops-command-center";
 export const RESET_PASSWORD_FAILURE = "Reset password failed";
 export const SET_PASSWORD_FAILURE = "Set password failed";
 export const RESET_PASSWORD_SUCCESS = "Password reset successfully"
@@ -67,7 +71,8 @@ export const ROLE = {
   SD: 'sd',
   RESOURCE: 'resource',
   FEOPS: 'feops',
-  ADMIN: 'admin'
+  ADMIN: 'admin',
+  CUSTOMER: 'customer'
 }
 
 export const DASHBOARD_SIDEBAR_LINKS = [
@@ -81,11 +86,72 @@ export const DASHBOARD_SIDEBAR_LINKS = [
   },
 ];
 
+export const SD_SIDEBAR_LINKS = [
+  {
+    name: "Dashboard",
+    link: "/service-desk"
+  },
+  {
+    name: "Tickets",
+    link: "/service-desk-tickets"
+  },
+  // {
+  //   name: "Calender",
+  //   link: "/sd-calender"
+  // },
+];
+
+export const FEOPS_SIDEBAR_LINKS = [
+  {
+    name: "Dashboard",
+    link: "/feops-command-center"
+  },
+];
+
+export const CUSTOMER_SIDEBAR_LINKS = [
+  {
+    name: "Dashboard",
+    link: "/customer-dashboard"
+  },
+  // {
+  //   name: "Customer Center",
+  //   link: "/customer-invoice"
+  // }
+];
+
+export const ADMIN_SIDEBAR_LINKS = [
+  {
+    name: "Users",
+    link: "/admin/user"
+  },
+  {
+    name: "Customers",
+    link: "/admin/customer"
+  },
+  {
+    name: "Projects",
+    link: "/admin/project"
+  },
+  {
+    name: "Jobs",
+    link: "/admin/job"
+  },
+  {
+    name: "Tickets",
+    link: "/admin/ticket"
+  }
+];
+
+
 export const RESOURCE_SIDEBAR_LINKS = [
   {
-    name: "Detail",
-    link: "/resource-details"
-  }
+    name: "Dashboard",
+    link: "/resources-dashboard"
+  },
+  // {
+  //   name: "Calender",
+  //   link: "/resources-calendar"
+  // },
 ];
 
 export const AUTH_LINKS = {
@@ -332,6 +398,389 @@ export const countryPhoneCodes = [
   "+1", "+1-242", "+1-246", "+1-268", "+1-264", "+1-284", "+1-345", "+1-441", "+1-473", "+1-649", "+1-664", "+1-670", "+1-671", "+1-758", "+1-784", "+1-787", "+1-939", "+20", "+212", "+213", "+216", "+218", "+220", "+221", "+222", "+223", "+224", "+225", "+226", "+227", "+228", "+229", "+230", "+231", "+232", "+233", "+234", "+235", "+236", "+237", "+238", "+239", "+240", "+241", "+242", "+243", "+244", "+245", "+246", "+248", "+249", "+250", "+251", "+252", "+253", "+254", "+255", "+256", "+257", "+258", "+260", "+261", "+262", "+263", "+264", "+265", "+266", "+267", "+268", "+269", "+27", "+290", "+291", "+297", "+298", "+299", "+30", "+31", "+32", "+33", "+34", "+350", "+351", "+352", "+353", "+354", "+355", "+356", "+357", "+358", "+359", "+36", "+370", "+371", "+372", "+373", "+374", "+375", "+376", "+377", "+378", "+379", "+380", "+381", "+382", "+383", "+385", "+386", "+387", "+389", "+39", "+40", "+41", "+420", "+421", "+423", "+43", "+44", "+45", "+46", "+47", "+48", "+49", "+500", "+501", "+502", "+503", "+504", "+505", "+506", "+507", "+508", "+509", "+51", "+52", "+53", "+54", "+55", "+56", "+57", "+58", "+590", "+591", "+592", "+593", "+594", "+595", "+596", "+597", "+598", "+599", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+670", "+672", "+673", "+674", "+675", "+676", "+677", "+678", "+679", "+680", "+681", "+682", "+683", "+684", "+685", "+686", "+687", "+688", "+689", "+690", "+691", "+692", "+7", "+81", "+82", "+84", "+850", "+852", "+853", "+855", "+856", "+86", "+870", "+880", "+886", "+90", "+91", "+92", "+93", "+94", "+95", "+960", "+961", "+962", "+963", "+964", "+965", "+966", "+967", "+968", "+970", "+971", "+972", "+973", "+974", "+975", "+976", "+977", "+98", "+992", "+993", "+994", "+995", "+996", "+998"
 ];
 
+
+export const tools_list = [
+  {
+    name: "Windows Laptop",
+    code: "Windows Laptop"
+  },
+  {
+    name: "Macbook",
+    code: "Mackbook"
+  },
+  {
+    name: "Cisco VPN",
+    code: "Cisco VPN"
+  },
+];
+
+export const slaPriority = [
+  {
+    value: "NBD",
+    label: "NBD"
+  },
+  {
+    value: "t3BD",
+    label: "3BD"
+  },
+  {
+    value: "SBD",
+    label: "SBD"
+  },
+  {
+    value: "SBD4H",
+    label: "SBD4H"
+  },
+  {
+    value: "t4x7",
+    label: "24x7"
+  }
+];
+export const servicePriority = [
+  {
+    value: "P1",
+    label: "P1"
+  },
+  {
+    value: "P2",
+    label: "P2"
+  },
+  {
+    value: "P3",
+    label: "P3"
+  },
+  {
+    value: "P4",
+    label: "P4"
+  },
+  {
+    value: "P5",
+    label: "P5"
+  }
+];
+
+export const serviceLevel = [
+  {
+    value: "L1",
+    label: "L1"
+  },
+  {
+    value: "L2",
+    label: "L2"
+  },
+  {
+    value: "L3",
+    label: "L3"
+  },
+  {
+    value: "L4",
+    label: "L4"
+  },
+  {
+    value: "L0",
+    label: "L0"
+  }
+];
+export const serviceType = [
+  {
+    value: "imac",
+    label: "IMAC"
+  },
+  {
+    value: "Breakfix",
+    label: "BREAKFIX"
+  },
+  {
+    value: "dss",
+    label: "DSS"
+  },
+  {
+    value: "h&f",
+    label: "H&F"
+  },
+  {
+    value: "audit",
+    label: "AUDIT"
+  },
+  {
+    value: "survey",
+    label: "SURVEY"
+  },
+  {
+    value: "other",
+    label: "OTHER",
+  }
+];
+
+export const ticketsType = [
+  {
+    value: "FSE",
+    label: "FSE",
+  },
+  {
+    value: "PTE",
+    label: "PTE",
+  },
+  {
+    value: "FTE",
+    label: "FTE",
+  }
+]
+export const countries = [
+  { value: "Afghanistan", label: "Afghanistan" },
+  { value: "Åland Islands", label: "Åland Islands" },
+  { value: "Albania", label: "Albania" },
+  { value: "Algeria", label: "Algeria" },
+  { value: "American Samoa", label: "American Samoa" },
+  { value: "Andorra", label: "Andorra" },
+  { value: "Angola", label: "Angola" },
+  { value: "Anguilla", label: "Anguilla" },
+  { value: "Antarctica", label: "Antarctica" },
+  { value: "Antigua & Barbuda", label: "Antigua & Barbuda" },
+  { value: "Argentina", label: "Argentina" },
+  { value: "Armenia", label: "Armenia" },
+  { value: "Aruba", label: "Aruba" },
+  { value: "Australia", label: "Australia" },
+  { value: "Austria", label: "Austria" },
+  { value: "Azerbaijan", label: "Azerbaijan" },
+  { value: "Bahamas", label: "Bahamas" },
+  { value: "Bahrain", label: "Bahrain" },
+  { value: "Bangladesh", label: "Bangladesh" },
+  { value: "Barbados", label: "Barbados" },
+  { value: "Belarus", label: "Belarus" },
+  { value: "Belgium", label: "Belgium" },
+  { value: "Belize", label: "Belize" },
+  { value: "Benin", label: "Benin" },
+  { value: "Bermuda", label: "Bermuda" },
+  { value: "Bhutan", label: "Bhutan" },
+  { value: "Bolivia", label: "Bolivia" },
+  { value: "Caribbean Netherlands", label: "Caribbean Netherlands" },
+  { value: "Bosnia & Herzegovina", label: "Bosnia & Herzegovina" },
+  { value: "Botswana", label: "Botswana" },
+  { value: "Bouvet Island", label: "Bouvet Island" },
+  { value: "Brazil", label: "Brazil" },
+  { value: "British Indian Ocean Territory", label: "British Indian Ocean Territory" },
+  { value: "Brunei", label: "Brunei" },
+  { value: "Bulgaria", label: "Bulgaria" },
+  { value: "Burkina Faso", label: "Burkina Faso" },
+  { value: "Burundi", label: "Burundi" },
+  { value: "Cambodia", label: "Cambodia" },
+  { value: "Cameroon", label: "Cameroon" },
+  { value: "Canada", label: "Canada" },
+  { value: "Cape Verde", label: "Cape Verde" },
+  { value: "Cayman Islands", label: "Cayman Islands" },
+  { value: "Central African Republic", label: "Central African Republic" },
+  { value: "Chad", label: "Chad" },
+  { value: "Chile", label: "Chile" },
+  { value: "China", label: "China" },
+  { value: "Christmas Island", label: "Christmas Island" },
+  { value: "Cocos (Keeling) Islands", label: "Cocos (Keeling) Islands" },
+  { value: "Colombia", label: "Colombia" },
+  { value: "Comoros", label: "Comoros" },
+  { value: "Congo - Brazzaville", label: "Congo - Brazzaville" },
+  { value: "Congo - Kinshasa", label: "Congo - Kinshasa" },
+  { value: "Cook Islands", label: "Cook Islands" },
+  { value: "Costa Rica", label: "Costa Rica" },
+  { value: "Côte d’Ivoire", label: "Côte d’Ivoire" },
+  { value: "Croatia", label: "Croatia" },
+  { value: "Cuba", label: "Cuba" },
+  { value: "Curaçao", label: "Curaçao" },
+  { value: "Cyprus", label: "Cyprus" },
+  { value: "Czechia", label: "Czechia" },
+  { value: "Denmark", label: "Denmark" },
+  { value: "Djibouti", label: "Djibouti" },
+  { value: "Dominica", label: "Dominica" },
+  { value: "Dominican Republic", label: "Dominican Republic" },
+  { value: "Ecuador", label: "Ecuador" },
+  { value: "Egypt", label: "Egypt" },
+  { value: "El Salvador", label: "El Salvador" },
+  { value: "Equatorial Guinea", label: "Equatorial Guinea" },
+  { value: "Eritrea", label: "Eritrea" },
+  { value: "Estonia", label: "Estonia" },
+  { value: "Ethiopia", label: "Ethiopia" },
+  { value: "Falkland Islands (Islas Malvinas)", label: "Falkland Islands (Islas Malvinas)" },
+  { value: "Faroe Islands", label: "Faroe Islands" },
+  { value: "Fiji", label: "Fiji" },
+  { value: "Finland", label: "Finland" },
+  { value: "France", label: "France" },
+  { value: "French Guiana", label: "French Guiana" },
+  { value: "French Polynesia", label: "French Polynesia" },
+  { value: "French Southern Territories", label: "French Southern Territories" },
+  { value: "Gabon", label: "Gabon" },
+  { value: "Gambia", label: "Gambia" },
+  { value: "Georgia", label: "Georgia" },
+  { value: "Germany", label: "Germany" },
+  { value: "Ghana", label: "Ghana" },
+  { value: "Gibraltar", label: "Gibraltar" },
+  { value: "Greece", label: "Greece" },
+  { value: "Greenland", label: "Greenland" },
+  { value: "Grenada", label: "Grenada" },
+  { value: "Guadeloupe", label: "Guadeloupe" },
+  { value: "Guam", label: "Guam" },
+  { value: "Guatemala", label: "Guatemala" },
+  { value: "Guernsey", label: "Guernsey" },
+  { value: "Guinea", label: "Guinea" },
+  { value: "Guinea-Bissau", label: "Guinea-Bissau" },
+  { value: "Guyana", label: "Guyana" },
+  { value: "Haiti", label: "Haiti" },
+  { value: "Heard & McDonald Islands", label: "Heard & McDonald Islands" },
+  { value: "Vatican City", label: "Vatican City" },
+  { value: "Honduras", label: "Honduras" },
+  { value: "Hong Kong", label: "Hong Kong" },
+  { value: "Hungary", label: "Hungary" },
+  { value: "Iceland", label: "Iceland" },
+  { value: "India", label: "India" },
+  { value: "Indonesia", label: "Indonesia" },
+  { value: "Iran", label: "Iran" },
+  { value: "Iraq", label: "Iraq" },
+  { value: "Ireland", label: "Ireland" },
+  { value: "Isle of Man", label: "Isle of Man" },
+  { value: "Israel", label: "Israel" },
+  { value: "Italy", label: "Italy" },
+  { value: "Jamaica", label: "Jamaica" },
+  { value: "Japan", label: "Japan" },
+  { value: "Jersey", label: "Jersey" },
+  { value: "Jordan", label: "Jordan" },
+  { value: "Kazakhstan", label: "Kazakhstan" },
+  { value: "Kenya", label: "Kenya" },
+  { value: "Kiribati", label: "Kiribati" },
+  { value: "North Korea", label: "North Korea" },
+  { value: "South Korea", label: "South Korea" },
+  { value: "Kosovo", label: "Kosovo" },
+  { value: "Kuwait", label: "Kuwait" },
+  { value: "Kyrgyzstan", label: "Kyrgyzstan" },
+  { value: "Laos", label: "Laos" },
+  { value: "Latvia", label: "Latvia" },
+  { value: "Lebanon", label: "Lebanon" },
+  { value: "Lesotho", label: "Lesotho" },
+  { value: "Liberia", label: "Liberia" },
+  { value: "Libya", label: "Libya" },
+  { value: "Liechtenstein", label: "Liechtenstein" },
+  { value: "Lithuania", label: "Lithuania" },
+  { value: "Luxembourg", label: "Luxembourg" },
+  { value: "Macao", label: "Macao" },
+  { value: "North Macedonia", label: "North Macedonia" },
+  { value: "Madagascar", label: "Madagascar" },
+  { value: "Malawi", label: "Malawi" },
+  { value: "Malaysia", label: "Malaysia" },
+  { value: "Maldives", label: "Maldives" },
+  { value: "Mali", label: "Mali" },
+  { value: "Malta", label: "Malta" },
+  { value: "Marshall Islands", label: "Marshall Islands" },
+  { value: "Martinique", label: "Martinique" },
+  { value: "Mauritania", label: "Mauritania" },
+  { value: "Mauritius", label: "Mauritius" },
+  { value: "Mayotte", label: "Mayotte" },
+  { value: "Mexico", label: "Mexico" },
+  { value: "Micronesia", label: "Micronesia" },
+  { value: "Moldova", label: "Moldova" },
+  { value: "Monaco", label: "Monaco" },
+  { value: "Mongolia", label: "Mongolia" },
+  { value: "Montenegro", label: "Montenegro" },
+  { value: "Montserrat", label: "Montserrat" },
+  { value: "Morocco", label: "Morocco" },
+  { value: "Mozambique", label: "Mozambique" },
+  { value: "Myanmar (Burma)", label: "Myanmar (Burma)" },
+  { value: "Namibia", label: "Namibia" },
+  { value: "Nauru", label: "Nauru" },
+  { value: "Nepal", label: "Nepal" },
+  { value: "Netherlands", label: "Netherlands" },
+  { value: "Curaçao", label: "Curaçao" },
+  { value: "New Caledonia", label: "New Caledonia" },
+  { value: "New Zealand", label: "New Zealand" },
+  { value: "Nicaragua", label: "Nicaragua" },
+  { value: "Niger", label: "Niger" },
+  { value: "Nigeria", label: "Nigeria" },
+  { value: "Niue", label: "Niue" },
+  { value: "Norfolk Island", label: "Norfolk Island" },
+  { value: "Northern Mariana Islands", label: "Northern Mariana Islands" },
+  { value: "Norway", label: "Norway" },
+  { value: "Oman", label: "Oman" },
+  { value: "Pakistan", label: "Pakistan" },
+  { value: "Palau", label: "Palau" },
+  { value: "Palestine", label: "Palestine" },
+  { value: "Panama", label: "Panama" },
+  { value: "Papua New Guinea", label: "Papua New Guinea" },
+  { value: "Paraguay", label: "Paraguay" },
+  { value: "Peru", label: "Peru" },
+  { value: "Philippines", label: "Philippines" },
+  { value: "Pitcairn Islands", label: "Pitcairn Islands" },
+  { value: "Poland", label: "Poland" },
+  { value: "Portugal", label: "Portugal" },
+  { value: "Puerto Rico", label: "Puerto Rico" },
+  { value: "Qatar", label: "Qatar" },
+  { value: "Réunion", label: "Réunion" },
+  { value: "Romania", label: "Romania" },
+  { value: "Russia", label: "Russia" },
+  { value: "Rwanda", label: "Rwanda" },
+  { value: "St. Barthélemy", label: "St. Barthélemy" },
+  { value: "St. Helena", label: "St. Helena" },
+  { value: "St. Kitts & Nevis", label: "St. Kitts & Nevis" },
+  { value: "St. Lucia", label: "St. Lucia" },
+  { value: "St. Martin", label: "St. Martin" },
+  { value: "St. Pierre & Miquelon", label: "St. Pierre & Miquelon" },
+  { value: "St. Vincent & Grenadines", label: "St. Vincent & Grenadines" },
+  { value: "Samoa", label: "Samoa" },
+  { value: "San Marino", label: "San Marino" },
+  { value: "São Tomé & Príncipe", label: "São Tomé & Príncipe" },
+  { value: "Saudi Arabia", label: "Saudi Arabia" },
+  { value: "Senegal", label: "Senegal" },
+  { value: "Serbia", label: "Serbia" },
+  { value: "Serbia", label: "Serbia" },
+  { value: "Seychelles", label: "Seychelles" },
+  { value: "Sierra Leone", label: "Sierra Leone" },
+  { value: "Singapore", label: "Singapore" },
+  { value: "Sint Maarten", label: "Sint Maarten" },
+  { value: "Slovakia", label: "Slovakia" },
+  { value: "Slovenia", label: "Slovenia" },
+  { value: "Solomon Islands", label: "Solomon Islands" },
+  { value: "Somalia", label: "Somalia" },
+  { value: "South Africa", label: "South Africa" },
+  { value: "South Georgia & South Sandwich Islands", label: "South Georgia & South Sandwich Islands" },
+  { value: "South Sudan", label: "South Sudan" },
+  { value: "Spain", label: "Spain" },
+  { value: "Sri Lanka", label: "Sri Lanka" },
+  { value: "Sudan", label: "Sudan" },
+  { value: "Suriname", label: "Suriname" },
+  { value: "Svalbard & Jan Mayen", label: "Svalbard & Jan Mayen" },
+  { value: "Eswatini", label: "Eswatini" },
+  { value: "Sweden", label: "Sweden" },
+  { value: "Switzerland", label: "Switzerland" },
+  { value: "Syria", label: "Syria" },
+  { value: "Taiwan", label: "Taiwan" },
+  { value: "Tajikistan", label: "Tajikistan" },
+  { value: "Tanzania", label: "Tanzania" },
+  { value: "Thailand", label: "Thailand" },
+  { value: "Timor-Leste", label: "Timor-Leste" },
+  { value: "Togo", label: "Togo" },
+  { value: "Tokelau", label: "Tokelau" },
+  { value: "Tonga", label: "Tonga" },
+  { value: "Trinidad & Tobago", label: "Trinidad & Tobago" },
+  { value: "Tunisia", label: "Tunisia" },
+  { value: "Turkey", label: "Turkey" },
+  { value: "Turkmenistan", label: "Turkmenistan" },
+  { value: "Turks & Caicos Islands", label: "Turks & Caicos Islands" },
+  { value: "Tuvalu", label: "Tuvalu" },
+  { value: "Uganda", label: "Uganda" },
+  { value: "Ukraine", label: "Ukraine" },
+  { value: "United Arab Emirates", label: "United Arab Emirates" },
+  { value: "United Kingdom", label: "United Kingdom" },
+  { value: "United States", label: "United States" },
+  { value: "U.S. Outlying Islands", label: "U.S. Outlying Islands" },
+  { value: "Uruguay", label: "Uruguay" },
+  { value: "Uzbekistan", label: "Uzbekistan" },
+  { value: "Vanuatu", label: "Vanuatu" },
+  { value: "Venezuela", label: "Venezuela" },
+  { value: "Vietnam", label: "Vietnam" },
+  { value: "British Virgin Islands", label: "British Virgin Islands" },
+  { value: "U.S. Virgin Islands", label: "U.S. Virgin Islands" },
+  { value: "Wallis & Futuna", label: "Wallis & Futuna" },
+  { value: "Western Sahara", label: "Western Sahara" },
+  { value: "Yemen", label: "Yemen" },
+  { value: "Zambia", label: "Zambia" },
+  { value: "Zimbabwe", label: "Zimbabwe" },
+];
+
 export const workPermitStatusOptions = [
   {
     value: 'National',
@@ -365,6 +814,311 @@ export const transportOptions = [
     label: 'Public Transport',
   },
 ];
+
+export const technology = [
+  {
+    value: 'NETWORK',
+    label: 'NETWORK',
+  },
+  {
+    value: 'OTHER',
+    label: 'OTHER',
+  },
+  {
+    value: 'EUC',
+    label: 'EUC',
+  }
+]
+
+export const projects = [
+  {
+    value: 'adhoc',
+    label: 'adhoc',
+  },
+  {
+    value: 'other',
+    label: 'Other',
+  },
+];
+
+export const sites = [
+  {
+    value: 'location1',
+    label: 'location1',
+  },
+  {
+    value: 'location2',
+    label: 'location2',
+  },
+  {
+    value: 'location3',
+    label: 'location3',
+  },
+];
+
+export const regions = [
+  {
+    value: 'EMEA',
+    label: 'EMEA',
+  },
+  {
+    value: 'AMER',
+    label: 'AMER',
+  },
+  {
+    value: 'LATAM',
+    label: 'LATAM',
+  },
+  {
+    value: 'APAC',
+    label: 'APAC',
+  }
+];
+
+
+export const roles = [
+  {
+    value: 'RMS',
+    label: 'RMS',
+  },
+  {
+    value: 'SD',
+    label: 'SD',
+  },
+  {
+    value: 'FEOPS',
+    label: 'FEOPS',
+  },
+];
+
+export const currency = [
+  {
+    value: 'USD',
+    label: 'USD',
+  },
+  {
+    value: 'EUR',
+    label: 'EUR',
+  },
+  {
+    value: 'GBP',
+    label: 'GBP',
+  },
+];
+
+export const agreedSla = [
+  {
+    value: 'SBD4H',
+    label: 'SBD4H',
+  },
+  {
+    value: 'SBD2H',
+    label: 'SBD2H',
+  },
+  {
+    value: 'SBD',
+    label: 'SBD',
+  },
+  {
+    value: 'NBD',
+    label: 'NBD',
+  },
+  {
+    value: 'twoBD',
+    label: '2BD',
+  },
+  {
+    value: 'threeBD',
+    label: '3BD',
+  },
+  {
+    value: 'fiveBD',
+    label: '5BD',
+  },
+  {
+    value: 'tenBD',
+    label: '10BD',
+  },
+];
+
+export const status = [
+  {
+    value: 'Planning',
+    label: 'Planning',
+  },
+  {
+    value: 'Signed',
+    label: 'Signed',
+  },
+  {
+    value: 'Approved',
+    label: 'Approved',
+  },
+  {
+    value: 'Live',
+    label: 'Live',
+  }
+];
+
+export const coverage = [
+  {
+    value: 'fiveD9H',
+    label: 'fiveD9H',
+  },
+  {
+    value: 't4X7AFTH',
+    label: 't4X7AFTH',
+  },
+  {
+    value: 't4X7WKND',
+    label: 't4X7WKND',
+  },
+  {
+    value: 't4X7HLDY',
+    label: 't4X7HLDY',
+  }
+];
+
+export const technologyType = [
+  {
+    value: 'EUC',
+    label: 'EUC',
+  },
+  {
+    value: 'NETWORK',
+    label: 'NETWORK',
+  },
+  {
+    value: 'LINUX',
+    label: 'LINUX',
+  },
+  {
+    value: 'MAC',
+    label: 'MAC',
+  }
+];
+
+export const serviceTypeProject = [
+  {
+    value: 'BREAKFIX',
+    label: 'BREAKFIX',
+  },
+  {
+    value: 'IMAC',
+    label: 'IMAC',
+  },
+  {
+    value: 'CABLING',
+    label: 'CABLING',
+  },
+  {
+    value: 'HandF',
+    label: 'HandF',
+  },
+  {
+    value: 'TRAINING',
+    label: 'TRAINING',
+  },
+  {
+    value: 'DSS',
+    label: 'DSS',
+  }
+];
+
+export const supportModel = [
+  {
+    value: 'FTE_WBF',
+    label: 'FTE_WBF',
+  },
+  {
+    value: 'FSE',
+    label: 'FSE',
+  },
+  {
+    value: 'FTE_NBF',
+    label: 'FTE_NBF',
+  },
+  {
+    value: 'FSE',
+    label: 'FSE',
+  },
+  {
+    value: 'PTE_WBF',
+    label: 'PTE_WBF',
+  },
+  {
+    value: 'PTE_NBF',
+    label: 'PTE_NBF',
+  }
+];
+
+export const talentLevel = [
+  {
+    value: 'L0',
+    label: 'L0',
+  },
+  {
+    value: 'L1',
+    label: 'L1',
+  },
+  {
+    value: 'L2',
+    label: 'L2',
+  },
+  {
+    value: 'L3',
+    label: 'L3',
+  }
+];
+
+export const IncrementTime = [
+  {
+    value: 'FIFTEEN',
+    label: 'FIFTEEN',
+  },
+  {
+    value: 'THIRTY',
+    label: 'THIRTY',
+  },
+  {
+    value: 'SIXTY',
+    label: 'SIXTY',
+  },
+  {
+    value: 'hund20',
+    label: 'hund20',
+  }
+];
+
+export const sowDesc = [
+  {
+    value: 'BREAKFIX',
+    label: 'BREAKFIX',
+  },
+  {
+    value: 'IMAC',
+    label: 'IMAC',
+  },
+  {
+    value: 'CABLING',
+    label: 'CABLING',
+  },
+  {
+    value: 'HandF',
+    label: 'HandF',
+  },
+  {
+    value: 'TRAINING',
+    label: 'TRAINING',
+  },
+  {
+    value: 'DSS',
+    label: 'DSS',
+  }
+];
+
+
+
 
 export const availabilityOptions = [
   {
@@ -408,6 +1162,53 @@ export const idCardTypeOptions = [
   }
 ];
 
+export const ticketStatus = [
+  {
+    value: 'OPEN',
+    label: 'OPEN',
+  },
+  {
+    value: 'INPROGRESS',
+    label: 'INPROGRESS',
+  },
+  {
+    value: 'CANCELLED',
+    label: 'CANCELLED',
+  },
+  {
+    value: 'SCHEDULED',
+    label: 'SCHEDULED',
+  },
+  {
+    value: 'CANCHAR',
+    label: 'CANCHAR',
+  },
+  {
+    value: 'ONROUTE',
+    label: 'ONROUTE',
+  },
+  {
+    value: 'ONSITE',
+    label: 'ONSITE',
+  },
+  {
+    value: 'WORKSTART',
+    label: 'WORKSTART',
+  },
+  {
+    value: 'OFFSITE',
+    label: 'OFFSITE',
+  },
+  {
+    value: 'COMPLETED',
+    label: 'COMPLETED',
+  },
+  {
+    value: 'RESCHEDULED',
+    label: 'RESCHEDULED',
+  },
+];
+
 export const interviewStatusOptions = [{
   label: "Complete",
   value: "Complete",
@@ -427,6 +1228,21 @@ export const getLandingPageRoute = (role) => {
     case ROLE.RESOURCE:
       return RESOURCE_LANDING_ROUTE
 
+<<<<<<< HEAD
+=======
+    case ROLE.SD:
+      return SD_LANDING_ROUTE
+
+    case ROLE.CUSTOMER:
+      return CUSTOMER_LANDING_ROUTE
+
+    case ROLE.ADMIN:
+      return ADMIN_LANDING_ROUTE
+
+    case ROLE.FEOPS:
+      return FEOPS_LANDING_ROUTE
+
+>>>>>>> 743770aafed7a7983d3de5955dede70dabafa62a
     default:
       return DASHBOARD_ROUTE
   }
@@ -439,9 +1255,66 @@ export const getSideBarLinks = (role) => {
       return DASHBOARD_SIDEBAR_LINKS
 
     case ROLE.RESOURCE:
-      return RESOURCE_SIDEBAR_LINKS
+      return RESOURCE_SIDEBAR_LINKS;
+
+    case ROLE.SD:
+      return SD_SIDEBAR_LINKS;
+
+    case ROLE.FEOPS:
+      return FEOPS_SIDEBAR_LINKS;
+
+    case ROLE.CUSTOMER:
+      return CUSTOMER_SIDEBAR_LINKS;
+
+    case ROLE.ADMIN:
+      return ADMIN_SIDEBAR_LINKS;
 
     default:
       return []
   }
 }
+
+// OPEN = "open",
+//   INPROGRESS = "in-progess",
+//   CANCELLED = "cancelled",
+//   SCHEDULED = "scheduled",
+//   CANCHAR = "cancelled but chargeable",
+//   ONROUTE = "on-route",
+//   ONSITE = "onsite",
+//   WORKSTART = "work started",
+//   OFFSITE = "offsite",
+//   COMPLETED = "completed",
+//   RESCHEDULED = "rescheduled"
+
+export const renderStatus = (status) => {
+  let background = "#faf1d2";
+  let color = "#eb960e";
+
+  if (status === "CANCELLED" || status === "CANCHAR") {
+    background = "#FFE8E8";
+    color = "#FF0000";
+  }
+  else if (status === "COMPLETED") {
+    background = "#E8FFF3";
+    color = "#50CD89";
+  }
+
+  return <Box sx={{
+    textAlign: "center", paddingX: "2px", paddingY: "4px", borderRadius: "6px", background, color,
+    width: "100px", fontStyle: "normal", fontWeight: 500, fontSize: "11px", lineHeight: "16px"
+  }}>{status}</Box>
+
+};
+
+export const getBorderColour = (status) => {
+  let color = "#50CD89";
+  if (status === "Cancelled") {
+    color = "#FF0000";
+  }
+  else if (status === "In Progress" || status === "Working Internally" || status === "Escalated") {
+    color = "#f0c507";
+  }
+
+  return color;
+
+};

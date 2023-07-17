@@ -1,7 +1,9 @@
 import * as yup from "yup";
-import { INVALID_EMAIL, phoneReg } from "../constants";
+import { INVALID_EMAIL, PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE, phoneReg } from "../constants";
 import { requiredMessage } from "../utils";
 import { isValidPhoneNumber } from "react-phone-number-input";
+
+
 
 function paymentMethodValidation(name, value, parentThis) {
   const fields = ['accountType', 'accountTitle', 'beneficiaryFirstName', 'beneficiaryMiddleName', 'beneficiaryLastName', 'beneficiaryAddress', 'sortCode', 'accountNumber', 'iban', 'swiftCode', 'branchName', 'bankAddress', 'bankName'];
@@ -29,12 +31,177 @@ const emailValidationSchema = {
 }
 
 const firstNameValidationSchema = {
-  firstName: yup.string().required(requiredMessage("Email"))
+  firstName: yup.string().required(requiredMessage("First Name"))
 }
 
 const lastNameValidationSchema = {
-  lastName: yup.string().required(requiredMessage("Email"))
+  lastName: yup.string().required(requiredMessage("Last name"))
 }
+const middleNameValidationSchema = {
+  middleName: yup.string().required(requiredMessage("Last name")).nullable()
+}
+
+const roleValidationSchema = {
+  roles: yup.string().required(requiredMessage("Role"))
+}
+
+export const userValidationSchema = yup.object({
+  firstName: yup.string().required(requiredMessage("First Name")),
+  lastName: yup.string().required(requiredMessage("Last name")),
+  role: yup.string().required(requiredMessage("Role")),
+  email: yup.string().email(INVALID_EMAIL).required(requiredMessage("Email")),
+})
+
+export const passwordAndRepeatPasswordSchema = {
+  newPass: yup.string().required(requiredMessage("Password")).matches(PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE),
+  confirmPassword: yup.string().oneOf([yup.ref("newPass"), null], "Passwords must match.").required("Confirm your Password."),
+}
+
+export const newPasswordSchema = {
+  newPass: yup.string().required(requiredMessage("Password")).matches(PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE),
+  confirmPassword: yup.string().oneOf([yup.ref("newPass"), null], "Passwords must match.").required("Confirm your Password."),
+}
+
+export const UpdatePasswordSchema =yup.object({
+  oldPass: yup.string().required(requiredMessage("Old Password")),
+  newPass: yup.string().required(requiredMessage("New Password")).matches(PASSWORD_REGEX, PASSWORD_VALIDATION_MESSAGE),
+  confirmPassword: yup.string().oneOf([yup.ref("newPass"), null], "Passwords must match.").required("Confirm your Password."),
+})
+
+export const customerValidationSchema = yup.object({
+  name: yup.string().required(requiredMessage("Name")),
+  vendorReference: yup.string().required(requiredMessage("Vendor Reference")),
+  website: yup.string().required(requiredMessage("Website")),
+  establishYear: yup.string().required(requiredMessage("EstablishYear")),
+  employeesCount: yup.string().required(requiredMessage("Employees Count")),
+  dispatchGroupEmail: yup.string().required(requiredMessage("Dispatch GroupEmail")),
+  city: yup.string().required(requiredMessage("City")),
+  employeeCountLinkedin: yup.string().required(requiredMessage("Employee Count Linkedin")),
+  phone: yup.string().required(requiredMessage("Phone")),
+  country: yup.string().required(requiredMessage("Country")),
+  postCode: yup.string().required(requiredMessage("Post Code")),
+  linkedinUrl: yup.string().required(requiredMessage("Linkedin Url")),
+  email: yup.string().required(requiredMessage("Email")),
+  stateProvince: yup.string().required(requiredMessage("State Province")),
+  address: yup.string().required(requiredMessage("Address")),
+  annualRevenue: yup.string().required(requiredMessage("Annual Revenue")),
+  revenueSoftware: yup.string().required(requiredMessage("Revenue Software")),
+  revenueConsultancy: yup.string().required(requiredMessage("Revenue Consultancy")),
+  revenueSupport: yup.string().required(requiredMessage("Revenue Support")),
+  revenueLogistics: yup.string().required(requiredMessage("Revenue Logistics")),
+  revenueOther: yup.string().required(requiredMessage("Revenue Other")),
+  contactNumber: yup.string().required(requiredMessage("Contact Number")),
+  addressLine1: yup.string().required(requiredMessage("Address Line1")),
+  addressLine2: yup.string().required(requiredMessage("Address Line2")),
+  emailId: yup.string().required(requiredMessage("Email Id")),
+  mobile: yup.string().required(requiredMessage("Mobile")),
+  whatsappNumber: yup.string().required(requiredMessage("Whatsapp Number")),
+  whatsappGroup: yup.string().required(requiredMessage("Whatsapp Group")),
+  whatsappLink: yup.string().required(requiredMessage("Whatsapp Link")),
+  cogentEmailId: yup.string().required(requiredMessage("Cogent Email Id")),
+  workPermitStatus: yup.string().required(requiredMessage("Work Permit Status")),
+  primaryTechService: yup.string().required(requiredMessage("Primary Tech Service")),
+  fieldService: yup.string().required(requiredMessage("Field Service")),
+  keyCustomerSupport: yup.string().required(requiredMessage("Key Customer Support")),
+  languageSupport: yup.string().required(requiredMessage("Language Support")),
+  countrySupported: yup.string().required(requiredMessage("Country Supported")),
+  certification: yup.string().required(requiredMessage("Certification")),
+  customerAbbr: yup.string().required(requiredMessage("Customer Abbr")),
+})
+
+export const projectValidationSchema = yup.object({
+  startDate : yup.string().required(requiredMessage("Start Date")),
+  endDate : yup.string().required(requiredMessage("End Date")),
+  customerId: yup.string().required(requiredMessage("Customer Id")),
+  status: yup.string().required(requiredMessage("Status")),
+  name: yup.string().required(requiredMessage("Name")),
+  clientPartnerName: yup.string().required(requiredMessage("Client Partner Name")),
+  custSdmName: yup.string().required(requiredMessage("Cust Sdm Name")),
+  custSdmEmail: yup.string().required(requiredMessage("Cust Sdm Email")),
+  custSdmContNum: yup.string().required(requiredMessage("Cust Sdm ContNum")),
+  cogSdmName: yup.string().required(requiredMessage("Cog Sdm Name")),
+  cogSdmNum: yup.string().required(requiredMessage("Cog Sdm Num")),
+  cogSdmCont: yup.string().required(requiredMessage("Cog Sdm Cont")),
+  cogSdEmail: yup.string().required(requiredMessage("Cog Sd Email")),
+  cogSdContNum: yup.string().required(requiredMessage("Cog Sd ContNum")),
+  agreedSla:  yup.array().required('Please select at least one option'),
+  coverage:   yup.array().required('Please select at least one option'),
+  technologyType: yup.array().required('Please select at least one option'),
+  serviceType: yup.array().required('Please select at least one option'),
+  supportModel: yup.array().required('Please select at least one option'),
+  talentLevel: yup.array().required('Please select at least one option'),
+  cancelPolicy: yup.string().required(requiredMessage("Cancel Policy")),
+  dispatchAgreed: yup.number().required().positive('Dispatch Agreed must be a positive number'),
+  incrementTime: yup.string().required(requiredMessage("Increment Time")),
+  sow: yup.string().required(requiredMessage("Sow")),
+  sowDesc: yup.string().required(requiredMessage("Sow Desc")),
+  owJd: yup.string().required(requiredMessage("OwJd")),
+  serviceDeliv: yup.string().required(requiredMessage("Service Deliv")),
+  ssInst: yup.string().required(requiredMessage("SsInst")),
+  asInst: yup.string().required(requiredMessage("AsInst")),
+  toolsReq: yup.string().required(requiredMessage("Tools Req")),
+  namedWorker: yup.boolean().required(requiredMessage("Named Worker")),
+  assignedWorker: yup.string().required(requiredMessage("Assigned Worker")),
+  technicalSkill: yup.string().required(requiredMessage("Technical Skill")),
+  behSkills: yup.string().required(requiredMessage("Beh Skills")),
+  experienceReq: yup.string().required(requiredMessage("Experience Req")),
+  langReq: yup.string().required(requiredMessage("Lang Req")),
+  trainReq: yup.string().required(requiredMessage("Train Req")),
+  trainDoc: yup.string().required(requiredMessage("Train Doc")),
+  reqTools: yup.string().required(requiredMessage("Req Tools")),
+  reqSoft: yup.string().required(requiredMessage("Req Soft")),
+  specReq: yup.string().required(requiredMessage("Spec Req")),
+  cl1ee: yup.string().required(requiredMessage("Cl1ee")),
+  cl1ec: yup.string().required(requiredMessage("Cl1ec")),
+  cl2ee: yup.string().required(requiredMessage("Cl2ee")),
+  cl2ec: yup.string().required(requiredMessage("Cl2ec")),
+  cgl1ee: yup.string().required(requiredMessage("Cgl1ee")),
+  cgl1ec: yup.string().required(requiredMessage("Cgl1ec")),
+  cfl2ee: yup.string().required(requiredMessage("Cfl2ee")),
+  cgl2ec: yup.string().required(requiredMessage("Cgl2ec")),
+  code: yup.string().required(requiredMessage("Code")),
+})
+
+export const JobsValidationSchema = yup.object({
+  name : yup.string().required(requiredMessage("Name")),
+  country : yup.string().required(requiredMessage("Country")),
+  city: yup.string().required(requiredMessage("City")),
+  state: yup.string().required(requiredMessage("State")),
+  province: yup.string().required(requiredMessage("Province")),
+  postcode: yup.string().required(requiredMessage("Post Code")),
+  siteAddress: yup.string().required(requiredMessage("Site Address")),
+  pocName: yup.string().required(requiredMessage("Poc Name")),
+  pocContactNumber: yup.string().required(requiredMessage("Poc Contact Number")),
+  pocEmailAdrress: yup.string().required(requiredMessage("Poc Email Adrress")),
+  ppe1h: yup.string().required(requiredMessage("Ppe1h")),
+  ppe2h: yup.string().required(requiredMessage("Ppe2h")),
+  ppe3h: yup.string().required(requiredMessage("Ppe3h")),
+  ppe4h: yup.string().required(requiredMessage("Ppe4h")),
+  ppe5h: yup.string().required(requiredMessage("Ppe5h")),
+  ppe6h: yup.string().required(requiredMessage("Ppe6h")),
+  ppe7h: yup.string().required(requiredMessage("Ppe7h")),
+  ppe8h: yup.string().required(requiredMessage("Ppe8h")),
+  tandm30: yup.string().required(requiredMessage("Tandm30")),
+  tandm1h: yup.string().required(requiredMessage("Tandm1h")),
+  afth: yup.string().required(requiredMessage("Afth")),
+  wknd: yup.string().required(requiredMessage("Wknd")),
+  ph: yup.string().required(requiredMessage("Ph")),
+  sat: yup.boolean().required(requiredMessage("Sat")),
+  sun: yup.boolean().required(requiredMessage("Sun")),
+  siteTiming: yup.string().required(requiredMessage("Site Timing")),
+  timeZone: yup.string().required(requiredMessage("Time Zone")),
+  dispatchAgreed: yup.number().required().positive('Dispatch Agreed must be a positive number'),
+  incrementTime: yup.string().required(requiredMessage("Increment Time")),
+  serviceType:  yup.array().required('Please select at least one option'),
+  supportType:  yup.array().required('Please select at least one option'),
+  serviceCatItem:  yup.array().required('Please select at least one option'),
+  agreedSla:  yup.array().required('Please select at least one option'),
+  coverage: yup.array().required('Please select at least one option'),
+  technologyType:  yup.array().required('Please select at least one option'),
+  currency:  yup.array().required('Please select at least one option'),
+  projectId: yup.string().required(requiredMessage("Project Id"))
+})
+
 
 
 const rpocEmailValidationSchema = {
@@ -42,7 +209,7 @@ const rpocEmailValidationSchema = {
 }
 
 const cogentEmailValidationSchema = {
-  cogentEmail: yup.string().email("Invalid Email")
+  cogentEmail: yup.string().email("Invalid Email").nullable()
 }
 
 const statusValidationSchema = {
@@ -194,17 +361,50 @@ const bankAddressValidationSchema = {
   bankAddress: yup.string(),
 }
 
-const isOnboardedValidationSchema = {
+const contractStatusSchema = {
   isOnboarded: yup.boolean().required(requiredMessage("isOnboarded")),
+  contractDocuments: yup.boolean().required(requiredMessage("Contract Document")).nullable(),
+  interviewStatus: yup.string().required("Interview Status is required.").nullable(),
+}
+
+const rpocSchema = {
+
+  rpocName: yup.string().nullable().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().required('RPOC Name is required').nullable(),
+    otherwise: yup.string().optional().nullable()
+  }),
+  rpocEmail: yup.string().nullable().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().email(INVALID_EMAIL).required('RPOC Email is required').nullable(),
+    otherwise: yup.string().email(INVALID_EMAIL).nullable()
+  }),
+  rpocContactNumber: yup.string().nullable().when('status', {
+    is: 'INDIRECT',
+    then: yup.string().required('RPOC Contact Number is required').nullable().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
+      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
+      return true
+    }),
+    otherwise: yup.string().nullable().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
+      if (!value) return true
+      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
+      return true
+    })
+  }),
+
 }
 
 const phoneNumberValidationSchema = {
   mobileNumber: yup.string().matches(phoneReg, 'Phone number is not valid').required(requiredMessage("Phone Number")),
 }
 
-export const resourceFormValidationSchema = yup.object({
-  // ...emailValidationSchema,
-  ...isOnboardedValidationSchema,
+const rmsResourceFormRemainingFields = {
+  ...rpocSchema,
+  ...contractStatusSchema,
+  ...cogentEmailValidationSchema,
+}
+
+const resourceFormCommonValidation = {
   ...statusValidationSchema,
   ...engagementTypeValidationSchema,
   ...skillSetValidationSchema,
@@ -220,81 +420,73 @@ export const resourceFormValidationSchema = yup.object({
   ...bankAddressValidationSchema,
   ...branchNameValidationSchema,
   ...bankNameValidationSchema,
-  ...cogentEmailValidationSchema,
   ...rpocEmailValidationSchema,
   ...accountTitleValidationSchema,
   ...accountTypeValidationSchema,
   ...firstNameValidationSchema,
   ...lastNameValidationSchema,
-  rpocName: yup.string().when('status', {
-    is: 'INDIRECT',
-    then: yup.string().required('RPOC Name is required'),
-    otherwise: yup.string().optional()
-  }),
-  rpocEmail: yup.string().when('status', {
-    is: 'INDIRECT',
-    then: yup.string().email(INVALID_EMAIL).required('RPOC Email is required'),
-    otherwise: yup.string().email(INVALID_EMAIL)
-  }),
-  rpocContactNumber: yup.string().when('status', {
-    is: 'INDIRECT',
-    then: yup.string().required('RPOC Contact Number is required').test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
-      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
-      return true
-    }),
-    otherwise: yup.string().test('valid-rpoc-number', 'RPOC Contact Number is Invalid', function (value) {
-      if (!value) return true
-      if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false
-      return true
-    })
-  }),
-  taxNumber: yup.string().required("Tax Number is required"),
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("First Name is required"),
-  nationality: yup.string().required("Nationality is required"),
-  country: yup.string().required("Country is required"),
-  mobileNumber: yup.string().required('Mobile Number is required').test('valid-mobile-number', 'Mobile Number is Invalid', function (value) {
+  taxNumber: yup.string().required("Tax Number is required").nullable(),
+  firstName: yup.string().required("First Name is required").nullable(),
+  lastName: yup.string().required("First Name is required").nullable(),
+  nationality: yup.string().required("Nationality is required").nullable(),
+  country: yup.string().required("Country is required").nullable(),
+  mobileNumber: yup.string().nullable().required('Mobile Number is required').nullable().test('valid-mobile-number', 'Mobile Number is Invalid', function (value) {
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false  // this whole validation for required phone number
     return true
   }),
-  contactNumber: yup.string().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
+  contactNumber: yup.string().nullable().test('valid-contact-number', 'Contact Number is Invalid', function (value) {
     if (!value) return true
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
     return true
   }),
-  whatsappNumber: yup.string().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
+  whatsappNumber: yup.string().nullable().test('valid-whatsappNo', 'WhatsApp Number is Invalid', function (value) {
     if (!value) return true
     if (!isValidPhoneNumber(value?.includes("+") ? value : `+${value}`)) return false   // this whole validation for optional phone number
     return true
   }),
-  addressLine1: yup.string().required("Address is required."),
-  workPermitStatus: yup.string().required("Work Permit Status is required."),
-  resumeDocUrl: yup.string().optional(),
-  identityDocUrl: yup.string().optional(),
+  addressLine1: yup.string().required("Address is required.").nullable(),
+  addressLine2: yup.string().nullable().optional(),
+  workPermitStatus: yup.string().required("Work Permit Status is required.").nullable(),
+  resumeDocUrl: yup.string().nullable().optional(),
+  identityDocUrl: yup.string().nullable().optional(),
   myResume: yup.mixed().test(
     'is-file',
     'Resume file is required',
     function (value) {
       if (this.parent.resumeDocUrl) return true;
-      return value && ['application/pdf', 'image/jpg'].includes(value?.type);
+      return value && ['application/pdf', 'image/jpg', "image/jpeg"].includes(value?.type);
     }
   ),
-  transport: yup.string().required("Mode of transport is required."),
-  availability: yup.string().required("Availability of transport is required."),
+  transport: yup.string().required("Mode of transport is required.").nullable(),
+  availability: yup.string().required("Availability of transport is required.").nullable(),
   // mobility: yup.number().typeError("Only Numbers are allowed").required("Mobility is required.")
-  mobility: yup.string().required("Mobility is required."),
-  idCardType: yup.string().required("Id Card Type is required."),
+  mobility: yup.string().required("Mobility is required.").nullable(),
+  idCardType: yup.string().required("Id Card Type is required.").nullable(),
   identityDocument: yup.mixed().test(
     'is-file',
     'Identity file is required',
     function (value) {
       if (this.parent.identityDocUrl) return true;
-      return value && ['application/pdf', 'image/jpg'].includes(value?.type);
+      return value && ['application/pdf', 'image/jpg', "image/jpeg"].includes(value?.type);
     }
   ),
-  contractDocuments: yup.boolean().required(requiredMessage("Contract Document")),
-  interviewStatus: yup.string().required("Interview Status is required."),
-})
+}
+
+export const getResourceFormValidationSchema = (role) => {
+
+  if (role === "rms") {
+    return yup.object({
+      ...resourceFormCommonValidation,
+      ...rmsResourceFormRemainingFields
+    })
+  }
+  else if (role === "resource") {
+    return yup.object({
+      ...resourceFormCommonValidation,
+    })
+  }
+}
+
 
 export const loginValidationSchema = yup.object({
   ...emailValidationSchema,
@@ -305,5 +497,6 @@ export const signUpValidationSchema = yup.object({
   ...rpocEmailValidationSchema,
   ...passwordValidationSchema,
   ...confirmPasswordValidationSchema,
-  ...phoneNumberValidationSchema
+  ...firstNameValidationSchema,
+  ...lastNameValidationSchema
 })

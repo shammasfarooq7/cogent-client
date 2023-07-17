@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Input, FormHelperText } from '@mui/material';
+import { Box, Input, FormHelperText, Tooltip } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import { Controller, useFormContext, } from 'react-hook-form';
 import './style.css'
 import { Alert } from './Alert';
 
-export const CustomDocumentUploadController = ({ controllerName, controllerLabel, allowedFileTypes = ["application/pdf", "image/jpeg"], acceptFiles = ".jpg,.jpeg,.pdf", maxFileSize = 5, isMultiLine, fieldIcon }) => {
+export const CustomDocumentUploadController = ({ controllerName, controllerLabel, allowedFileTypes = ["application/pdf", "image/jpeg", 'image/jpg',], acceptFiles = ".jpg,.jpeg,.pdf", maxFileSize = 5, isClearable = false, fieldIcon }) => {
   const { control } = useFormContext();
 
   const handleFileChange = (e, setValue) => {
@@ -25,6 +26,10 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
     }
   }
 
+  const removeFile = (setValue) => {
+    setValue(null)
+  }
+
   return (
     <Controller
       name={controllerName}
@@ -32,6 +37,7 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
       render={({ field, fieldState: { invalid, error: { message } = {} } }) => (
         <>
           <Input
+            key={new Date()}
             id={controllerName}
             type="file"
             sx={{ display: "none" }}
@@ -46,7 +52,13 @@ export const CustomDocumentUploadController = ({ controllerName, controllerLabel
               color: field?.value?.name ? "#222B45" : "#00000099", lineHeight: "16px", cursor: "pointer"
             }}>
               {field?.value?.name || controllerLabel}
-              {fieldIcon}
+              <Box>
+                {field?.value && isClearable &&
+                  <Tooltip title="Remove Attachment">
+                    <ClearIcon sx={{ "width": "16px" }} onClick={(e) => { e.stopPropagation(); e.preventDefault(); removeFile(field.onChange) }} />
+                  </Tooltip>}
+                {fieldIcon}
+              </Box>
             </Box>
           </label>
           {invalid && message &&

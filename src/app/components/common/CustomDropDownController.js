@@ -1,7 +1,6 @@
 // packages block
-import React from 'react';
-import { Box, InputAdornment, TextField ,Input, MenuItem } from '@mui/material';
-import { alpha, styled } from '@mui/material/styles';
+import React, { } from 'react';
+import { TextField, MenuItem } from '@mui/material';
 // import { withStyles } from "@material-ui/core/styles";
 import { Controller, useFormContext } from 'react-hook-form';
 import './style.css'
@@ -21,7 +20,11 @@ import './style.css'
 
 
 
-export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType , currencies}) => {
+export const CustomDropDrownController = ({ controllerName, controllerLabel, fieldType, currencies, onchange = false, disabled = false }) => {
+  
+  const userRole = localStorage.getItem("userRole")
+ console.log("currencies", currencies)
+
   const { control } = useFormContext();
   return (
     <Controller
@@ -31,25 +34,34 @@ export const CustomDropDrownController = ({ controllerName, controllerLabel, fie
         <TextField
           type={fieldType}
           select
-          sx={{borderRadius:"18px"}}
+          sx={{ borderRadius: "18px" }}
           margin='dense'
           size='small'
           error={invalid}
+          disabled={disabled}
           label={controllerLabel}
           fullWidth
           {...field}
           helperText={message}
           variant="outlined"
           InputLabelProps={{
-            style: { color: "#222B45", fontFamily:"popins" },
+            style: { color: "#222B45", fontFamily: "popins" },
           }}
         >
-             {currencies.map((option) => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
+          {
+            currencies &&
+            currencies.map((option) => (
+              userRole === "ADMIN" ?
+              <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.value : option.value}>
+              {onchange ? option.label : option.label}
             </MenuItem>
-          ))}
-            </TextField> 
+            :
+            <MenuItem key={onchange ? option.name : option.value} value={onchange ? option.id : option.value}>
+                {onchange ? option.name : option.label}
+              </MenuItem>
+            ))
+        }
+          </TextField> 
       )}
     />
   );

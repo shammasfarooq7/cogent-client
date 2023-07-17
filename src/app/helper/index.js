@@ -33,3 +33,7 @@ export const getFileWithNewName = (file, userName, type) => {
     const newFile = new File([file], newName, { type: file.type });
     return newFile
 }
+
+export const getFutureDate = (daysAfter = 1) => {
+    return new Date(new Date().setDate(new Date().getDate() + daysAfter))
+}
