@@ -31,6 +31,7 @@ const AssignResourceModal = ({ open, handleClose, ticketInfo }) => {
             getAllResourcesInput: {
                 page,
                 limit,
+                isOnboarded: true
             }
         }
     })
