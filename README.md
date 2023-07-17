@@ -68,3 +68,19 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+## building and pushing image to gcr
+
+#### Prerequisites
+- gcloud sdk/cli
+- Make sure this json key is present in your root directory and make sure you don't commit it 'shining-relic-392816-f89ede29c1cd.json', I had put it in gitignore to avoid such scenerios.  
+  
+In order to build and push the image to gcr run following commands:
+```
+gcloud auth activate-service-account --key-file shining-relic-392816-f89ede29c1cd.json
+gcloud config set core/project shining-relic-392816
+gcloud builds submit --config=cloudbuild.yaml --substitutions=_COMMIT_SHA=1z2x3c4
+```
+
+This `_COMMIT_SHA` tag need to have same value for backend service as well.

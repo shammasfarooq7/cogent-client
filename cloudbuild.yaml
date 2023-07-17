@@ -1,0 +1,13 @@
+steps:
+  - name: gcr.io/kaniko-project/executor:v0.16.0
+    args:
+    - --destination=gcr.io/shining-relic-392816/web:${_COMMIT_SHA}
+    - --cache=true
+    - --cache-ttl=24h
+    - --build-arg 
+    - REACT_APP_COMMIT_SHA=${_COMMIT_SHA}
+
+
+
+
+
