@@ -30,7 +30,7 @@ export const PrivateRoute = ({ children, roles = [] }) => {
     return <></> // To DO : Add Loader
   }
 
-  if (!roles.includes(userRole)) {
+  if (!!roles.length && !roles.includes(userRole)) {
     return <Navigate to={getLandingPageRoute(userRole)} state={{ from: location }} replace />;
   }
 
