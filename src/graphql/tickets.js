@@ -278,10 +278,75 @@ query GetTicketQuery($id: String!) {
 //   }
 // `;
 
+export const GET_RESOURCE_TICKET_COUNT_QUERY = gql`
+query GetResourceTicketQuery($getResourceTicketInput:GetResourceTicketInput!) {
+  getResourceTickets(getResourceTicketInput: $getResourceTicketInput) {
+    count
+  }
+}
+`;
+
 export const GET_RESOURCE_TICKET_QUERY = gql`
 query GetResourceTicketQuery($getResourceTicketInput:GetResourceTicketInput!) {
   getResourceTickets(getResourceTicketInput: $getResourceTicketInput) {
     count
+    ticketDates {
+      date
+      scheduledTime
+      ticket {
+        id
+        customerName
+        customerId
+        cogentCaseNumber
+        cogentWorkOrderNumber
+        status
+        customerTicketNumber
+        ticketReceivedTime
+        projectId
+        jobSiteId
+        numberOfHoursReq
+        numberOfResource
+        isExternal
+        isApproved
+        ticketType
+        ticketDetail {
+          endClientName
+          accountName
+          slaPriority
+          siteName
+          region
+          country
+          city
+          siteAccessInstruction
+          hardwareSN
+          serviceDocUrl
+          spocName
+          spocEmailAddress
+          spocContactNumber
+          projectCode
+          toolsRequested
+          specialInstruction
+          addInstruction
+          instructions
+          scopeOfWork
+          caseDetails
+          jobSummary
+          technologyType
+          customerCaseNumber
+          serviceType
+          serviceLevel
+          servicePriority
+          siteAddress
+          province
+          postCode
+          attachments {
+            url
+          }
+  
+        }
+      }
+
+    }
   }
 }
 `;

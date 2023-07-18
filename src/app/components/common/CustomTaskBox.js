@@ -11,22 +11,22 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import useDebounce from '../../customHooks/useDebounce';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_TICKETS_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
+import { GET_ALL_TICKETS_QUERY, GET_RESOURCE_TICKET_QUERY, GET_TODAY_TICKET_QUERY } from '../../../graphql/tickets';
 import { TicketView } from '../../pages/Admin/Tickets/TicketView';
 import { UserContext } from '../../context/user-context';
 import { SDForm } from '../tickets/addTicket/AddTicketForm';
-import { renderStatus } from '../../constants';
+import { ROLE, renderStatus } from '../../constants';
 
 export const TaskBox = ({ taskName, buttonText, todays, type }) => {
+  const { user } = useContext(UserContext)
   const [openViewForm, setOpenViewForm] = useState(false);
   const [ticket, setTicket] = useState({});
   const [searchValue, setSearchValue] = useState(null);
   const [openSDForm, setOpenSDForm] = useState(false);
-  const { count, setCount } = useContext(UserContext);
   const [page, setPage] = useState(0);
-  const [future, setFututre] = useState(true);
   const [limit, setLimit] = useState(10);
   const searchQuery = useDebounce(searchValue, 500);
+  const isResource = user?.roles?.find(item => item?.role?.toLowerCase() === ROLE.RESOURCE)
 
   const queryVariables = {
     page,
@@ -34,36 +34,59 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
     ...(searchQuery && { searchQuery }),
   };
 
-  const queryFututeVariables = {
+  const resourceTicketsQueryVariables = {
     page,
     limit,
-    future,
-    ...(searchQuery && { searchQuery }),
-};
+    ...(todays ? { today: true } : { future: true }),
+  };
 
-  const queryKey = todays ? GET_TODAY_TICKET_QUERY  : GET_ALL_TICKETS_QUERY
-  
+  const queryKey = isResource ? GET_RESOURCE_TICKET_QUERY : todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
+
   const { data, loading, refetch } = useQuery(queryKey, {
     variables: {
-      ...(todays
-        ? {
-          getTodayTicketsInput: {
-            ...queryVariables,
+      ...(
+        isResource ?
+          {
+            getResourceTicketInput: {
+              ...resourceTicketsQueryVariables
+            }
           }
-        }
-        : {
-          getAllTicketsInput: {
-            ...queryVariables,
-          }
-        })
+          : todays
+            ? {
+              getTodayTicketsInput: {
+                ...queryVariables,
+              }
+            }
+            : {
+              getAllTicketsInput: {
+                ...queryVariables,
+              }
+            })
     }
   })
 
-  if (data?.getTodayTicket) {
-    setCount(data?.getTodayTicket?.count)
+  const formatDataForResource = (data) => {
+    const tickets = [];
+    const { ticketDates, count = 0 } = data || {}
+
+    if (ticketDates?.length) {
+      ticketDates?.forEach(ticketDate => {
+        const { date, scheduledTime } = ticketDate || {}
+        const ticketObj = {
+          ...ticketDate?.ticket,
+          ticketDate: {
+            date,
+            scheduledTime
+          }
+        }
+        tickets.push(ticketObj)
+      })
+    }
+
+    return { count, tickets }
   }
 
-  const ticketsData = todays ? data?.getTodayTicket : data?.getAllTickets
+  const ticketsData = isResource ? formatDataForResource(data?.getResourceTickets) : todays ? data?.getTodayTicket : data?.getAllTickets;
 
   const handleViewClick = (ticket) => {
     setTicket(ticket);
@@ -155,12 +178,12 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
                 </TableCell>
                 <TableCell>
                   <Typography>
-                    {ticket?.status ?  renderStatus(ticket.status) : '--'}
+                    {ticket?.status ? renderStatus(ticket.status) : '--'}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Box display={'flex'} alignItems={'center'}>
-                    {!todays &&
+                    {!todays && !isResource &&
                       <Box
                         component="img"
                         sx={{
@@ -199,7 +222,7 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
       <Box display={"flex"} justifyContent={"end"} marginTop={2}>
         <TablePagination
           component="div"
-          count={data?.getAllUsers?.count || 0}
+          count={ticketsData?.count || 0}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={limit}

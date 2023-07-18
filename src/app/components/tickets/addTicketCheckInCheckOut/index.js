@@ -99,7 +99,8 @@ const AddTimeSheetModal = ({ open, handleClose, ticketInfo }) => {
     const { data, loading, error } = useQuery(GET_TIME_SHEETS_QUERY, {
         variables: {
             ticketId: ticketInfo?.id
-        }
+        },
+        nextFetchPolicy: "network-only"
     })
     const { ticketTimeSheetData } = data || {};
 

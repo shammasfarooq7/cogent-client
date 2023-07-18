@@ -210,7 +210,7 @@ const MainRoutes = () => {
                </PrivateRoute>
             } />
              <Route path={"/userview"} element={
-              <PrivateRoute roles={[ROLE.ADMIN, ROLE.CUSTOMER, ROLE.FEOPS,ROLE.SD,ROLE.RMS]}>
+              <PrivateRoute>
                 <UserView />
                </PrivateRoute>
             } />
