@@ -59,7 +59,6 @@ export const UpdatePassword = ({ openModal, setOpenModal, editInfo, refetchUser 
 
             const { oldPass, newPass} = data
             const payload = {
-                email:user.email,
                 oldPass,
                 newPass
             }
