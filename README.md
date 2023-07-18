@@ -80,7 +80,7 @@ In order to build and push the image to gcr run following commands:
 ```
 gcloud auth activate-service-account --key-file shining-relic-392816-f89ede29c1cd.json
 gcloud config set core/project shining-relic-392816
-gcloud builds submit --config=cloudbuild.yaml --substitutions=_COMMIT_SHA=latest-staging
+gcloud builds submit --config=cloudbuild.yaml --substitutions=_COMMIT_SHA=latest
 ```
 
 This `_COMMIT_SHA` tag need to have same value for backend service as well.

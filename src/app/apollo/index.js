@@ -27,7 +27,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = new HttpLink({
-  uri: `${process.env.REACT_APP_API_BASE_URL}/graphql`
+  uri: `https://app.cogentengine.com/graphql`
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
