@@ -1,3 +1,4 @@
+import { ROLE } from "../constants"
 
 export const getName = (firstName, middlename, lastname) => {
     let name = ''
@@ -55,4 +56,40 @@ export const convertTimeToUTCTime = (timeString) => {
         return time
     }
     return formatTime(utcTime)
+}
+
+export const filterCheckInOutTimeForRole = (item, role) => {
+
+    const { checkIn: resourceCheckIn, checkOut: resourceCheckOut, feopsCheckIn, feopsCheckOut, sdCheckIn, sdCheckOut } = item || {}
+
+    const formatResult = (checkIn, checkOut) => {
+        return { checkIn, checkOut }
+    }
+
+    switch (role?.toLowerCase()) {
+        case ROLE.RESOURCE:
+            return formatResult(resourceCheckIn, resourceCheckOut)
+
+        case ROLE.SD:
+            return formatResult(sdCheckIn, sdCheckOut)
+
+        case ROLE.FEOPS:
+            return formatResult(feopsCheckIn, feopsCheckOut)
+
+        default:
+            return formatResult(resourceCheckIn, resourceCheckOut)
+    }
+
+}
+
+export const getTimeFromDate = (date) => {
+    if (!date) return ""
+    const hour = new Date(date).getHours();
+    const hourVal = hour < 10 ? `0${hour}` : hour;
+    const min = new Date(date).getMinutes();
+    const minVal = min < 10 ? `0${min}` : min;
+    const sec = new Date(date).getSeconds();
+    const secVal = sec < 10 ? `0${sec}` : sec;
+
+    return `${hourVal}:${minVal}:${secVal}`
 }

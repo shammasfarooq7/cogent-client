@@ -94,9 +94,9 @@ export const TicketView = ({ openModal, setOpenModal, info, type }) => {
                 {type === "resource" &&
                   <Box sx={{ display: 'flex' }}>
                     {/* <Button sx={{ mr: '10px', backgroundColor: '#50CD89', color: 'white', textTransform: 'capitalize', '&:hover': { color: 'white', background: '#50CD89' } }} >Generate Invoice</Button> */}
-                    {/* <Button
+                    <Button
                       sx={{ mr: '10px', backgroundColor: '#00A3FF', color: 'white', textTransform: 'capitalize', '&:hover': { color: 'white', background: '#00A3FF' } }}
-                      onClick={() => { setOpenTimeSheetModal(true) }}>Update Time</Button> */}
+                      onClick={() => { setOpenTimeSheetModal(true) }}>Update Time</Button>
                   </Box>
                 }
                 {

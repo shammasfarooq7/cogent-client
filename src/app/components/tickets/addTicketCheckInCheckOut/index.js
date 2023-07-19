@@ -1,10 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import { Modal, Box, Typography, Avatar, Button, Radio, FormControlLabel, TextField } from "@mui/material"
-import { useState } from "react";
-import { convertTimeToUTCTime, getName } from "../../../helper";
+import { useContext, useState } from "react";
+import { convertTimeToUTCTime, filterCheckInOutTimeForRole, getName, getTimeFromDate } from "../../../helper";
 import { GET_TIME_SHEETS_QUERY, TIME_SHEET_CHECK_IN_OUT } from "../../../../graphql/tickets";
 import { Alert } from "../../common/Alert";
+import { UserContext } from "../../../context/user-context";
+import { ROLE } from "../../../constants";
 
 const style = {
     position: 'absolute',
@@ -21,30 +23,36 @@ const style = {
     p: 4,
 };
 
-const Record = ({ item }) => {
-    const [isChecked, setIsChecked] = useState(null);
-    const [time, setTime] = useState(null);
+const Record = ({ item, refetch }) => {
+    const { user } = useContext(UserContext)
+    const role = user?.roles?.[0]?.role || ""
+    const [checkInTime, setCheckInTime] = useState(null);
+    const [checkOutTime, setCheckOutTime] = useState(null);
 
+    const { checkIn, checkOut } = filterCheckInOutTimeForRole(item, role);
 
-    const [submitTime, { data, loading, error }] = useMutation(TIME_SHEET_CHECK_IN_OUT, {
+    const [submitTime, { data, loading, error, reset }] = useMutation(TIME_SHEET_CHECK_IN_OUT, {
         variables: {
             checkinCheckoutInput: {
                 resourceId: item?.resource?.id,
                 ticketDateId: item?.ticketDate?.id,
-                checkinOrCheckout: isChecked ? 'CHECK_IN' : 'CHECK_OUT',
-                time: convertTimeToUTCTime(time)
+                checkinOrCheckout: checkInTime ? 'CHECK_IN' : 'CHECK_OUT',
+                time: convertTimeToUTCTime(checkInTime || checkOutTime)
             }
         }
     });
 
     const { timeSheetCheckInOut } = data || {};
 
-    const isSubmitDisabled = !time || isChecked === null || data || loading;
+    const isError = checkIn ? checkOutTime <= getTimeFromDate(checkIn) : false;
+    const isSubmitDisabled = (!checkInTime && !checkOutTime) || (checkIn && checkOut) || data || loading || isError;
 
     const handleSubmit = async () => {
         try {
             await submitTime();
-
+            await refetch()
+            setCheckInTime(null)
+            setCheckOutTime(null)
         } catch (error) {
         }
         finally {
@@ -54,6 +62,7 @@ const Record = ({ item }) => {
     if (timeSheetCheckInOut) {
         const { message } = timeSheetCheckInOut || {};
         Alert.success(message || "Assigned Successfully");
+        setTimeout(() => { reset() }, 3000)
     }
 
     return (
@@ -68,25 +77,35 @@ const Record = ({ item }) => {
                 </Box>
                 <Typography sx={{ maxWidth: "200px" }}>{format(new Date(item?.ticketDate?.date), "dd MMM yyyy") || "_ _"}</Typography>
 
-                <TextField
-                    placeholder='Select Time'
-                    type='time'
-                    size='small'
-                    onChange={(e) => { setTime(`${e.target.value}:00`) }}
-                    sx={{ marginLeft: "4px", height: "40px", borderRadius: '8px' }}
-                />
-
                 <Box>
-                    <FormControlLabel sx={{ color: "black" }}
-                        control={<Radio checked={isChecked} size='small' onChange={() => setIsChecked(true)} />}
-                        label={"Check In"} />
-
-                    <FormControlLabel sx={{ color: "black" }}
-                        control={<Radio checked={isChecked === false} size='small' onChange={() => setIsChecked(false)} />}
-                        label={"Check Out"} />
+                    <TextField
+                        placeholder='Select Time'
+                        type='time'
+                        value={checkIn ? getTimeFromDate(checkIn) : checkInTime}
+                        disabled={checkIn}
+                        size='small'
+                        onChange={(e) => { setCheckInTime(`${e.target.value}:00`) }}
+                        sx={{ marginLeft: "4px", height: "40px", borderRadius: '8px' }}
+                    />
+                    {isError && <Box>&nbsp;</Box>}
                 </Box>
 
-                <Button variant="contained" color="info" disabled={isSubmitDisabled} onClick={handleSubmit}> Submit</Button>
+                <Box>
+                    <TextField
+                        placeholder='Select Time'
+                        type='time'
+                        size='small'
+                        value={checkOut ? getTimeFromDate(checkOut) : checkOutTime}
+                        disabled={checkOut || !checkIn}
+                        onChange={(e) => { setCheckOutTime(`${e.target.value}:00`) }}
+                        sx={{ marginLeft: "4px", height: "40px", borderRadius: '8px' }}
+                    />
+                    {isError && <Box sx={{ fontSize: 12, color: "red" }}>Invalid checkout time</Box>}
+                </Box>
+
+                <Button style={{ width: 103 }} variant="contained" color="info" disabled={isSubmitDisabled} onClick={handleSubmit}>
+                    {(checkIn && checkOut) ? "Submited" : "Submit"}
+                </Button>
             </Box>
         </Box>
     )
@@ -94,18 +113,21 @@ const Record = ({ item }) => {
 
 const AddTimeSheetModal = ({ open, handleClose, ticketInfo }) => {
 
+    const { user } = useContext(UserContext)
     const [page, setPage] = useState(0);
 
-    const { data, loading, error } = useQuery(GET_TIME_SHEETS_QUERY, {
+
+    const isResource = user?.roles?.find(item => item?.role?.toLowerCase() === ROLE.RESOURCE)
+
+    const { data, loading, error, refetch } = useQuery(GET_TIME_SHEETS_QUERY, {
         variables: {
             ticketId: ticketInfo?.id
         },
-        nextFetchPolicy: "network-only"
+        fetchPolicy: "network-only"
     })
     const { ticketTimeSheetData } = data || {};
+    const resources = isResource ? ticketTimeSheetData?.filter(item => item?.resource?.id === user?.resource?.id) : ticketTimeSheetData
 
-    const { getAllResources } = data || {};
-    const { count = 0, resources } = getAllResources || {};
 
     return (
         <Modal
@@ -127,11 +149,14 @@ const AddTimeSheetModal = ({ open, handleClose, ticketInfo }) => {
                         Ticket Date
                     </Typography>
                     <Typography id="modal-modal-description" >
-                        Time
+                        Check In  Time
                     </Typography>
                     <Typography id="modal-modal-description" >
-                        Check In/Out
+                        Check Out Time
                     </Typography>
+                    {/* <Typography id="modal-modal-description" >
+                        Check In/Out
+                    </Typography> */}
                     <Typography id="modal-modal-description" >
                         Action
                     </Typography>
@@ -139,14 +164,14 @@ const AddTimeSheetModal = ({ open, handleClose, ticketInfo }) => {
                 {loading ?
                     <Box>Loading...</Box>
                     : <>
-                        {ticketTimeSheetData?.map(item => (
-                            <Record item={item} />
+                        {resources?.map(item => (
+                            <Record  {...{ item, refetch }} />
                         ))}
-                        {count > resources?.length &&
+                        {/* {count > resources?.length &&
                             <Box sx={{ display: "flex", justifyContent: "center", marginTop: "12px", fontSize: 12, }}>
                                 <Button disabled={loading} onClick={() => { setPage(page + 1) }}> Show More</Button>
                             </Box>
-                        }
+                        } */}
                     </>
                 }
             </Box>

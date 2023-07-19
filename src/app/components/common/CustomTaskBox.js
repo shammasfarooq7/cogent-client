@@ -39,7 +39,7 @@ export const TaskBox = ({ taskName, buttonText, todays, type }) => {
   const resourceTicketsQueryVariables = {
     page,
     limit,
-    ...(todays ? { today: true } : { future: true }),
+    ...(todays ? { today: true } : {}),
   };
 
   const queryKey = isResource ? GET_RESOURCE_TICKET_QUERY : todays ? GET_TODAY_TICKET_QUERY : GET_ALL_TICKETS_QUERY
